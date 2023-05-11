@@ -11,3 +11,4 @@ class Profile(models.Model):
     @property
     def update_last_online(self) -> None:
         self.last_online = timezone.now()
+        self.save()

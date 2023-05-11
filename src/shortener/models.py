@@ -1,12 +1,12 @@
-from django.contrib.auth.models import User
 from django.db import models
-from django.forms import CharField
 
 from account.models import Profile
 
 
 class Link(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    
-    long_link = CharField(max_length=2000)
-    short_link = CharField(max_length=250)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+
+    long_link = models.CharField(max_length=2000)
+    short_link = models.CharField(max_length=250, null=True, blank=True)
+
+    # TODO: Add index by user, long link and short link. Add created data field

@@ -5,10 +5,10 @@
 {% block content %}
     <section class="section-shortener">
         <div class="shortener section-center">
-            <form class="shorten-form">
+            <form class="shorten-form" method="post">
                 {% csrf_token %}
-                <input type="text">
-                <input type="text">
+                {{ shorten_form.as_p }}
+                {% if shorten_link %}{{ shorten_link }}{% endif %}
                 <button class="btn btn-primary block-btn">shorten</button>
             </form>
         </div>
