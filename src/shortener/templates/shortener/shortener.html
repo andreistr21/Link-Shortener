@@ -1,5 +1,16 @@
 {% extends 'common/base.html' %}
-
-
-
-
+{% block title %}
+    Shorty
+{% endblock title %}
+{% block content %}
+    <section class="section-shortener">
+        <div class="shortener section-center">
+            <form class="shorten-form">
+                {% csrf_token %}
+                <input type="text">
+                <input type="text">
+                <button class="btn btn-primary block-btn">shorten</button>
+            </form>
+        </div>
+    </section>
+{% endblock content %}
