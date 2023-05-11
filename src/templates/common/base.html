@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="foo,bar" />
+        <meta name="description" content="foo" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- fontawesom -->
+        <script src="https://kit.fontawesome.com/142a68216d.js"
+                crossorigin="anonymous"></script>
+        <!-- normalize -->
+        <link rel="stylesheet" href={% static 'normalize.css' %} />
+        <!-- main css -->
+        <link rel="stylesheet" href={% static 'main.css' %} />
+        <title>
+            {% block title %}
+                Shorty
+            {% endblock title %}
+        </title>
+    </head>
+    <body>
+        <header>
+            {% comment %} navbar {% endcomment %}
+            <nav class="nav" id="nav">
+                <div class="section-center nav-center">
+                    {% comment %} navlogo {% endcomment %}
+                    <div class="nav-logo">
+                        <img src="{% static 'Logo.png' %}" alt="">
+                    </div>
+                    {% comment %} navbutton {% endcomment %}
+                    <button class="icon-btn nav-btn" id="nav-btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    {% comment %} navlinks {% endcomment %}
+                    <ul class="nav-links">
+                        <li>
+                            <a class="nav-link">sign in</a>
+                        </li>
+                        <li>
+                            <a class="nav-link">sign up</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            {% comment %} sidebar {% endcomment %}
+            <aside class="sidebar" id="sidebar">
+                <button class="icon-btn close-btn" id="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+                {% comment %} navbuttons {% endcomment %}
+                <div class="sidebar-buttons">
+                    <button class="btn btn-primary btn-block">sign in</button>
+                    <button class="btn btn-secondary btn-block">sign up</button>
+                </div>
+            </aside>
+        </header>
+        <footer class="footer">
+            <div class="section-center">
+                <p>
+                    &copy; <span id="date"></span> shorty. all rights reserved
+                </p>
+            </div>
+        </footer>
+        <script src="{% static 'main.js' %}"></script>
+    </body>
+</html>
