@@ -6,6 +6,8 @@ from django.conf import settings
 from shortener.forms import ShortenForm
 
 from .selectors import is_link_free
+import validators.url
+from urllib.parse import urlparse
 
 
 def save_link(shorten_form, shorten_link):
@@ -71,17 +73,40 @@ def short_with_random_value(shorten_form, absolute_uri):
     return shorten_link
 
 
+def validate_for_restricted_domains(link):
+    restricted_domains = settings.RESTRICTED_DOMAINS
+    link_domain = urlparse(link).netloc
+    print("!!!!!!!!!!!")
+    print(link_domain)
+    if link_domain in restricted_domains:
+        return False
+    return True
+
+
+def link_validation(shorten_form):
+    link = shorten_form.cleaned_data.get("long_link")
+    if validators.url(link):
+        if not validate_for_restricted_domains(link):
+            shorten_form.add_error("long_link", "This domain is banned")
+            return False
+    else:
+        shorten_form.add_error("long_link", "Enter a valid link")
+        return False
+    return True
+
+
 def short_link(request):
     shorten_form = ShortenForm(request.POST)
+    shorten_link = None
     if shorten_form.is_valid():
-        absolute_uri = request.build_absolute_uri()
-        if alias := shorten_form.cleaned_data.get("alias"):
-            if len(alias) > 3:
-                shorten_link = short_with_alias(alias, shorten_form, absolute_uri)
+        if link_validation(shorten_form):
+            absolute_uri = request.build_absolute_uri()
+            if alias := shorten_form.cleaned_data.get("alias"):
+                if len(alias) > 3:
+                    shorten_link = short_with_alias(alias, shorten_form, absolute_uri)
+                else:
+                    shorten_form.add_error("alias", "The alias must be at least 4 characters")
             else:
-                shorten_form.add_error("alias", "The alias must be at least 4 characters")
-                shorten_link = None
-        else:
-            shorten_link = short_with_random_value(shorten_form, absolute_uri)
+                shorten_link = short_with_random_value(shorten_form, absolute_uri)
 
     return shorten_form, shorten_link
