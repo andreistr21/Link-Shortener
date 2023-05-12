@@ -76,11 +76,7 @@ def short_with_random_value(shorten_form, absolute_uri):
 def validate_for_restricted_domains(link):
     restricted_domains = settings.RESTRICTED_DOMAINS
     link_domain = urlparse(link).netloc
-    print("!!!!!!!!!!!")
-    print(link_domain)
-    if link_domain in restricted_domains:
-        return False
-    return True
+    return link_domain not in restricted_domains
 
 
 def link_validation(shorten_form):
@@ -98,15 +94,14 @@ def link_validation(shorten_form):
 def short_link(request):
     shorten_form = ShortenForm(request.POST)
     shorten_link = None
-    if shorten_form.is_valid():
-        if link_validation(shorten_form):
-            absolute_uri = request.build_absolute_uri()
-            if alias := shorten_form.cleaned_data.get("alias"):
-                if len(alias) > 3:
-                    shorten_link = short_with_alias(alias, shorten_form, absolute_uri)
-                else:
-                    shorten_form.add_error("alias", "The alias must be at least 4 characters")
+    if shorten_form.is_valid() and link_validation(shorten_form):
+        absolute_uri = request.build_absolute_uri()
+        if alias := shorten_form.cleaned_data.get("alias"):
+            if len(alias) > 3:
+                shorten_link = short_with_alias(alias, shorten_form, absolute_uri)
             else:
-                shorten_link = short_with_random_value(shorten_form, absolute_uri)
+                shorten_form.add_error("alias", "The alias must be at least 4 characters")
+        else:
+            shorten_link = short_with_random_value(shorten_form, absolute_uri)
 
     return shorten_form, shorten_link
