@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load static %}
 {% block title %}
     Shorty
 {% endblock title %}
@@ -7,9 +8,24 @@
         <div class="shortener section-center">
             <form class="shorten-form" method="post">
                 {% csrf_token %}
-                {{ shorten_form.as_p }}
-                {% if shorten_link %}{{ shorten_link }}{% endif %}
+                <div class="form-icon">
+                    <img class="img" src="{% static 'paperclip.svg' %}" alt="clip image">
+                </div>
+                <div class="input shotener-input">
+                    {{ shorten_form.long_link }}
+                    {% if shorten_form.errors.long_link %}<div class="field-error">{{ shorten_form.errors.long_link.0 }}</div>{% endif %}
+                </div>
+                <div class="input shotener-input">
+                    {{ shorten_form.alias }}
+                    {% if shorten_form.errors.alias %}<div class="field-error">{{ shorten_form.errors.alias.0 }}</div>{% endif %}
+                </div>
                 <button class="btn btn-primary block-btn">shorten</button>
+                {% if shorten_link %}
+                    <div class="shortened-link-section">
+                        <p>Shorten link:</p>
+                        <div class="shortened-link">{{ shorten_link }}</div>
+                    </div>
+                {% endif %}
             </form>
         </div>
     </section>

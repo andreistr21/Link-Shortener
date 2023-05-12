@@ -49,7 +49,8 @@ html {
   --backgroundColor: var(--grey-50);
   --textColor: var(--grey-900);
   --borderRadius-100: 0.25rem;
-  --borderRadius-200: 1rem;
+  --borderRadius-200: 0.5rem;
+  --borderRadius-300: 1rem;
   --letterSpacing: 1px;
   --transition: 0.3s ease-in-out all;
   --max-width: 1120px;
@@ -272,6 +273,28 @@ ul {
   margin-top: 1rem;
 }
 
+/* input */
+.input input {
+  width: 100%;
+  line-height: 1.5;
+  border: none;
+  outline: var(--primary-500) solid 2px;
+  border-radius: var(--borderRadius-200);
+  padding: 0.5rem 0.75rem;
+  transition: var(--transition);
+}
+.input input:focus {
+  outline-color: var(--primary-700);
+}
+.field-error {
+  background-color: var(--red-light);
+  color: var(--red-dark);
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--borderRadius-200);
+  font-size: var(--small-text);
+}
+
 /* ============= LOCAL CSS =============== */
 /* base */
 /* header */
@@ -298,6 +321,7 @@ ul {
   text-transform: capitalize;
   color: var(--primary-900);
   cursor: pointer;
+  transition: var(--transition);
 }
 .nav-link:hover {
   color: var(--white);
@@ -351,20 +375,39 @@ ul {
   height: calc(100vh - 4rem - 5rem);
   min-height: 32rem;
 }
-.shorten-form {
-  background-color: var(--white);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, auto);
-  row-gap: 1rem;
-  width: 24rem;
-  padding: 3rem 2rem;
-  border-radius: var(--borderRadius-200);
-  box-shadow: var(--shadow-3);
-}
-.shortener{
+.shortener {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
+}
+.shorten-form {
+  background-color: var(--white);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(auto auto);
+  row-gap: 1rem;
+  width: calc(100% - 2rem);
+  max-width: 28rem;
+  padding: 3rem 2rem;
+  border-radius: var(--borderRadius-300);
+  box-shadow: var(--shadow-3);
+}
+.shortened-link {
+  background-color: var(--grey-300);
+  border-radius: var(--borderRadius-200);
+  padding: 0.5rem 0.75rem;
+}
+.shortened-link-section p {
+  margin-top: 1rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.form-icon {
+  width: 48px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+.form-icon img {
+  filter: invert(53%) sepia(50%) saturate(1836%) hue-rotate(175deg) brightness(98%) contrast(99%);
 }

@@ -4,7 +4,7 @@ from account.models import Profile
 
 
 class Link(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     long_link = models.CharField(max_length=2000)
     short_link = models.CharField(max_length=250, null=True, blank=True)
@@ -16,5 +16,3 @@ class Link(models.Model):
             models.Index(fields=["long_link"]),
             models.Index(fields=["short_link"]),
         ]
-
-    # TODO: Add index by user, long link and short link. Add created data field
