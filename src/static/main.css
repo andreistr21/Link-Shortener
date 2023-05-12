@@ -293,6 +293,7 @@ ul {
   padding: 0.25rem 0.5rem;
   border-radius: var(--borderRadius-200);
   font-size: var(--small-text);
+  line-height: 1.25;
 }
 
 /* ============= LOCAL CSS =============== */

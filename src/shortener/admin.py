@@ -5,5 +5,5 @@ from .models import Link
 
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ["user_profile", "short_link", "created_at"]
+    list_display = ["short_link", "user_profile" , "created_at"]
     ordering = ["-created_at"]

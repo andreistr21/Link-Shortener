@@ -10,5 +10,7 @@ class ShortenForm(forms.ModelForm):
         model = Link
         fields = ("long_link",)
         widgets = {
-            "long_link": forms.TextInput(attrs={"placeholder": "Enter a long link to make a short one"}),
+            "long_link": forms.TextInput(
+                attrs={"placeholder": "Enter a long link to make a short one", "autofocus": True, "type": "url"}
+            ),
         }
