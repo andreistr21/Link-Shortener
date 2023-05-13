@@ -16,8 +16,8 @@ def save_link(shorten_form, shorten_link):
     link.save()
 
 
-def validate_str_for_allowed_values(str_to_validate: str, restricted_values: list) -> bool:
-    return all(character in restricted_values for character in str_to_validate)
+def validate_str_for_allowed_values(str_to_validate: str, allowed_values: list) -> bool:
+    return all(character in allowed_values for character in str_to_validate)
 
 
 def validate_str_for_restriction(str_to_validate: str, restricted_values: list) -> bool:

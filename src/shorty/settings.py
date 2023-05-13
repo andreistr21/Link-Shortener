@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "shortener",
-    "account"
+    "account",
 ]
 
 MIDDLEWARE = [
@@ -119,9 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = (
-    BASE_DIR / "static",
-)
+STATICFILES_DIRS = (BASE_DIR / "static",)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -130,8 +128,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Shortener settings
-ALLOWED_CHARACTERS = string.ascii_letters + string.digits
+ALLOWED_CHARACTERS = string.ascii_letters + string.digits + "-"
 RESTRICTED_PHRASES = ["admin"]
 RESTRICTED_DOMAINS = ["127.0.0.1", "127.0.0.1:8000"]
-
-

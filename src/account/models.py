@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-import datetime
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -10,5 +10,5 @@ class Profile(models.Model):
 
     @property
     def update_last_online(self) -> None:
-        self.last_online = datetime.datetime.now()
+        self.last_online = timezone.now()
         self.save()
