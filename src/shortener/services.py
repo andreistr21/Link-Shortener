@@ -5,14 +5,14 @@ from django.conf import settings
 
 from shortener.forms import ShortenForm
 
-from .selectors import is_link_free
+from .selectors import is_alias_free
 import validators.url
 from urllib.parse import urlparse
 
 
-def save_link(shorten_form, shorten_link):
+def save_link(shorten_form, alias):
     link = shorten_form.save(commit=False)
-    link.short_link = shorten_link
+    link.alias = alias
     link.save()
 
 
@@ -43,14 +43,13 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
     return True
 
 
-def short_with_alias(alias, shorten_form, absolute_uri):
+def short_with_alias(alias, shorten_form):
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
-        if is_link_free(absolute_uri, alias):
-            save_link(shorten_form, f"{absolute_uri}{alias}")
-            return f"{absolute_uri}{alias}"
-
-        shorten_form.add_error("alias", "This alias is unavailable")
+        if is_alias_free(alias):
+            save_link(shorten_form, alias)
+        else:
+            shorten_form.add_error("alias", "This alias is unavailable")
 
 
 def gen_random_str():
@@ -59,20 +58,18 @@ def gen_random_str():
     return "".join(random.choice(letters) for _ in range(8))
 
 
-def get_random_alias(absolute_uri):
+def get_random_alias():
     """Returns random available alias"""
     alias = gen_random_str()
-    while not alias_validation(alias) and not is_link_free(absolute_uri, alias):
+    while not alias_validation(alias) and not is_alias_free(alias):
         alias = gen_random_str()
 
-    return f"{absolute_uri}{alias}"
+    return alias
 
 
-def short_with_random_value(shorten_form, absolute_uri):
-    shorten_link = get_random_alias(absolute_uri)
-    save_link(shorten_form, shorten_link)
-
-    return shorten_link
+def short_with_random_value(shorten_form):
+    alias = get_random_alias()
+    save_link(shorten_form, alias)
 
 
 def validate_for_restricted_domains(link):
@@ -95,15 +92,14 @@ def link_validation(shorten_form):
 
 def short_link(request):
     shorten_form = ShortenForm(request.POST)
-    shorten_link = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         absolute_uri = request.build_absolute_uri()
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:
-                shorten_link = short_with_alias(alias, shorten_form, absolute_uri)
+                short_with_alias(alias, shorten_form)
             else:
                 shorten_form.add_error("alias", "The alias must be at least 4 characters")
         else:
-            shorten_link = short_with_random_value(shorten_form, absolute_uri)
+            short_with_random_value(shorten_form)
 
-    return shorten_form, shorten_link
+    return shorten_form, absolute_uri + alias  # TODO: Only if shortened

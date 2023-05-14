@@ -1,7 +1,5 @@
 from unittest import TestCase
 
-from django.conf import settings
-
 from shortener.services import validate_str_for_restriction
 
 from .common_data import strs_to_validate_allowed_phrases, strs_to_validate_restricted_phrases
