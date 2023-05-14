@@ -29,13 +29,16 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
     Returns True if alias is free, False otherwise"""
     allowed = settings.ALLOWED_CHARACTERS
     restricted = settings.RESTRICTED_PHRASES
+    #TODO: Move settings imports into validator
     if not validate_str_for_restriction(alias, restricted):
         if shorten_form:
             shorten_form.add_error("alias", "This alias is not allowed")
         return False
     if not validate_str_for_allowed_values(alias, allowed):
         if shorten_form:
-            shorten_form.add_error("alias", "Only alphabetic characters and numerals are available for the alias")
+            shorten_form.add_error(
+                "alias", "Only alphabetic characters, numerals and hyphen are available for the alias"
+            )
         return False
 
     return True

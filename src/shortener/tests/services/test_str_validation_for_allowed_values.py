@@ -1,25 +1,15 @@
+from unittest import TestCase
+
 from django.conf import settings
-from django.test import TestCase
 
 from shortener.services import validate_str_for_allowed_values
+
+from .common_data import strs_to_validate_allowed_characters, strs_to_validate_restricted_characters
 
 
 class StrValidationForAllowedValuesTests(TestCase):
     def test_validation_with_restricted_values(self):
-        strs_to_validate = [
-            "alias*",
-            "library^",
-            "lap%top",
-            "some_str",
-            "str#2",
-            "(value)",
-            "v[alidati]on",
-            "do.t",
-            ",comma",
-            "questionmark?",
-            "!mark",
-            "equal=",
-        ]
+        strs_to_validate = strs_to_validate_restricted_characters
         allowed_values = settings.ALLOWED_CHARACTERS
 
         for str in strs_to_validate:
@@ -28,15 +18,7 @@ class StrValidationForAllowedValuesTests(TestCase):
     def test_validation_with_allowed_values(self):
         allowed_values = settings.ALLOWED_CHARACTERS
 
-        strs_to_validate = [
-            "properAlias",
-            "alias",
-            "test-alias",
-            "New-aliAs",
-            "some-text",
-            "t3st",
-            "text5",
-        ]
-        
+        strs_to_validate = strs_to_validate_allowed_characters
+
         for str in strs_to_validate:
             self.assertTrue(validate_str_for_allowed_values(str, allowed_values))
