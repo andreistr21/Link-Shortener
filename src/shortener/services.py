@@ -16,25 +16,24 @@ def save_link(shorten_form, shorten_link):
     link.save()
 
 
-def validate_str_for_allowed_values(str_to_validate: str, allowed_values: list) -> bool:
-    return all(character in allowed_values for character in str_to_validate)
+def validate_str_for_allowed_values(str_to_validate: str) -> bool:
+    allowed = settings.ALLOWED_CHARACTERS
+    return all(character in allowed for character in str_to_validate)
 
 
-def validate_str_for_restriction(str_to_validate: str, restricted_values: list) -> bool:
-    return str_to_validate not in restricted_values
+def validate_str_for_restriction(str_to_validate: str) -> bool:
+    restricted = settings.RESTRICTED_PHRASES
+    return str_to_validate not in restricted
 
 
 def alias_validation(alias: str, shorten_form=None) -> bool:
     """Checks alias for restricted characters, if not, adds error to the form.
     Returns True if alias is free, False otherwise"""
-    allowed = settings.ALLOWED_CHARACTERS
-    restricted = settings.RESTRICTED_PHRASES
-    #TODO: Move settings imports into validator
-    if not validate_str_for_restriction(alias, restricted):
+    if not validate_str_for_restriction(alias):
         if shorten_form:
             shorten_form.add_error("alias", "This alias is not allowed")
         return False
-    if not validate_str_for_allowed_values(alias, allowed):
+    if not validate_str_for_allowed_values(alias):
         if shorten_form:
             shorten_form.add_error(
                 "alias", "Only alphabetic characters, numerals and hyphen are available for the alias"

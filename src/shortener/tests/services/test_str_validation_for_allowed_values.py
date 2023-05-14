@@ -10,15 +10,12 @@ from .common_data import strs_to_validate_allowed_characters, strs_to_validate_r
 class StrValidationForAllowedValuesTests(TestCase):
     def test_validation_with_restricted_values(self):
         strs_to_validate = strs_to_validate_restricted_characters
-        allowed_values = settings.ALLOWED_CHARACTERS
 
         for str in strs_to_validate:
-            self.assertFalse(validate_str_for_allowed_values(str, allowed_values))
+            self.assertFalse(validate_str_for_allowed_values(str))
 
     def test_validation_with_allowed_values(self):
-        allowed_values = settings.ALLOWED_CHARACTERS
-
         strs_to_validate = strs_to_validate_allowed_characters
 
         for str in strs_to_validate:
-            self.assertTrue(validate_str_for_allowed_values(str, allowed_values))
+            self.assertTrue(validate_str_for_allowed_values(str))
