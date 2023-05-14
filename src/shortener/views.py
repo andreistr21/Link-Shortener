@@ -13,6 +13,9 @@ def index(request) -> HttpResponse:
         shorten_form, shorten_link = short_link(request)
         if shorten_form.is_valid():
             shorten_form = ShortenForm()
+        else:
+            # If form contains errors, that means that link wasn't shortened
+            shorten_link = None
 
     return render(
         request,

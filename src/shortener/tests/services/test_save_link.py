@@ -11,7 +11,7 @@ class SaveLinkTests(TestCase):
         link_1 = Link(long_link=long_link, alias=alias)
         link_1.save()
 
-    def test_save_with_long_and_aliass(self):
+    def test_save_with_long_and_alias(self):
         long_link = "youtube.com"
         alias = "test-short-link"
 
