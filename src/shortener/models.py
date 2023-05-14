@@ -7,7 +7,7 @@ class Link(models.Model):
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     long_link = models.CharField(max_length=2000)
-    short_link = models.CharField(max_length=250, null=True, blank=True)
+    short_link = models.CharField(max_length=250, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
