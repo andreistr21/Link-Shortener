@@ -28,7 +28,7 @@ def validate_str_for_restriction(str_to_validate: str) -> bool:
 
 def alias_validation(alias: str, shorten_form=None) -> bool:
     """Checks alias for restricted characters and phrases, if alias if restricted, adds error to the form.
-    Returns True if alias is can be used or False otherwise"""
+    Returns True if alias is can be used False otherwise"""
     if not validate_str_for_restriction(alias):
         if shorten_form:
             shorten_form.add_error("alias", "This alias is not allowed")
