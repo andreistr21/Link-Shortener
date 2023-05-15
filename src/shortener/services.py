@@ -102,4 +102,4 @@ def short_link(request):
         else:
             short_with_random_value(shorten_form)
 
-    return shorten_form, absolute_uri + alias  # TODO: Only if shortened
+    return shorten_form, absolute_uri + alias
