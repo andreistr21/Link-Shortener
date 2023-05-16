@@ -73,6 +73,7 @@ def short_with_random_value(shorten_form):
 
 
 def validate_for_restricted_domains(link):
+    """Returns True if domain is allowed"""
     restricted_domains = settings.RESTRICTED_DOMAINS
     link_domain = urlparse(link).netloc
     return link_domain not in restricted_domains
@@ -81,7 +82,7 @@ def validate_for_restricted_domains(link):
 def link_validation(shorten_form):
     link = shorten_form.cleaned_data.get("long_link")
     if validators.url(link):
-        if not validate_for_restricted_domains(link):
+        if not validate_for_restricted_domains(f"https://{link}"):
             shorten_form.add_error("long_link", "This domain is banned")
             return False
     else:
