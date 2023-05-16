@@ -70,6 +70,8 @@ def get_random_alias():
 def short_with_random_value(shorten_form):
     alias = get_random_alias()
     save_link(shorten_form, alias)
+    
+    return alias
 
 
 def validate_for_restricted_domains(link):
@@ -85,7 +87,7 @@ def validate_for_restricted_domains(link):
 
 def link_validation(shorten_form):
     link = shorten_form.cleaned_data.get("long_link")
-    if validators.url(link) or validators.url(f"{link}"):
+    if validators.url(link) or validators.url(f"https://{link}"):
         if not validate_for_restricted_domains(link):
             shorten_form.add_error("long_link", "This domain is banned")
             return False
@@ -103,7 +105,6 @@ def short_link(shorten_form):
             else:
                 shorten_form.add_error("alias", "The alias must be at least 4 characters")
         else:
-            #TODO: alias should be returned
-            short_with_random_value(shorten_form)
+            alias = short_with_random_value(shorten_form)
 
     return alias
