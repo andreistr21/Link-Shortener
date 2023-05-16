@@ -79,12 +79,13 @@ def validate_for_restricted_domains(link):
     # urlparse library can't find domain if there is no protocol extension
     if link_domain == "":
         link_domain = urlparse(f"https://{link}").netloc
+    #TODO: add error if still can't find domain
     return link_domain not in restricted_domains
 
 
 def link_validation(shorten_form):
     link = shorten_form.cleaned_data.get("long_link")
-    if validators.url(link) or validators.url(f"https://{link}"):
+    if validators.url(link) or validators.url(f"{link}"):
         if not validate_for_restricted_domains(link):
             shorten_form.add_error("long_link", "This domain is banned")
             return False
@@ -94,16 +95,15 @@ def link_validation(shorten_form):
     return True
 
 
-def short_link(request):
-    shorten_form = ShortenForm(request.POST)
+def short_link(shorten_form):
     if shorten_form.is_valid() and link_validation(shorten_form):
-        absolute_uri = request.build_absolute_uri()
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:
                 short_with_alias(alias, shorten_form)
             else:
                 shorten_form.add_error("alias", "The alias must be at least 4 characters")
         else:
+            #TODO: alias should be returned
             short_with_random_value(shorten_form)
 
-    return shorten_form, absolute_uri + alias
+    return alias

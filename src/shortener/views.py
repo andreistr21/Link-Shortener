@@ -8,14 +8,13 @@ from .services import short_link
 
 def index(request) -> HttpResponse:
     shorten_form = ShortenForm()
-    shorten_link = ""
+    shorten_link = None
     if request.POST:
-        shorten_form, shorten_link = short_link(request)
+        alias = short_link(shorten_form)
+        # If form doesn't contain errors, that means that link was shortened and shorten link can be returned
         if shorten_form.is_valid():
             shorten_form = ShortenForm()
-        else:
-            # If form contains errors, that means that link wasn't shortened
-            shorten_link = None
+            shorten_link = f"{request.build_absolute_uri()}{alias}"
 
     return render(
         request,
