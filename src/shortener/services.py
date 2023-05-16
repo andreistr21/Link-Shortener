@@ -81,15 +81,14 @@ def validate_for_restricted_domains(link):
     # urlparse library can't find domain if there is no protocol extension
     if link_domain == "":
         link_domain = urlparse(f"https://{link}").netloc
-    #TODO: add error if still can't find domain
-    return link_domain not in restricted_domains
+    return False if link_domain == "" else link_domain not in restricted_domains
 
 
 def link_validation(shorten_form):
     link = shorten_form.cleaned_data.get("long_link")
     if validators.url(link) or validators.url(f"https://{link}"):
         if not validate_for_restricted_domains(link):
-            shorten_form.add_error("long_link", "This domain is banned")
+            shorten_form.add_error("long_link", "This domain is banned or invalid")
             return False
     else:
         shorten_form.add_error("long_link", "Enter a valid link")
@@ -98,6 +97,7 @@ def link_validation(shorten_form):
 
 
 def short_link(shorten_form):
+    alias = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:
