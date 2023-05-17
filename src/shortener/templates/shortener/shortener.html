@@ -1,5 +1,6 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block title %}
     Shorty
 {% endblock title %}
@@ -12,7 +13,7 @@
                     <img class="img" src="{% static 'paperclip.svg' %}" alt="clip image">
                 </div>
                 <div class="input shotener-input">
-                    {{ shorten_form.long_link }}
+                    {{ shorten_form.long_link|remove_attr:"maxlength" }}
                     {% if shorten_form.errors.long_link %}<div class="field-error">{{ shorten_form.errors.long_link.0 }}</div>{% endif %}
                 </div>
                 <div class="input shotener-input">

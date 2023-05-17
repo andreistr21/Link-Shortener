@@ -3,8 +3,6 @@ import string
 
 from django.conf import settings
 
-from shortener.forms import ShortenForm
-
 from .selectors import is_alias_free
 import validators.url
 from urllib.parse import urlparse
@@ -70,7 +68,7 @@ def get_random_alias():
 def short_with_random_value(shorten_form):
     alias = get_random_alias()
     save_link(shorten_form, alias)
-    
+
     return alias
 
 

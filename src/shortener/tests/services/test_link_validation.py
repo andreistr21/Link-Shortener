@@ -1,3 +1,5 @@
+import random
+import string
 from unittest import TestCase
 from django.conf import settings
 
@@ -33,7 +35,7 @@ class LinkValidationTests(TestCase):
         link_validation(shorten_form)
         errors = shorten_form.errors.get("long_link")
         self.assertTrue(error_value in errors)
-        
+
     def test_with_restricted_domain(self):
         restricted_links = [
             "127.0.0.1:8000",
@@ -57,6 +59,6 @@ class LinkValidationTests(TestCase):
             shorten_form = ShortenForm(data={"long_link": link})
             shorten_form.is_valid()
             link_validation(shorten_form)
-            
+
             errors = shorten_form.errors.get("long_link")
             self.assertTrue(error_value in errors)
