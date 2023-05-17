@@ -51,12 +51,12 @@ class LinkValidationTests(TestCase):
             "127.0.0.1:8000",
             "https://127.0.0.1:8000/account",
         ]
-        error_value = "This domain is banned"
+        error_value = "This domain is banned or invalid"
 
         for link in restricted_links:
             shorten_form = ShortenForm(data={"long_link": link})
             shorten_form.is_valid()
             link_validation(shorten_form)
-
+            
             errors = shorten_form.errors.get("long_link")
             self.assertTrue(error_value in errors)
