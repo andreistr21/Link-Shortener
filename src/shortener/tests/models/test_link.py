@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import datetime
 from unittest import mock
 
@@ -5,6 +7,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from account.models import Profile
+from shortener.forms import ShortenForm
 from shortener.models import Link
 
 
@@ -23,3 +26,15 @@ class LinkTests(TestCase):
         self.assertEqual(link.long_link, long_link)
         self.assertEqual(link.alias, alias)
         self.assertEqual(link.created_at, mock_date)
+
+    def test_if_link_too_long(self):
+        letters = string.ascii_lowercase + string.digits
+
+        long_link = "https://www.youtube.com/" + "".join(random.choice(letters) for _ in range(2000))
+        part_of_error_value = "Ensure this value has at most"
+        shorten_form = ShortenForm(data={"long_link": long_link})
+        shorten_form.is_valid()
+
+        errors = shorten_form.errors.get("long_link")
+        for error in errors:
+            self.assertTrue(part_of_error_value in error)
