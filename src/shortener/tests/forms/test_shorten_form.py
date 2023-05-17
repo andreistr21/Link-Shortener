@@ -16,6 +16,6 @@ class ShortenFormTests(TestCase):
         shorten_form = ShortenForm()
 
         self.assertInHTML(
-            '<input type="text" name="alias" placeholder="Alias (Optional)" id="id_alias">',
+            '<input type="text" name="alias" placeholder="Alias (Optional)" maxlength="80" id="id_alias">',
             str(shorten_form),
         )
