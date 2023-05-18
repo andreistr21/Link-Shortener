@@ -1,14 +1,16 @@
+from ctypes import Union
 import random
 import string
 
 from django.conf import settings
+from django.forms import ModelForm
 
 from .selectors import is_alias_free
 import validators.url
 from urllib.parse import urlparse
 
 
-def save_link(shorten_form, alias=None):
+def save_link(shorten_form: ModelForm, alias=None) -> None:
     if alias:
         link = shorten_form.save(commit=False)
         link.alias = alias
@@ -44,7 +46,7 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
     return True
 
 
-def short_with_alias(alias, shorten_form):
+def short_with_alias(alias: str, shorten_form: ModelForm) -> None:
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
         if is_alias_free(alias):
@@ -53,13 +55,13 @@ def short_with_alias(alias, shorten_form):
             shorten_form.add_error("alias", "This alias is unavailable")
 
 
-def gen_random_str():
+def gen_random_str() -> str:
     letters = string.ascii_lowercase + string.digits
 
     return "".join(random.choice(letters) for _ in range(8))
 
 
-def get_random_alias():
+def get_random_alias() -> str:
     """Returns random available alias"""
     alias = gen_random_str()
     while not alias_validation(alias) or not is_alias_free(alias):
@@ -68,14 +70,14 @@ def get_random_alias():
     return alias
 
 
-def short_with_random_value(shorten_form):
+def short_with_random_value(shorten_form: ModelForm) -> str:
     alias = get_random_alias()
     save_link(shorten_form, alias)
 
     return alias
 
 
-def validate_for_restricted_domains(link):
+def validate_for_restricted_domains(link: str) -> bool:
     """Returns True if domain is allowed"""
     restricted_domains = settings.RESTRICTED_DOMAINS
     link_domain = urlparse(link).netloc
@@ -85,7 +87,7 @@ def validate_for_restricted_domains(link):
     return False if link_domain == "" else link_domain not in restricted_domains
 
 
-def link_validation(shorten_form):
+def link_validation(shorten_form: ModelForm) -> bool:
     link = shorten_form.cleaned_data.get("long_link")
     if validators.url(link) or validators.url(f"https://{link}"):
         if not validate_for_restricted_domains(link):
@@ -97,7 +99,7 @@ def link_validation(shorten_form):
     return True
 
 
-def short_link(shorten_form):
+def short_link(shorten_form: ModelForm) -> Union(None, str):
     alias = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):

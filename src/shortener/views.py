@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from shortener.forms import ShortenForm
@@ -6,7 +6,7 @@ from shortener.forms import ShortenForm
 from .services import short_link
 
 
-def index(request) -> HttpResponse:
+def index(request: HttpRequest) -> HttpResponse:
     shorten_form = ShortenForm()
     shorten_link = None
     if request.POST:
