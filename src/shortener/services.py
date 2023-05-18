@@ -1,6 +1,6 @@
-from ctypes import Union
 import random
 import string
+from typing import Optional
 
 from django.conf import settings
 from django.forms import ModelForm
@@ -99,7 +99,7 @@ def link_validation(shorten_form: ModelForm) -> bool:
     return True
 
 
-def short_link(shorten_form: ModelForm) -> Union(None, str):
+def short_link(shorten_form: ModelForm) -> Optional[str]:
     alias = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):
