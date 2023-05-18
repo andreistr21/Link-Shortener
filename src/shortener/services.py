@@ -8,10 +8,13 @@ import validators.url
 from urllib.parse import urlparse
 
 
-def save_link(shorten_form, alias):
-    link = shorten_form.save(commit=False)
-    link.alias = alias
-    link.save()
+def save_link(shorten_form, alias=None):
+    if alias:
+        link = shorten_form.save(commit=False)
+        link.alias = alias
+        link.save()
+    else:
+        shorten_form.save()
 
 
 def validate_str_for_allowed_values(str_to_validate: str) -> bool:
@@ -59,7 +62,7 @@ def gen_random_str():
 def get_random_alias():
     """Returns random available alias"""
     alias = gen_random_str()
-    while not alias_validation(alias) and not is_alias_free(alias):
+    while not alias_validation(alias) or not is_alias_free(alias):
         alias = gen_random_str()
 
     return alias
