@@ -4,7 +4,6 @@ from unittest import mock
 from shortener.forms import ShortenForm
 from shortener.models import Link
 from shortener.services import get_random_alias, save_link
-from shortener.selectors import is_alias_free
 
 
 class GetRandomAliasTests(TestCase):

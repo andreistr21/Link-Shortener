@@ -1,7 +1,4 @@
-import random
-import string
 from unittest import TestCase
-from django.conf import settings
 
 from shortener.forms import ShortenForm
 from shortener.services import link_validation
