@@ -142,8 +142,8 @@ ul {
 .btn {
   cursor: pointer;
   font-size: 1rem;
-  border: 2px solid var(--primary-500);
-  border-radius: var(--borderRadius-100);
+  border-color: transparent;
+  border-radius: var(--borderRadius-200);
   letter-spacing: var(--letterSpacing);
   padding: 0.75rem 1.5rem;
   text-transform: capitalize;
@@ -157,7 +157,6 @@ ul {
 }
 .btn-primary:hover {
   background-color: var(--primary-700);
-  border-color: transparent;
 }
 .btn-secondary {
   color: var(--primary-900);
@@ -165,7 +164,6 @@ ul {
 }
 .btn-secondary:hover {
   background-color: var(--primary-300);
-  border-color: transparent;
 }
 .btn-block {
   width: 100%;
@@ -199,8 +197,21 @@ ul {
   background: var(--green-light);
 }
 /* form */
-
 .form {
+  background-color: var(--white);
+  display: grid;
+  row-gap: 1rem;
+  width: calc(100% - 2rem);
+  max-width: 28rem;
+  padding: 3rem 2rem;
+  border-radius: var(--borderRadius-300);
+  box-shadow: var(--shadow-3);
+}
+.form-header{
+  margin: 0 auto;
+}
+
+/* .form {
   width: 90vw;
   max-width: var(--fixed-width);
   background: var(--white);
@@ -240,7 +251,7 @@ ul {
   color: var(--red-dark);
   letter-spacing: var(--letterSpacing);
   text-transform: capitalize;
-}
+} */
 /* alert */
 
 @keyframes spinner {
@@ -383,16 +394,8 @@ ul {
   place-items: center;
 }
 .shorten-form {
-  background-color: var(--white);
-  display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(auto auto);
-  row-gap: 1rem;
-  width: calc(100% - 2rem);
-  max-width: 28rem;
-  padding: 3rem 2rem;
-  border-radius: var(--borderRadius-300);
-  box-shadow: var(--shadow-3);
 }
 .shortened-link {
   background-color: var(--grey-300);
@@ -410,5 +413,19 @@ ul {
   margin-bottom: 2rem;
 }
 .form-icon img {
-  filter: invert(53%) sepia(50%) saturate(1836%) hue-rotate(175deg) brightness(98%) contrast(99%);
+  filter: invert(53%) sepia(50%) saturate(1836%) hue-rotate(175deg)
+    brightness(98%) contrast(99%);
+}
+
+/* Sign Up */
+.sign-up {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+.section-sign-up {
+  background-color: var(--grey-100);
+  height: calc(100vh - 4rem - 5rem);
+  min-height: 32rem;
 }

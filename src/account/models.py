@@ -36,13 +36,12 @@ class UserManager(BaseUserManager):
 class Profile(AbstractUser):
     username = None
     email = models.EmailField("email address", unique=True)
+    last_online = models.DateTimeField(auto_now_add=timezone.now())
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-
-    last_online = models.DateTimeField(auto_now_add=timezone.now())
 
     @property
     def update_last_online(self) -> None:
