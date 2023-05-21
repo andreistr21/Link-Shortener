@@ -1,7 +1,8 @@
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from account.forms import SignUpForm
+from account.forms import SignInForm, SignUpForm
 from account.services import send_activation_email
 
 from .models import Profile
@@ -12,7 +13,6 @@ def sign_up(request):
     sign_up_form = SignUpForm()
     if request.POST:
         sign_up_form = SignUpForm(request.POST)
-        # TODO: Add additional email verification by validators module.
         if sign_up_form.is_valid():
             user = sign_up_form.save()
             send_activation_email(request, user, sign_up_form.cleaned_data.get("email"))
@@ -27,11 +27,25 @@ def sign_up(request):
     )
 
 
+def sign_in(request):
+    sign_in_form = SignInForm()
+    if request.POST:
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        if user := authenticate(request, email=email, password=password):
+            login(request, user)
+            return redirect(reverse("account:overview"))
+        else:
+            print("DON'T logged in")
+
+    return render(request, "account/sign_in.html", {"sign_in_form": sign_in_form})
+
+
 def confirm_email(request):
     return render(request, "account/confirm_email.html")
 
 
-def activate_email(request, pk, token):
+def activate_email(_, pk, token):
     try:
         user = Profile.objects.get(pk=pk)
     except (TypeError, ValueError, OverflowError, Profile.DoesNotExist):
@@ -43,7 +57,11 @@ def activate_email(request, pk, token):
 
         return redirect(reverse("account:sing_up"))
     else:
-        #TODO: Add an action if no such user is found.
+        # TODO: Add an action if no such user is found.
         print("No such user")
 
     return redirect(reverse("shortener:index"))
+
+
+def overview(request):
+    return render(request, "account/overview.html", {})
