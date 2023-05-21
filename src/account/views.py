@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -30,13 +30,10 @@ def sign_up(request):
 def sign_in(request):
     sign_in_form = SignInForm()
     if request.POST:
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        if user := authenticate(request, email=email, password=password):
+        sign_in_form = SignInForm(request, request.POST)
+        if user := sign_in_form.is_valid():
             login(request, user)
             return redirect(reverse("account:overview"))
-        else:
-            print("DON'T logged in")
 
     return render(request, "account/sign_in.html", {"sign_in_form": sign_in_form})
 
