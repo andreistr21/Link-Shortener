@@ -37,6 +37,7 @@ class Profile(AbstractUser):
     username = None
     email = models.EmailField("email address", unique=True)
     last_online = models.DateTimeField(auto_now_add=timezone.now())
+    is_email_confirmed = models.BooleanField("email confirmed", default=False)
 
     objects = UserManager()
 

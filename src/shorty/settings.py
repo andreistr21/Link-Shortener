@@ -134,3 +134,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 ALLOWED_CHARACTERS = string.ascii_letters + string.digits + "-"
 RESTRICTED_PHRASES = ["admin"]
 RESTRICTED_DOMAINS = ["127.0.0.1", "127.0.0.1:8000"]
+
+
+# Email settings
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
