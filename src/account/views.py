@@ -1,9 +1,11 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
+from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from django.contrib.auth.forms import AuthenticationForm
 
 from account.forms import SignInForm, SignUpForm
-from account.services import send_activation_email
+from account.tasks import send_activation_email
 
 from .models import Profile
 from .tokens import email_activation_token
@@ -15,7 +17,12 @@ def sign_up(request):
         sign_up_form = SignUpForm(request.POST)
         if sign_up_form.is_valid():
             user = sign_up_form.save()
-            send_activation_email(request, user, sign_up_form.cleaned_data.get("email"))
+            send_activation_email.delay(
+                domain=get_current_site(request).domain,
+                protocol=request.is_secure(),
+                user_id=user.id,
+                to_email=sign_up_form.cleaned_data.get("email"),
+            )
             return redirect(reverse("account:confirm_email"))
 
     return render(
@@ -31,8 +38,8 @@ def sign_in(request):
     sign_in_form = SignInForm()
     if request.POST:
         sign_in_form = SignInForm(request, request.POST)
-        if user := sign_in_form.is_valid():
-            login(request, user)
+        if sign_in_form.is_valid():
+            login(request, sign_in_form.user_cache)
             return redirect(reverse("account:overview"))
 
     return render(request, "account/sign_in.html", {"sign_in_form": sign_in_form})

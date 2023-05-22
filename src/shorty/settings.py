@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "shortener.apps.ShortenerConfig",
     "account.apps.AccountConfig",
+    "celery",
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
+
+
+# Celery
+CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
