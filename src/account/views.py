@@ -1,29 +1,22 @@
-from django.contrib.auth import login
-from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from account.forms import SignInForm, SignUpForm
-from account.tasks import send_activation_email
-
-from .models import Profile
-from .tokens import email_activation_token
+from account.services import (
+    send_new_activation_link,
+    sign_in_user,
+    sign_up_user,
+    update_email_confirmation_status,
+)
 
 
 def sign_up(request):
     sign_up_form = SignUpForm()
     if request.POST:
         sign_up_form = SignUpForm(request.POST)
-        if sign_up_form.is_valid():
-            user = sign_up_form.save()
-            send_activation_email.delay(
-                domain=get_current_site(request).domain,
-                protocol=request.is_secure(),
-                user_id=user.id,
-                to_email=sign_up_form.cleaned_data.get("email"),
-            )
-            return redirect(reverse("account:confirm_email"))
+        if http_response_redirect := sign_up_user(request, sign_up_form):
+            return http_response_redirect
 
     return render(
         request,
@@ -39,12 +32,10 @@ def sign_in(request):
     sign_in_form = SignInForm()
     if request.POST:
         sign_in_form = SignInForm(request, request.POST)
-        if sign_in_form.is_valid():
-            login(request, sign_in_form.user_cache)
-            return redirect(reverse("account:overview"))
-        elif "Email for this account not confirmed." in sign_in_form.non_field_errors()[0]:
-            new_activation_link = True
-            print(f"{new_activation_link=}")
+        if resp := sign_in_user(request, sign_in_form) is HttpResponseRedirect:
+            return resp
+        elif resp is bool:
+            new_activation_link = resp
 
     return render(
         request,
@@ -61,21 +52,9 @@ def confirm_email(request):
 
 
 def activate_email(_, pk, token):
-    try:
-        user = Profile.objects.get(pk=pk)
-    except (TypeError, ValueError, OverflowError, Profile.DoesNotExist):
-        user = None
+    update_email_confirmation_status(pk, token)
 
-    if user is not None and email_activation_token.check_token(user, token):
-        user.is_email_confirmed = True
-        user.save()
-
-        return redirect(reverse("account:sing_up"))
-    else:
-        # TODO: Add an action if no such user is found.
-        print("No such user")
-
-    return redirect(reverse("shortener:index"))
+    return redirect(reverse("account:sing_in"))
 
 
 def overview(request: HttpRequest) -> HttpResponse:
@@ -86,19 +65,8 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
     new_confirmation_link_form = SignInForm()
     if request.POST:
         new_confirmation_link_form = SignInForm(request, request.POST)
-        if (
-            not new_confirmation_link_form.is_valid()
-            and new_confirmation_link_form.non_field_errors
-            and "Email for this account not confirmed." in new_confirmation_link_form.non_field_errors()[0]
-        ):
-            user = get_object_or_404(Profile, email=new_confirmation_link_form.cleaned_data.get("email"))
-            send_activation_email.delay(
-                domain=get_current_site(request).domain,
-                protocol=request.is_secure(),
-                user_id=user.id,
-                to_email=new_confirmation_link_form.cleaned_data.get("email"),
-            )
-            return redirect(reverse("account:confirm_email"))
+        if http_resp_redirect := send_new_activation_link(request, new_confirmation_link_form):
+            return http_resp_redirect
 
     return render(
         request,
