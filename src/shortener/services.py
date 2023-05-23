@@ -39,7 +39,8 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
     if not validate_str_for_allowed_values(alias):
         if shorten_form:
             shorten_form.add_error(
-                "alias", "Only alphabetic characters, numerals and hyphen are available for the alias"
+                "alias",
+                "Only alphabetic characters, numerals and hyphen are available for the alias",
             )
         return False
 
