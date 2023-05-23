@@ -140,7 +140,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Shortener settings
 ALLOWED_CHARACTERS = string.ascii_letters + string.digits + "-"
-RESTRICTED_PHRASES = ["admin"]
+RESTRICTED_PHRASES = ["admin", "account"]
 RESTRICTED_DOMAINS = ["127.0.0.1", "127.0.0.1:8000"]
 
 

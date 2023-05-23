@@ -17,8 +17,6 @@ def update_email_confirmation_status(pk, token, status=True):
         user.is_email_confirmed = status
         user.save()
 
-        return redirect(reverse("account:sing_up"))
-
 
 def sign_up_user(request, sign_up_form):
     if sign_up_form.is_valid():
@@ -37,7 +35,7 @@ def sign_in_user(request, sign_in_form):
         login(request, sign_in_form.user_cache)
         return redirect(reverse("account:overview"))
     elif "Email for this account not confirmed." in sign_in_form.non_field_errors()[0]:
-        return True
+        return "Error"
 
 
 def send_new_activation_link(request, new_confirmation_link_form):

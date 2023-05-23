@@ -1,11 +1,16 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 
 from .models import Profile
 
 
 class SignUpForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["password1"].widget.attrs.update({"placeholder": "Password"})
+        self.fields["password2"].widget.attrs.update({"placeholder": "Repeat password"})
+
     class Meta:
         model = Profile
         fields = (
@@ -13,16 +18,22 @@ class SignUpForm(UserCreationForm):
             "password1",
             "password2",
         )
+        widgets = {
+            "email": forms.EmailInput(attrs={"placeholder": "Your email"}),
+        }
 
 
 class SignInForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={"autofocus": True, "max_length": 150}))
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={"autofocus": True, "max_length": 150, "placeholder": "your email"}
+        )
+    )
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "password"}))
 
     def __init__(self, request=None, *args, **kwargs):
         self.user_cache = None
         self.request = request
-        self.email_field = get_user_model()._meta.get_field(get_user_model().USERNAME_FIELD)
         super(SignInForm, self).__init__(*args, **kwargs)
 
     def clean(self):
@@ -54,5 +65,12 @@ class SignInForm(forms.Form):
     def invalid_login_error(self):
         self.add_error(
             None,
-            f"Please enter a correct {self.email_field} and password. Note that both fields may be case-sensitive.",
+            "Please enter a correct email and password. Note that both fields may be case-sensitive.",
         )
+
+
+class ResetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["new_password1"].widget.attrs.update({"placeholder": "New Password"})
+        self.fields["new_password2"].widget.attrs.update({"placeholder": "Repeat New Password"})

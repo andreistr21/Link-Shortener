@@ -5,8 +5,8 @@
     Sign In
 {% endblock title %}
 {% block content %}
-    <section class="section-sign">
-        <div class="sign section-center">
+    <section class="section-form section-sign-in">
+        <div class="section-center section-center-form">
             <form class="form sign-form" method="post">
                 {% csrf_token %}
                 <div class="form-header">
@@ -15,22 +15,22 @@
                 {% if new_activation_link %}
                     <a href={% url 'account:new_confirmation_link' %}>Need a new confirmation link?</a>
                 {% endif %}
-                {{ sign_in_form.as_p }}
-                {% comment %} <div class="input sign-input">
-                    {{ shorten_form.long_link }}
-                    {% if shorten_form.errors.long_link %}<div class="field-error">{{ shorten_form.errors.long_link.0 }}</div>{% endif %}
-                </div>
-                <div class="input sign-input">
-                    {{ shorten_form.alias }}
-                    {% if shorten_form.errors.alias %}<div class="field-error">{{ shorten_form.errors.alias.0 }}</div>{% endif %}
-                </div> {% endcomment %}
-                <button class="btn btn-primary block-btn">sign ip</button>
-                {% comment %} {% if shorten_link %}
-                    <div class="shortened-link-section">
-                        <p>Shorten link:</p>
-                        <div class="shortened-link">{{ shorten_link }}</div>
+                {% if sign_in_form.non_field_errors %}<div class="form-error">{{ sign_in_form.non_field_errors.0 }}</div>{% endif %}
+                {% for field in sign_in_form %}
+                    <div class="input sign-input">
+                        {{ field }}
+                        {% if field.errors %}<div class="field-error">{{ field.errors.0 }}</div>{% endif %}
                     </div>
-                {% endif %} {% endcomment %}
+                {% endfor %}
+                <button class="btn btn-primary block-btn">sign in</button>
+                <div class="form-help-section">
+                    <p class="text-small">
+                        Forgot your password? <a href="{% url 'account:password_reset' %}">Reset Password</a>
+                    </p>
+                    <p class="text-small">
+                        Don't have an account? <a href="{% url 'account:sign_up' %}">Join Now</a>
+                    </p>
+                </div>
             </form>
         </div>
     </section>

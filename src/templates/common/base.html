@@ -37,10 +37,10 @@
                     {% comment %} navlinks {% endcomment %}
                     <ul class="nav-links">
                         <li>
-                            <a class="nav-link">sign in</a>
+                            <a href={% url 'account:sign_in' %} class="nav-link">sign in</a>
                         </li>
                         <li>
-                            <a class="nav-link">sign up</a>
+                            <a href={% url 'account:sign_up' %} class="nav-link">sign up</a>
                         </li>
                     </ul>
                 </div>

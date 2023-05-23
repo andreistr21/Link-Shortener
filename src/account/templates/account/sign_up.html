@@ -1,33 +1,27 @@
 {% extends 'common/base.html' %}
-{% comment %} {% load static %} {% endcomment %}
-{% comment %} {% load custom_tags %} {% endcomment %}
 {% block title %}
     Sign Up
 {% endblock title %}
 {% block content %}
-    <section class="section-sign">
-        <div class="sign section-center">
+    <section class="section-form section-sign-up">
+        <div class="section-center section-center-form">
             <form class="form sign-form" method="post">
                 {% csrf_token %}
                 <div class="form-header">
                     <h1>sign up</h1>
                 </div>
-                {{ sign_up_form.as_p }}
-                {% comment %} <div class="input sign-input">
-                    {{ shorten_form.long_link }}
-                    {% if shorten_form.errors.long_link %}<div class="field-error">{{ shorten_form.errors.long_link.0 }}</div>{% endif %}
-                </div>
-                <div class="input sign-input">
-                    {{ shorten_form.alias }}
-                    {% if shorten_form.errors.alias %}<div class="field-error">{{ shorten_form.errors.alias.0 }}</div>{% endif %}
-                </div> {% endcomment %}
-                <button class="btn btn-primary block-btn">sign up</button>
-                {% comment %} {% if shorten_link %}
-                    <div class="shortened-link-section">
-                        <p>Shorten link:</p>
-                        <div class="shortened-link">{{ shorten_link }}</div>
+                {% for field in sign_up_form %}
+                    <div class="input sign-input">
+                        {{ field }}
+                        {% if field.errors %}<div class="field-error">{{ field.errors.0 }}</div>{% endif %}
                     </div>
-                {% endif %} {% endcomment %}
+                {% endfor %}
+                <button class="btn btn-primary block-btn">sign up</button>
+                <div class="form-help-section">
+                    <p class="text-small">
+                        Already have an account? <a href="{% url 'account:sign_up' %}">Sign In</a>
+                    </p>
+                </div>
             </form>
         </div>
     </section>

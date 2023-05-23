@@ -3,5 +3,15 @@
     Confrim Email
 {% endblock title %}
 {% block content %}
-    <h1>Confirtm your email by link sended to your email.</h1>
+    <section class="section-form">
+        <div class="section-center confirm-email">
+            <h5>Confirm your email by link sended to your email.</h5>
+            <a href="{% url 'account:sign_in' %}">
+                <button class="btn btn-primary block-btn">sign in</button>
+            </a>
+            <p class="text-small">
+                Need a new confirmation link? <span><a href="{% url 'account:new_confirmation_link' %}">Send a new link</a></span>
+            </p>
+        </div>
+    </section>
 {% endblock content %}

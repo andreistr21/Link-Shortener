@@ -32,10 +32,14 @@ def sign_in(request):
     sign_in_form = SignInForm()
     if request.POST:
         sign_in_form = SignInForm(request, request.POST)
-        if resp := sign_in_user(request, sign_in_form) is HttpResponseRedirect:
+        resp = sign_in_user(request, sign_in_form)
+        if type(resp) is HttpResponseRedirect:
             return resp
-        elif resp is bool:
-            new_activation_link = resp
+        elif resp == "Error":
+            new_activation_link = True
+            
+    for error in sign_in_form.non_field_errors():
+        print(error)
 
     return render(
         request,
@@ -54,7 +58,7 @@ def confirm_email(request):
 def activate_email(_, pk, token):
     update_email_confirmation_status(pk, token)
 
-    return redirect(reverse("account:sing_in"))
+    return redirect(reverse("account:sign_in"))
 
 
 def overview(request: HttpRequest) -> HttpResponse:
@@ -62,6 +66,7 @@ def overview(request: HttpRequest) -> HttpResponse:
 
 
 def new_confirmation_link(request: HttpRequest) -> HttpResponse:
+    """Sending new confirmation link to email"""
     new_confirmation_link_form = SignInForm()
     if request.POST:
         new_confirmation_link_form = SignInForm(request, request.POST)
