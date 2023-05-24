@@ -12,6 +12,9 @@
                 <div class="form-header">
                     <h3>new confirmation link</h3>
                 </div>
+                {% if new_confirmation_link_form.non_field_errors %}
+                    <div class="form-error">{{ new_confirmation_link_form.non_field_errors.0 }}</div>
+                {% endif %}
                 {% for field in new_confirmation_link_form %}
                     <div class="input sign-input">
                         {{ field }}

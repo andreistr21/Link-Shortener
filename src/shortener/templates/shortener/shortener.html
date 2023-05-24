@@ -12,6 +12,7 @@
                 <div class="form-icon">
                     <img class="img" src="{% static 'paperclip.svg' %}" alt="clip image">
                 </div>
+                {% if shorten_form.non_field_errors %}<div class="form-error">{{ shorten_form.non_field_errors.0 }}</div>{% endif %}
                 <div class="input shotener-input">
                     {{ shorten_form.long_link|remove_attr:"maxlength" }}
                     {% if shorten_form.errors.long_link %}<div class="field-error">{{ shorten_form.errors.long_link.0 }}</div>{% endif %}
