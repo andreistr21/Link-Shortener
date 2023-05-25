@@ -44,7 +44,7 @@ class Profile(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    @property
-    def update_last_online(self) -> None:
-        self.last_online = timezone.now()
-        self.save()
+    # @property
+    # def update_last_online(self) -> None:
+    #     self.last_online = timezone.now()
+    #     self.save()

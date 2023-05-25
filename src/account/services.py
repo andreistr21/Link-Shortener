@@ -45,6 +45,7 @@ def send_new_activation_link(request, new_confirmation_link_form):
         and "Email for this account not confirmed."
         in new_confirmation_link_form.non_field_errors()[0]
     ):
+        # TODO: move to selectors; search by indexed field
         user = get_object_or_404(
             Profile, email=new_confirmation_link_form.cleaned_data.get("email")
         )
