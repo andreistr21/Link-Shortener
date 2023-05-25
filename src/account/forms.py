@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import SetPasswordForm, UserCreationForm
 
-from .models import Profile
+from account.models import Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -54,7 +54,10 @@ class SignInForm(forms.Form):
         if not self.user_cache.is_email_confirmed:
             self.add_error(
                 None,
-                "Email for this account not confirmed. Confirmation link was sent to your email during registration.",
+                (
+                    "Email for this account not confirmed. Confirmation link was sent to your"
+                    " email during registration."
+                ),
             )
         if not self.user_cache.is_active:
             self.add_error(
@@ -65,7 +68,10 @@ class SignInForm(forms.Form):
     def invalid_login_error(self):
         self.add_error(
             None,
-            "Please enter a correct email and password. Note that both fields may be case-sensitive.",
+            (
+                "Please enter a correct email and password. Note that both fields may be"
+                " case-sensitive."
+            ),
         )
 
 
