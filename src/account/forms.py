@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import SetPasswordForm, UserCreationForm
+from django.contrib.auth.forms import SetPasswordForm, UserCreationForm, AuthenticationForm
 
 from account.models import Profile
 
@@ -26,10 +26,10 @@ class SignUpForm(UserCreationForm):
 class SignInForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(
-            attrs={"autofocus": True, "max_length": 150, "placeholder": "your email"}
+            attrs={"autofocus": True, "max_length": 150, "placeholder": "Your email"}
         )
     )
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "password"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
 
     def __init__(self, request=None, *args, **kwargs):
         self.user_cache = None
@@ -58,11 +58,6 @@ class SignInForm(forms.Form):
                     "Email for this account not confirmed. Confirmation link was sent to your"
                     " email during registration."
                 ),
-            )
-        if not self.user_cache.is_active:
-            self.add_error(
-                None,
-                "This account is inactive",
             )
 
     def invalid_login_error(self):
