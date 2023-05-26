@@ -1,15 +1,13 @@
-from django.core.mail import EmailMessage
-from django.shortcuts import get_object_or_404
-from django.template.loader import render_to_string
 from celery import shared_task
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
-from .models import Profile
-
-from .tokens import email_activation_token
+from account.selectors import get_profile
+from account.tokens import email_activation_token
 
 
 def construct_email(domain, protocol, user_id, to_email):
-    user = get_object_or_404(Profile, pk=user_id)
+    user = get_profile(user_id)
     mail_subject = "Activate your user account."
     message = render_to_string(
         "account/email_activation.html",
