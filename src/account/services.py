@@ -45,6 +45,7 @@ def sign_in_user(request, sign_in_form):
 
 
 def send_new_activation_link(request, new_confirmation_link_form):
+    """Sends a new activation link to user if email isn't confirmed"""
     if (
         not new_confirmation_link_form.is_valid()
         and new_confirmation_link_form.non_field_errors
