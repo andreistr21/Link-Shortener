@@ -25,5 +25,5 @@ def construct_email(domain, protocol, user_id, to_email):
 
 
 @shared_task
-def send_activation_email(domain, protocol, user_id, to_email):
+def send_activation_email_task(domain, protocol, user_id, to_email):
     construct_email(domain, protocol, user_id, to_email).send()

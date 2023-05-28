@@ -3,7 +3,7 @@ from unittest import mock
 from django.test import TestCase
 
 from account.models import Profile
-from account.tasks import send_activation_email
+from account.tasks import send_activation_email_task
 
 
 class SendActivationEmailTests(TestCase):
@@ -19,7 +19,7 @@ class SendActivationEmailTests(TestCase):
 
     @mock.patch("django.core.mail.message.EmailMessage.send")
     def test_email_sent(self, send_mock):
-        send_activation_email.apply(
+        send_activation_email_task.apply(
             args=(
                 self.domain,
                 self.protocol,
