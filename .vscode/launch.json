@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.services.test_send_activation_email.SendActivationEmailTests.test_task_called",
+                "account.tests.services.test_sign_up_user.SignUpUserTests.test_if_form_is_valid",
             ],
             "django": true
         },
