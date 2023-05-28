@@ -1,8 +1,9 @@
-from django.test import TestCase
-from account.models import Profile
-
-from account.tasks import construct_email, send_activation_email
 from unittest import mock
+
+from django.test import TestCase
+
+from account.models import Profile
+from account.tasks import send_activation_email
 
 
 class SendActivationEmailTests(TestCase):
