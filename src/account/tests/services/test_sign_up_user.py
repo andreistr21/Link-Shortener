@@ -1,7 +1,6 @@
 from unittest import mock
 
 from celery import current_app
-from django.http import HttpResponseRedirect
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 

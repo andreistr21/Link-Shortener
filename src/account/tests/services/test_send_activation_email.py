@@ -16,7 +16,7 @@ class SendActivationEmailTests(TestCase):
         self.factory = RequestFactory()
 
     @mock.patch("account.forms.SignUpForm.clean")
-    @mock.patch("account.tasks.send_activation_email.delay")
+    @mock.patch("account.tasks.send_activation_email_task.delay")
     @mock.patch("django.http.request.HttpRequest.is_secure")
     def test_task_called(
         self,
