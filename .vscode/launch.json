@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.views.test_activate_email",
+                "account.tests.views.test_new_confirmation_link.NewConfirmationLinkTests.test_if_form_is_valid",
             ],
             "django": true
         },
