@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.views.test_sign_up.SignUpTests.test_if_form_is_valid",
+                "account.tests.views.test_sign_in.SignInTests.test_if_email_is_not_confirmed",
             ],
             "django": true
         },
