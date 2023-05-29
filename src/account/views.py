@@ -37,9 +37,6 @@ def sign_in(request):
             return resp
         elif resp == "Error":
             new_activation_link = True
-            
-    for error in sign_in_form.non_field_errors():
-        print(error)
 
     return render(
         request,
@@ -70,7 +67,9 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
     new_confirmation_link_form = SignInForm()
     if request.POST:
         new_confirmation_link_form = SignInForm(request, request.POST)
-        if http_resp_redirect := send_new_activation_link(request, new_confirmation_link_form):
+        if http_resp_redirect := send_new_activation_link(
+            request, new_confirmation_link_form
+        ):
             return http_resp_redirect
 
     return render(
