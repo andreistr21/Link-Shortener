@@ -52,8 +52,12 @@
                 </button>
                 {% comment %} navbuttons {% endcomment %}
                 <div class="sidebar-buttons">
-                    <button class="btn btn-primary btn-block">sign in</button>
-                    <button class="btn btn-secondary btn-block">sign up</button>
+                    <a href="{% url 'account:sign_in' %}">
+                        <button class="btn btn-primary btn-block">sign in</button>
+                    </a>
+                    <a href="{% url 'account:sign_up' %}">
+                        <button class="btn btn-secondary btn-block">sign up</button>
+                    </a>
                 </div>
             </aside>
         </header>

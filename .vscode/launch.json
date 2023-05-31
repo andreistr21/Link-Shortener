@@ -24,6 +24,16 @@
                 "runserver",
             ],
             "django": true
+        },
+        {
+            "name": "Python: Django server_plus",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/manage.py",
+            "args": [
+                "runserver_plus --key-file selftest-key --cert-file selftest-cert 127.0.0.1:8000",
+            ],
+            "django": true
         }
     ]
 }

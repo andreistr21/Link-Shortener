@@ -28,7 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-8q+^2&g9mbg5+dyvkpj_#7r+h0=csq4t8k@1@014iy7898a#j-"
+SECRET_KEY = (
+    "django-insecure-8q+^2&g9mbg5+dyvkpj_#7r+h0=csq4t8k@1@014iy7898a#j-"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +50,8 @@ INSTALLED_APPS = [
     "shortener.apps.ShortenerConfig",
     "account.apps.AccountConfig",
     "celery",
+    "social_django",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -93,6 +97,12 @@ DATABASES = {
 
 # Authentication
 AUTH_USER_MODEL = "account.Profile"
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.facebook.FacebookOAuth2",
+]
+
+LOGIN_REDIRECT_URL = "account:overview"
 
 
 # Password validation
@@ -103,13 +113,19 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.MinimumLengthValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.CommonPasswordValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.NumericPasswordValidator"
+        ),
     },
 ]
 
@@ -155,3 +171,15 @@ EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
 
 # Celery
 CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
+
+# Social auth
+# When using PostgreSQL, it’s recommended to use the built-in JSONB field
+# to store the extracted extra_data. To enable it define the setting:
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_FACEBOOK_KEY = getenv("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = getenv("SOCIAL_AUTH_FACEBOOK_SECRET")
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    "fields": "email",
+}
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False

@@ -23,4 +23,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("shortener.urls")),
     path("account/", include("account.urls")),
+    path(
+        "account/social-auth/",
+        include("social_django.urls", namespace="social"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

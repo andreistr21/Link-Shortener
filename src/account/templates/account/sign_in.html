@@ -23,6 +23,7 @@
                     </div>
                 {% endfor %}
                 <button class="btn btn-primary block-btn">sign in</button>
+                {% include 'account/social_auth.html' %}
                 <div class="form-help-section">
                     <p class="text-small">
                         Forgot your password? <a href="{% url 'account:password_reset' %}">Reset Password</a>

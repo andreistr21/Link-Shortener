@@ -4,5 +4,12 @@
     Overview
 {% endblock title %}
 {% block content %}
+    {% if user.is_authenticated %}
+        Authenticated
+    {% else %}
+        Not authenticated
+    {% endif %}
+    {{ user.email }}
+    {{ user.get_username }}
     <h1>Overview page</h1>
 {% endblock content %}
