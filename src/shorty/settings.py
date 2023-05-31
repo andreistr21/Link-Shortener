@@ -100,6 +100,7 @@ AUTH_USER_MODEL = "account.Profile"
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "social_core.backends.facebook.FacebookOAuth2",
+    "social_core.backends.google.GoogleOAuth2",
 ]
 
 LOGIN_REDIRECT_URL = "account:overview"
@@ -176,10 +177,14 @@ CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
 # When using PostgreSQL, it’s recommended to use the built-in JSONB field
 # to store the extracted extra_data. To enable it define the setting:
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+# Facebook
 SOCIAL_AUTH_FACEBOOK_KEY = getenv("SOCIAL_AUTH_FACEBOOK_KEY")
 SOCIAL_AUTH_FACEBOOK_SECRET = getenv("SOCIAL_AUTH_FACEBOOK_SECRET")
 SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     "fields": "email",
 }
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+# Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
