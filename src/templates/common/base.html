@@ -36,12 +36,18 @@
                     </button>
                     {% comment %} navlinks {% endcomment %}
                     <ul class="nav-links">
-                        <li>
-                            <a href={% url 'account:sign_in' %} class="nav-link">sign in</a>
-                        </li>
-                        <li>
-                            <a href={% url 'account:sign_up' %} class="nav-link">sign up</a>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="#" class="nav-link">{{ user.username }}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href={% url 'account:sign_in' %} class="nav-link">sign in</a>
+                            </li>
+                            <li>
+                                <a href={% url 'account:sign_up' %} class="nav-link">sign up</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>

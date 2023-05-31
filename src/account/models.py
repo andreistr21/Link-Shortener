@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
 
 class UserManager(BaseUserManager):
@@ -34,10 +35,35 @@ class UserManager(BaseUserManager):
 
 
 class Profile(AbstractUser):
-    username = None
+    username = models.CharField(
+        "username",
+        max_length=150,
+        blank=True,
+        help_text=(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_"
+            " only."
+        ),
+        validators=[UnicodeUsernameValidator()],
+        error_messages={
+            "unique": "A user with that username already exists.",
+        },
+    )
     email = models.EmailField("email address", unique=True, max_length=150)
     last_online = models.DateTimeField(auto_now_add=timezone.now())
     is_email_confirmed = models.BooleanField("email confirmed", default=False)
+    # profile_username = models.CharField(
+    #     "username",
+    #     max_length=150,
+    #     blank=True,
+    #     help_text=(
+    #         "Required. 150 characters or fewer. Letters, digits and @/./+/-/_"
+    #         " only."
+    #     ),
+    #     validators=[UnicodeUsernameValidator()],
+    #     error_messages={
+    #         "unique": "A user with that username already exists.",
+    #     },
+    # )
 
     objects = UserManager()
 

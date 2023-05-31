@@ -162,3 +162,5 @@ cython_debug/
 # Certificats
 src/selftest-cert.crt
 src/selftest-cert.key
+/selftest-cert.crt
+/selftest-cert.key

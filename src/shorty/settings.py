@@ -95,6 +95,7 @@ DATABASES = {
     }
 }
 
+
 # Authentication
 AUTH_USER_MODEL = "account.Profile"
 AUTHENTICATION_BACKENDS = [
@@ -174,7 +175,16 @@ EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
 # Celery
 CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
 
-# Social auth
+# # Social authentication
+# SOCIAL_AUTH_PIPELINE = (
+#     "social_core.pipeline.social_auth.social_details",
+#     "social_core.pipeline.social_auth.social_uid",
+#     "social_core.pipeline.social_auth.auth_allowed",
+#     "social_core.pipeline.social_auth.social_user",
+#     "social_core.pipeline.social_auth.associate_user",
+#     "social_core.pipeline.social_auth.load_extra_data",
+#     "social_core.pipeline.user.user_details",
+# )
 # When using PostgreSQL, it’s recommended to use the built-in JSONB field
 # to store the extracted extra_data. To enable it define the setting:
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -183,7 +193,7 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_FACEBOOK_KEY = getenv("SOCIAL_AUTH_FACEBOOK_KEY")
 SOCIAL_AUTH_FACEBOOK_SECRET = getenv("SOCIAL_AUTH_FACEBOOK_SECRET")
 SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "email"}
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "name, email"}
 # Google
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
