@@ -1,3 +1,5 @@
+from profile import Profile
+from django import forms
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest
@@ -26,9 +28,24 @@ def _send_activation_email(request: HttpRequest, user, form):
     )
 
 
+def get_username(sign_up_form: forms.Form) -> str:
+    """Extracts first part of the email (up to "@" character)"""
+    email = sign_up_form.cleaned_data["email"]
+
+    return email.split("@")[0]
+
+
+def save_new_user(sign_up_form: forms.Form) -> Profile:
+    """Saves user and adds username"""
+    user = sign_up_form.save()
+    user.username = get_username(sign_up_form)
+    user.save()
+    return user
+
+
 def sign_up_user(request, sign_up_form):
     if sign_up_form.is_valid():
-        user = sign_up_form.save()
+        user = save_new_user(sign_up_form)
         _send_activation_email(request, user, sign_up_form)
         return redirect(reverse("account:confirm_email"))
 
