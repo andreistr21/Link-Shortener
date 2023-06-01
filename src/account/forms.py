@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import SetPasswordForm, UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import (
+    SetPasswordForm,
+    UserCreationForm,
+    AuthenticationForm,
+)
 
 from account.models import Profile
 
@@ -8,8 +12,12 @@ from account.models import Profile
 class SignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["password1"].widget.attrs.update({"placeholder": "Password"})
-        self.fields["password2"].widget.attrs.update({"placeholder": "Repeat password"})
+        self.fields["password1"].widget.attrs.update(
+            {"placeholder": "Password"}
+        )
+        self.fields["password2"].widget.attrs.update(
+            {"placeholder": "Repeat password"}
+        )
 
     class Meta:
         model = Profile
@@ -26,10 +34,16 @@ class SignUpForm(UserCreationForm):
 class SignInForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(
-            attrs={"autofocus": True, "max_length": 150, "placeholder": "Your email"}
+            attrs={
+                "autofocus": True,
+                "max_length": 150,
+                "placeholder": "Your email",
+            }
         )
     )
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
 
     def __init__(self, request=None, *args, **kwargs):
         self.user_cache = None
@@ -42,7 +56,9 @@ class SignInForm(forms.Form):
         password = self.cleaned_data.get("password")
 
         if email and password:
-            self.user_cache = authenticate(self.request, email=email, password=password)
+            self.user_cache = authenticate(
+                self.request, email=email, password=password
+            )
             if self.user_cache is None:
                 self.invalid_login_error()
             else:
@@ -55,8 +71,8 @@ class SignInForm(forms.Form):
             self.add_error(
                 None,
                 (
-                    "Email for this account not confirmed. Confirmation link was sent to your"
-                    " email during registration."
+                    "Email for this account not confirmed. Confirmation link"
+                    " was sent to your email during registration."
                 ),
             )
 
@@ -64,8 +80,8 @@ class SignInForm(forms.Form):
         self.add_error(
             None,
             (
-                "Please enter a correct email and password. Note that both fields may be"
-                " case-sensitive."
+                "Please enter a correct email and password. Note that both"
+                " fields may be case-sensitive."
             ),
         )
 
@@ -73,5 +89,9 @@ class SignInForm(forms.Form):
 class ResetPasswordForm(SetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["new_password1"].widget.attrs.update({"placeholder": "New Password"})
-        self.fields["new_password2"].widget.attrs.update({"placeholder": "Repeat New Password"})
+        self.fields["new_password1"].widget.attrs.update(
+            {"placeholder": "New Password"}
+        )
+        self.fields["new_password2"].widget.attrs.update(
+            {"placeholder": "Repeat New Password"}
+        )

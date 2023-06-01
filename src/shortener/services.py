@@ -1,13 +1,13 @@
 import random
 import string
 from typing import Optional
+from urllib.parse import urlparse
 
+import validators.url
 from django.conf import settings
 from django.forms import ModelForm
 
 from .selectors import is_alias_free
-import validators.url
-from urllib.parse import urlparse
 
 
 def save_link(shorten_form: ModelForm, alias=None) -> None:
@@ -40,7 +40,10 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
         if shorten_form:
             shorten_form.add_error(
                 "alias",
-                "Only alphabetic characters, numerals and hyphen are available for the alias",
+                (
+                    "Only alphabetic characters, numerals and hyphen are"
+                    " available for the alias"
+                ),
             )
         return False
 
@@ -85,14 +88,18 @@ def validate_for_restricted_domains(link: str) -> bool:
     # urlparse library can't find domain if there is no protocol extension
     if link_domain == "":
         link_domain = urlparse(f"https://{link}").netloc
-    return False if link_domain == "" else link_domain not in restricted_domains
+    return (
+        False if link_domain == "" else link_domain not in restricted_domains
+    )
 
 
 def link_validation(shorten_form: ModelForm) -> bool:
     link = shorten_form.cleaned_data.get("long_link")
     if validators.url(link) or validators.url(f"https://{link}"):
         if not validate_for_restricted_domains(link):
-            shorten_form.add_error("long_link", "This domain is banned or invalid")
+            shorten_form.add_error(
+                "long_link", "This domain is banned or invalid"
+            )
             return False
     else:
         shorten_form.add_error("long_link", "Enter a valid link")
@@ -107,7 +114,9 @@ def short_link(shorten_form: ModelForm) -> Optional[str]:
             if len(alias) > 3:
                 short_with_alias(alias, shorten_form)
             else:
-                shorten_form.add_error("alias", "The alias must be at least 4 characters")
+                shorten_form.add_error(
+                    "alias", "The alias must be at least 4 characters"
+                )
         else:
             alias = short_with_random_value(shorten_form)
 
