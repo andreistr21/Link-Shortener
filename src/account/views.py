@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
 from account.services import (
     send_new_activation_link,
@@ -11,6 +13,7 @@ from account.services import (
 )
 
 
+@anonymous_required
 def sign_up(request):
     sign_up_form = SignUpForm()
     if request.POST:
@@ -27,6 +30,7 @@ def sign_up(request):
     )
 
 
+@anonymous_required
 def sign_in(request):
     new_activation_link = False
     sign_in_form = SignInForm()
@@ -52,16 +56,19 @@ def confirm_email(request):
     return render(request, "account/confirm_email.html")
 
 
+@anonymous_required
 def activate_email(_, pk, token):
     update_email_confirmation_status(pk, token)
 
     return redirect(reverse("account:sign_in"))
 
 
+@login_required
 def overview(request: HttpRequest) -> HttpResponse:
     return render(request, "account/overview.html", {})
 
 
+@anonymous_required
 def new_confirmation_link(request: HttpRequest) -> HttpResponse:
     """Sending new confirmation link to email"""
     new_confirmation_link_form = SignInForm()

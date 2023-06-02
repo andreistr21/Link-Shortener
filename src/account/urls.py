@@ -1,16 +1,17 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
+    LogoutView,
     PasswordResetCompleteView,
     PasswordResetConfirmView,
     PasswordResetDoneView,
     PasswordResetView,
-    LogoutView,
 )
-from django.urls import include, reverse_lazy
-from django.urls import path
+from django.urls import path, reverse_lazy
 
+from account.decorators import anonymous_required
 from account.forms import ResetPasswordEmailForm, ResetPasswordForm
 
-from . import views
+from account import views
 
 app_name = "account"
 urlpatterns = [
@@ -18,7 +19,9 @@ urlpatterns = [
     path("sign-in/", views.sign_in, name="sign_in"),
     path(
         "logout/",
-        LogoutView.as_view(template_name="account/logged_out.html"),
+        login_required(
+            LogoutView.as_view(template_name="account/logged_out.html")
+        ),
         name="logout",
     ),
     path("confirm-email/", views.confirm_email, name="confirm_email"),
@@ -35,11 +38,13 @@ urlpatterns = [
     path("overview", views.overview, name="overview"),
     path(
         "password-reset/",
-        PasswordResetView.as_view(
-            form_class=ResetPasswordEmailForm,
-            template_name="account/password_reset.html",
-            email_template_name="account/email_password_reset_email.html",
-            success_url=reverse_lazy("account:password_reset_done"),
+        anonymous_required(
+            PasswordResetView.as_view(
+                form_class=ResetPasswordEmailForm,
+                template_name="account/password_reset.html",
+                email_template_name="account/email_password_reset_email.html",
+                success_url=reverse_lazy("account:password_reset_done"),
+            )
         ),
         name="password_reset",
     ),
@@ -52,10 +57,12 @@ urlpatterns = [
     ),
     path(
         "password-reset-confirm/<uidb64>/<token>/",
-        PasswordResetConfirmView.as_view(
-            form_class=ResetPasswordForm,
-            template_name="account/password_reset_confirm.html",
-            success_url=reverse_lazy("account:password_reset_complete"),
+        anonymous_required(
+            PasswordResetConfirmView.as_view(
+                form_class=ResetPasswordForm,
+                template_name="account/password_reset_confirm.html",
+                success_url=reverse_lazy("account:password_reset_complete"),
+            )
         ),
         name="password_reset_confirm",
     ),
@@ -66,5 +73,4 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    # path("social-auth/", include("social_django.urls", namespace="social")),
 ]

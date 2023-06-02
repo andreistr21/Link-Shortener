@@ -105,6 +105,7 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.twitter.TwitterOAuth",
 ]
 
+LOGIN_URL = "account:sign_in"
 LOGIN_REDIRECT_URL = "account:overview"
 
 
