@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import (
     SetPasswordForm,
     UserCreationForm,
-    AuthenticationForm,
+    PasswordResetForm,
 )
 
 from account.models import Profile
@@ -95,3 +95,9 @@ class ResetPasswordForm(SetPasswordForm):
         self.fields["new_password2"].widget.attrs.update(
             {"placeholder": "Repeat New Password"}
         )
+
+
+class ResetPasswordEmailForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs.update({"placeholder": "Your email"})
