@@ -1,5 +1,6 @@
 import functools
 from django.shortcuts import redirect
+from django.urls import reverse
 
 
 def anonymous_required(view_func, redirect_url="account:overview"):
@@ -13,6 +14,6 @@ def anonymous_required(view_func, redirect_url="account:overview"):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return view_func(request, *args, **kwargs)
-        return redirect(redirect_url)
+        return redirect(reverse(redirect_url))
 
     return wrapper

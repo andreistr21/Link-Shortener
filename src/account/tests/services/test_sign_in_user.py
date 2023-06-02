@@ -1,9 +1,6 @@
-from unittest import mock
-
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
-# from django.contrib.auth.__init__ import login
 
 from account.forms import SignInForm
 from account.models import Profile
@@ -50,5 +47,6 @@ class SignInUserTests(TestCase):
         sign_in_form = SignInForm(self.request, data=form_data)
         resp = sign_in_user(self.request, sign_in_form)
         resp.client = Client()
+        resp.client.login(email=email, password=password)
 
         self.assertRedirects(resp, reverse("account:overview"))

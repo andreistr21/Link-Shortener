@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.views.test_new_confirmation_link.NewConfirmationLinkTests.test_if_form_is_valid",
+                "account.tests.services.test_sign_in_user",
             ],
             "django": true
         },
