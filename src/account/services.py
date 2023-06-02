@@ -56,7 +56,8 @@ def sign_in_user(request, sign_in_form):
         login(request, sign_in_form.user_cache)
         return redirect(reverse("account:overview"))
     elif (
-        "Email for this account not confirmed."
+        len(sign_in_form.non_field_errors()) > 0
+        and "Email for this account not confirmed."
         in sign_in_form.non_field_errors()[0]
     ):
         return "Error"

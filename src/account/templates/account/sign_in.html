@@ -15,7 +15,7 @@
                 {% if new_activation_link %}
                     <a href={% url 'account:new_confirmation_link' %}>Need a new confirmation link?</a>
                 {% endif %}
-                {% if sign_in_form.non_field_errors %}<div class="form-error">{{ sign_in_form.non_field_errors.0 }}</div>{% endif %}
+                {% if sign_in_form.non_field_errors %}<div class="field-error form-error">{{ sign_in_form.non_field_errors.0 }}</div>{% endif %}
                 {% for field in sign_in_form %}
                     <div class="input sign-input">
                         {{ field }}
