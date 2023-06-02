@@ -37,9 +37,16 @@
                     {% comment %} navlinks {% endcomment %}
                     <ul class="nav-links">
                         {% if user.is_authenticated %}
-                            <li>
-                                <a href="#" class="nav-link">{{ user.username }}</a>
-                            </li>
+                            <div class="dropdown">
+                                <button class="drop-btn">
+                                    {{ user.username }}
+                                    <span><i class="fa-solid fa-caret-down"></i></span>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="#">settings</a>
+                                    <a href="#">logout</a>
+                                </div>
+                            </div>
                         {% else %}
                             <li>
                                 <a href={% url 'account:sign_in' %} class="nav-link">sign in</a>
