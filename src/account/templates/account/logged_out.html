@@ -1,0 +1,15 @@
+{% extends 'common/base.html' %}
+{% block title %}
+    Logged out
+{% endblock title %}
+{% block content %}
+    <section class="section-form">
+        <div class="section-center confirm-email">
+            <h4>You are logged out from your account</h4>
+            <br>
+            <a href="{% url 'account:sign_in' %}">
+                <button class="btn btn-primary block-btn">sign in</button>
+            </a>
+        </div>
+    </section>
+{% endblock content %}

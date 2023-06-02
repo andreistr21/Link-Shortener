@@ -27,9 +27,9 @@
             <nav class="nav" id="nav">
                 <div class="section-center nav-center">
                     {% comment %} navlogo {% endcomment %}
-                    <div class="nav-logo">
+                    <a href="{% url 'shortener:index' %}" class="nav-logo">
                         <img src="{% static 'Logo.png' %}" alt="">
-                    </div>
+                    </a>
                     {% comment %} navbutton {% endcomment %}
                     <button class="icon-btn nav-btn" id="nav-btn">
                         <i class="fa-solid fa-bars"></i>
@@ -44,7 +44,7 @@
                                 </button>
                                 <div class="dropdown-content">
                                     <a href="#">settings</a>
-                                    <a href="#">logout</a>
+                                    <a id="logout-btn-id">log out</a>
                                 </div>
                             </div>
                         {% else %}
