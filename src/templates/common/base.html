@@ -78,9 +78,13 @@
         {% endblock content %}
         <footer class="footer">
             <div class="section-center">
-                <p>
-                    &copy; <span id="date"></span> shorty. all rights reserved
-                </p>
+                <div class="footer-content">
+                    <p>
+                        &copy; <span id="date"></span> shorty. all rights reserved
+                    </p>
+                    <a href="{% url 'account:privacy_policy' %}" class="text-standard">Privacy Policy</a>
+                    <a href="{% url 'account:terms_of_use' %}" class="text-standard">Terms Of Use</a>
+                </div>
             </div>
         </footer>
         <script src="{% static 'main.js' %}"></script>

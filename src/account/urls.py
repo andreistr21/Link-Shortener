@@ -7,11 +7,11 @@ from django.contrib.auth.views import (
     PasswordResetView,
 )
 from django.urls import path, reverse_lazy
-
-from account.decorators import anonymous_required
-from account.forms import ResetPasswordEmailForm, ResetPasswordForm
+from django.views.generic import TemplateView
 
 from account import views
+from account.decorators import anonymous_required
+from account.forms import ResetPasswordEmailForm, ResetPasswordForm
 
 app_name = "account"
 urlpatterns = [
@@ -72,5 +72,15 @@ urlpatterns = [
             template_name="account/password_reset_complete.html"
         ),
         name="password_reset_complete",
+    ),
+    path(
+        "privacy-policy/",
+        TemplateView.as_view(template_name="account/privacy_policy.html"),
+        name="privacy_policy",
+    ),
+    path(
+        "terms-of-use/",
+        TemplateView.as_view(template_name="account/terms_of_use.html"),
+        name="terms_of_use",
     ),
 ]

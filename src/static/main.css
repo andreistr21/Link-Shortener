@@ -295,6 +295,13 @@ Form
 .text-center {
   text-align: center;
 }
+.text-normal {
+  text-transform: none;
+}
+.text-standard,
+.text-standard:visited {
+  color: var(--primary-900);
+}
 
 /* 
 ==========
@@ -317,13 +324,9 @@ Dialog box
 }
 
 .dialog {
-  /* width: 24rem; */
-  /* height: 8rem; */
   padding: 1.5rem 3rem;
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  /* font-family: sans-serif; */
-  /* font-weight: bold; */
 
   display: flex;
   justify-content: center;
@@ -375,9 +378,6 @@ Dialog box
 }
 .nav-links a {
   color: var(--primary-900);
-}
-.text-normal {
-  text-transform: none;
 }
 
 /* Drop down */
@@ -470,6 +470,12 @@ Dialog box
   padding: 2rem 0;
   text-align: center;
   text-transform: capitalize;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
 }
 
 .section-form {
