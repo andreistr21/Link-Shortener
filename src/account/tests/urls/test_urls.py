@@ -102,7 +102,7 @@ class AccountUrlTests(TestCase):
             "?next=/account/logout/",
         )
 
-    def test_logout_url_auth_user(self):
+    def test_logout_url_auth_user(self):  # sourcery skip: class-extract-method
         self._login()
         response = self.client.get(reverse("account:logout"))
 
