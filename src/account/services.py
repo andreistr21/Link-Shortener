@@ -6,14 +6,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 
 from account.selectors import get_profile, get_profile_by_email
 from account.tasks import send_activation_email_task
 from account.tokens import email_activation_token
 
 
-def update_email_confirmation_status(pk, token, status=True):
-    user = get_profile(pk)
+def update_email_confirmation_status(uidb64, token, status=True):
+    uid = force_str(urlsafe_base64_decode(uidb64))
+    user = get_profile(uid)
 
     if email_activation_token.check_token(user, token):
         user.is_email_confirmed = status

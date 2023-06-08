@@ -57,8 +57,8 @@ def confirm_email(request):
 
 
 @anonymous_required
-def activate_email(_, pk, token):
-    update_email_confirmation_status(pk, token)
+def activate_email(_, uidb64, token):
+    update_email_confirmation_status(uidb64, token)
 
     return redirect(reverse("account:sign_in"))
 

@@ -31,7 +31,7 @@ urlpatterns = [
         name="new_confirmation_link",
     ),
     path(
-        "activate-email/<pk>/<token>",
+        "activate-email/<uidb64>/<token>",
         views.activate_email,
         name="activate_email",
     ),

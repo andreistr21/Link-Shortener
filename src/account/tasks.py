@@ -1,6 +1,8 @@
 from celery import shared_task
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from account.selectors import get_profile
 from account.tokens import email_activation_token
@@ -14,8 +16,7 @@ def construct_email(domain, protocol, user_id, to_email):
         {
             "user": user.email,
             "domain": domain,
-            "pk": user.pk,
-            # "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
             "token": email_activation_token.make_token(user),
             "protocol": "https" if protocol else "http",
         },
