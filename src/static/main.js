@@ -45,7 +45,7 @@ function myConfirmBox(message) {
   });
 }
 
-// Using the confirm box
+// Logout listener pc version
 document.getElementById("logout-btn-id").addEventListener("click", () => {
   myConfirmBox("Are you sure you want to log out?").then((response) => {
     if (response) {
@@ -53,3 +53,16 @@ document.getElementById("logout-btn-id").addEventListener("click", () => {
     }
   });
 });
+
+// Logout listener phone version
+document
+  .getElementById("logout-btn-id-2")
+  .addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent the default link behavior
+    sidebar.classList.remove("show-sidebar");
+    myConfirmBox("Are you sure you want to log out?").then((response) => {
+      if (response) {
+        window.location.href = "http://127.0.0.1:8000/account/logout/";
+      }
+    });
+  });

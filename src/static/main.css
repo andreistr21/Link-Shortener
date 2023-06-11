@@ -35,6 +35,17 @@ html {
   --grey-800: #1f2937;
   --grey-900: #111827;
 
+  /* red */
+  --red-100: #f8d7da;
+  --red-200: #f1aeb5;
+  --red-300: #ea868f;
+  --red-400: #e35d6a;
+  --red-500: #dc3545;
+  --red-600: #b02a37;
+  --red-700: #842029;
+  --red-800: #58151c;
+  --red-900: #2c0b0e;
+
   /* rest of the colors */
   --black: #222;
   --white: #fff;
@@ -223,6 +234,14 @@ a:visited {
   transform: scale(1.2);
 }
 
+.btn-logout {
+  color: var(--white);
+  background-color: var(--red-500);
+}
+.btn-logout:hover {
+  background-color: var(--red-400);
+}
+
 /* alerts */
 .alert {
   padding: 0.375rem 0.75rem;
@@ -254,6 +273,7 @@ Form
   padding: 3rem 2rem;
   border-radius: var(--borderRadius-300);
   box-shadow: var(--shadow-3);
+  margin: 1.5rem 0;
 }
 .form-header {
   margin: 0 auto;
@@ -484,6 +504,9 @@ Dialog box
 
 /* sidebar */
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
@@ -493,16 +516,20 @@ Dialog box
   height: 100%;
   transition: var(--transition);
   transform: translateX(100%);
+  z-index: 1;
 }
 .show-sidebar {
   transform: translateX(0);
 }
 .close-btn {
-  position: relative;
-  left: calc(100% - 1rem);
+  position: fixed;
+  right: 1rem;
 }
 .sidebar-buttons {
-  padding-top: 2rem;
+  margin-top: 3rem;
+}
+.sidebar-profile {
+  margin-top: 3rem;
 }
 
 /* footer */
@@ -555,10 +582,8 @@ Dialog box
   width: 48px;
   margin: 0 auto;
   margin-bottom: 2rem;
-  z-index: 0;
 }
 .form-icon img {
-  z-index: 0;
   filter: invert(53%) sepia(50%) saturate(1836%) hue-rotate(175deg)
     brightness(98%) contrast(99%);
 }
@@ -575,6 +600,16 @@ Dialog box
 }
 .call-for-registration ul {
   padding-left: 20px;
+}
+
+@media screen and (max-width: 672px) {
+  .section-shortener{
+    min-height: 62rem;
+  }
+  .appeal {
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(2, 1fr);
+  }
 }
 
 /* 
