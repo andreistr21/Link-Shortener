@@ -114,7 +114,13 @@ h4 {
 h5 {
   font-size: 1.25rem;
 }
-
+p {
+  margin-top: 0.5rem;
+  line-height: 1.25rem;
+}
+li {
+  line-height: 1.25rem;
+}
 .h1-text {
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -129,7 +135,7 @@ h5 {
   margin-bottom: 0.75rem;
 }
 
-.p-text{
+.p-text {
   margin-bottom: 0.5rem;
 }
 
@@ -150,9 +156,9 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-.ul-text{
+.ul-text {
   padding-left: 40px;
-  list-style-type: circle;
+  list-style-type: disc;
 }
 
 .img {
@@ -200,6 +206,9 @@ a:visited {
   background-color: var(--primary-300);
 }
 .btn-block {
+  width: 100%;
+}
+.block-btn {
   width: 100%;
 }
 .icon-btn {
@@ -323,6 +332,16 @@ Form
 .text-standard,
 .text-standard:visited {
   color: var(--primary-900);
+}
+.a-btn {
+  width: 100%;
+  height: 100%;
+}
+.horizontal-btns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 /* 
@@ -488,8 +507,10 @@ Dialog box
 
 /* footer */
 .footer {
+  display: grid;
+  place-items: center;
   background-color: var(--grey-400);
-  padding: 2rem 0;
+  height: 5rem;
   text-align: center;
   text-transform: capitalize;
 }
@@ -510,8 +531,11 @@ Dialog box
 .shortener {
   width: 100%;
   height: 100%;
-  /* display: grid; */
-  /* place-items: center; */
+  display: grid;
+}
+.appeal {
+  grid-template-columns: repeat(2, 1fr);
+  place-content: center;
 }
 .shorten-form {
   grid-template-columns: 1fr;
@@ -537,6 +561,20 @@ Dialog box
   z-index: 0;
   filter: invert(53%) sepia(50%) saturate(1836%) hue-rotate(175deg)
     brightness(98%) contrast(99%);
+}
+.call-for-registration {
+  width: calc(100% - 2rem);
+  max-width: 28rem;
+}
+.call-for-registration h4 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.call-for-registration p {
+  margin: 1rem 0;
+}
+.call-for-registration ul {
+  padding-left: 20px;
 }
 
 /* 

@@ -6,7 +6,7 @@
 {% endblock title %}
 {% block content %}
     <section class="section-form section-shortener">
-        <div class="section-center shortener section-center-form">
+        <div class="section-center shortener section-center-form {% if not user.is_authenticated %}appeal{% endif %}">
             <form class="form shorten-form" method="post">
                 {% csrf_token %}
                 <div class="form-icon">
@@ -29,6 +29,30 @@
                     </div>
                 {% endif %}
             </form>
+            {% if not user.is_authenticated %}
+                <div class="call-for-registration">
+                    <h4>Don't have an account?</h4>
+                    <p>
+                        <span><a href="{% url 'account:sign_up' %}">Register an account</a></span> to access URL statistics and preserve your shortened URLs!
+                    </p>
+                    <p>
+                        As a guest user, you're missing out on the valuable features and insights available to registered users. By creating an account, you can enjoy:
+                    </p>
+                    <ul class="ul-text">
+                        <li>Detailed statistics: Gain valuable insights into link performance and audience engagement.</li>
+                        <li>URL preservation: Safeguard your shortened URLs and never worry about losing them.</li>
+                        <li>Enhanced management: Organize your links efficiently and keep them easily accessible.</li>
+                    </ul>
+                    <div class="horizontal-btns">
+                        <a href="{% url 'account:sign_up' %}" class="a-btn">
+                            <button class="btn btn-primary block-btn">Sign Up</button>
+                        </a>
+                        <a href="{% url 'account:sign_in' %}" class="a-btn">
+                            <button class="btn btn-primary block-btn">Sign In</button>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </section>
 {% endblock content %}
