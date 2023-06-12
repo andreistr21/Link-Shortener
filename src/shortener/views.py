@@ -1,7 +1,8 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from shortener.forms import ShortenForm
+from shortener.selectors import get_link
 
 from .services import short_link
 
@@ -13,7 +14,7 @@ def index(request: HttpRequest) -> HttpResponse:
         shorten_form = ShortenForm(request.POST)
         if shorten_form.is_valid():
             alias = short_link(shorten_form)
-            # If form doesn't contain errors, that means that link 
+            # If form doesn't contain errors, that means that link
             # was shortened and shorten link can be returned
             if shorten_form.is_valid():
                 shorten_form = ShortenForm()
@@ -27,3 +28,9 @@ def index(request: HttpRequest) -> HttpResponse:
             "shorten_link": shorten_link,
         },
     )
+
+
+def shorten_redirect(request: HttpRequest, url_alias: str) -> HttpResponse:
+    link = get_link(url_alias)
+    
+    return redirect(link.long_link)
