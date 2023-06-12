@@ -6,17 +6,22 @@ from urllib.parse import urlparse
 import validators.url
 from django.conf import settings
 from django.forms import ModelForm
+from django.http import HttpRequest
 
 from .selectors import is_alias_free
 
 
-def save_link(shorten_form: ModelForm, alias=None) -> None:
+def save_link(
+    request: HttpRequest, shorten_form: ModelForm, alias=None
+) -> None:
+    link = shorten_form.save(commit=False)
+
     if alias:
-        link = shorten_form.save(commit=False)
         link.alias = alias
-        link.save()
-    else:
-        shorten_form.save()
+    if request.user.is_authenticated:
+        link.user_profile = request.user
+
+    link.save()
 
 
 def validate_str_for_allowed_values(str_to_validate: str) -> bool:
@@ -50,11 +55,13 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
     return True
 
 
-def short_with_alias(alias: str, shorten_form: ModelForm) -> None:
+def short_with_alias(
+    request: HttpRequest, alias: str, shorten_form: ModelForm
+) -> None:
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
         if is_alias_free(alias):
-            save_link(shorten_form, alias)
+            save_link(request, shorten_form, alias)
         else:
             shorten_form.add_error("alias", "This alias is unavailable")
 
@@ -74,9 +81,11 @@ def get_random_alias() -> str:
     return alias
 
 
-def short_with_random_value(shorten_form: ModelForm) -> str:
+def short_with_random_value(
+    request: HttpRequest, shorten_form: ModelForm
+) -> str:
     alias = get_random_alias()
-    save_link(shorten_form, alias)
+    save_link(request, shorten_form, alias)
 
     return alias
 
@@ -107,12 +116,12 @@ def link_validation(shorten_form: ModelForm) -> bool:
     return True
 
 
-def short_link(shorten_form: ModelForm) -> Optional[str]:
+def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
     alias = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:
-                short_with_alias(alias, shorten_form)
+                short_with_alias(request, alias, shorten_form)
             else:
                 shorten_form.add_error(
                     "alias", "The alias must be at least 4 characters"

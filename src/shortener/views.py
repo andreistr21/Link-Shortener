@@ -13,7 +13,7 @@ def index(request: HttpRequest) -> HttpResponse:
     if request.POST:
         shorten_form = ShortenForm(request.POST)
         if shorten_form.is_valid():
-            alias = short_link(shorten_form)
+            alias = short_link(request, shorten_form)
             # If form doesn't contain errors, that means that link
             # was shortened and shorten link can be returned
             if shorten_form.is_valid():
