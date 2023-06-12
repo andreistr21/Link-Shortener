@@ -1,3 +1,4 @@
+import json
 import random
 import string
 from typing import Optional
@@ -7,8 +8,13 @@ import validators.url
 from django.conf import settings
 from django.forms import ModelForm
 from django.http import HttpRequest
+from django.utils import timezone
+from django_redis import get_redis_connection
 
-from .selectors import is_alias_free
+from shortener.models import Link
+from shortener.selectors import is_alias_free
+
+redis_con = get_redis_connection("default")
 
 
 def save_link(
@@ -130,3 +136,10 @@ def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
             alias = short_with_random_value(shorten_form)
 
     return alias
+
+
+def update_link_statistics(link: Link) -> None:
+    redis_con.lpush(
+        link.alias,
+        json.dumps({"time": timezone.now().isoformat(), "country": "pl"}),
+    )

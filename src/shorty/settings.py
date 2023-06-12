@@ -137,9 +137,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-uk"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Warsaw"
 
 USE_I18N = True
 
@@ -157,6 +157,17 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+CACHE_TTL = 60 * 15
 
 # Shortener settings
 ALLOWED_CHARACTERS = string.ascii_letters + string.digits + "-"
