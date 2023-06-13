@@ -157,6 +157,7 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 # Cache
 CACHES = {
     "default": {
@@ -168,6 +169,7 @@ CACHES = {
     }
 }
 CACHE_TTL = 60 * 15
+
 
 # Shortener settings
 ALLOWED_CHARACTERS = string.ascii_letters + string.digits + "-"
@@ -186,6 +188,7 @@ EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
 
 # Celery
 CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
+
 
 # Social authentication
 SOCIAL_AUTH_PIPELINE = (
@@ -219,3 +222,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 # Twitter
 SOCIAL_AUTH_TWITTER_KEY = getenv("SOCIAL_AUTH_TWITTER_KEY")
 SOCIAL_AUTH_TWITTER_SECRET = getenv("SOCIAL_AUTH_TWITTER_SECRET")
+
+
+#GeoIP
+GEOIP_PATH = BASE_DIR / "files"

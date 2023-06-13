@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 
 import validators.url
 from django.conf import settings
+from django.contrib.gis.geoip2 import GeoIP2
+from geoip2.errors import AddressNotFoundError
 from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
@@ -15,6 +17,7 @@ from shortener.models import Link
 from shortener.selectors import is_alias_free
 
 redis_con = get_redis_connection("default")
+g = GeoIP2()
 
 
 def save_link(
@@ -138,8 +141,30 @@ def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
     return alias
 
 
-def update_link_statistics(link: Link) -> None:
+def get_request_ip(request: HttpRequest) -> str:
+    """Retrieving ip from request and returns it."""
+    if forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
+        return forwarded_for.split(",")[0].strip()
+    if remote_addr := request.META.get("REMOTE_ADDR"):
+        return remote_addr.split(",")[0].strip()
+
+
+def get_request_country_code(request: HttpRequest) -> str:
+    """Returns code of the country from which request is made from"""
+    ip = get_request_ip(request)
+    try:
+        country_code = g.country_code(ip)
+    except AddressNotFoundError:
+        country_code = ""
+    return country_code
+
+
+# TODO: add tests
+def update_link_statistics(request: HttpRequest, link: Link) -> None:
+    country_code = get_request_country_code(request)
     redis_con.lpush(
         link.alias,
-        json.dumps({"time": timezone.now().isoformat(), "country": "pl"}),
+        json.dumps(
+            {"time": timezone.now().isoformat(), "country": country_code}
+        ),
     )
