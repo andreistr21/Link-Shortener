@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import string
-from dotenv import load_dotenv
 from os import getenv
+from pathlib import Path
 
+from dotenv import load_dotenv
 
 # ENV variables
 load_dotenv()
@@ -168,7 +168,7 @@ CACHES = {
         },
     }
 }
-CACHE_TTL = 60 * 15
+# CACHE_TTL = 60 * 15
 
 
 # Shortener settings
@@ -205,7 +205,6 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.user.user_details",
 )
 
-
 # When using PostgreSQL, it’s recommended to use the built-in JSONB field
 # to store the extracted extra_data. To enable it define the setting:
 # SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -224,5 +223,5 @@ SOCIAL_AUTH_TWITTER_KEY = getenv("SOCIAL_AUTH_TWITTER_KEY")
 SOCIAL_AUTH_TWITTER_SECRET = getenv("SOCIAL_AUTH_TWITTER_SECRET")
 
 
-#GeoIP
+# GeoIP
 GEOIP_PATH = BASE_DIR / "files"
