@@ -136,7 +136,7 @@ def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
                     "alias", "The alias must be at least 4 characters"
                 )
         else:
-            alias = short_with_random_value(shorten_form)
+            alias = short_with_random_value(request, shorten_form)
 
     return alias
 
