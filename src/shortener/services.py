@@ -142,13 +142,14 @@ def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
 
 
 def get_request_ip(request: HttpRequest) -> str:
-    """Retrieving ip from request and returns it."""
+    """Retrieves ip from request and returns it or empty string."""
     if forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
         return forwarded_for.split(",")[0].strip()
     if remote_addr := request.META.get("REMOTE_ADDR"):
         return remote_addr.split(",")[0].strip()
+    return ""
 
-
+# TODO: add tests
 def get_request_country_code(request: HttpRequest) -> str:
     """Returns code of the country from which request is made from"""
     ip = get_request_ip(request)
