@@ -32,6 +32,7 @@ def index(request: HttpRequest) -> HttpResponse:
 # TODO: add tests
 def shorten_redirect(request: HttpRequest, url_alias: str) -> HttpResponse:
     link = get_link(url_alias)
-    update_link_statistics(request, link)
+    if link.user_profile:
+        update_link_statistics(request, link)
 
     return redirect(link.long_link)
