@@ -7,11 +7,11 @@ from urllib.parse import urlparse
 import validators.url
 from django.conf import settings
 from django.contrib.gis.geoip2 import GeoIP2
-from geoip2.errors import AddressNotFoundError
 from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
 from django_redis import get_redis_connection
+from geoip2.errors import AddressNotFoundError
 
 from shortener.models import Link
 from shortener.selectors import is_alias_free
@@ -149,7 +149,7 @@ def get_request_ip(request: HttpRequest) -> str:
         return remote_addr.split(",")[0].strip()
     return ""
 
-# TODO: add tests
+
 def get_request_country_code(request: HttpRequest) -> str:
     """Returns code of the country from which request is made from"""
     ip = get_request_ip(request)

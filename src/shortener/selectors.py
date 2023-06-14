@@ -7,5 +7,5 @@ def is_alias_free(alias: str) -> bool:
 
 
 def get_link(alias: str) -> Link:
-    """Retrieve link by alias or 404"""
+    """Retrieve link by alias or raises 404 error"""
     return get_object_or_404(Link, alias=alias)
