@@ -1,6 +1,8 @@
 from unittest import mock
 
 from django.test import TestCase
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from account.models import Profile
 from account.selectors import get_profile
@@ -22,6 +24,8 @@ class UpdateEmailConfirmationStatusTests(TestCase):
 
         self.assertFalse(self.user.is_email_confirmed)
 
-        update_email_confirmation_status(self.user.pk, "test_token")
+        update_email_confirmation_status(
+            urlsafe_base64_encode(force_bytes(self.user.pk)), "test_token"
+        )
 
         self.assertTrue(get_profile(self.user.pk).is_email_confirmed)
