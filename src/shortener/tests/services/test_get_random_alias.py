@@ -20,8 +20,10 @@ class GetRandomAliasTests(TestCase):
         long_link = "youtube.com"
         alias_1 = "testval1"
         alias_2 = "testval2"
-        shorten_form = ShortenForm(data={"long_link": long_link, "alias": alias_1})
-        save_link(shorten_form)
+        shorten_form = ShortenForm(
+            data={"long_link": long_link, "alias": alias_1}
+        )
+        shorten_form.save()
 
         gen_random_str_mock.side_effect = [alias_1, alias_2]
         returned_alias = get_random_alias()
