@@ -1,6 +1,8 @@
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.test import TestCase
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from account.models import Profile
 from account.tasks import construct_email
@@ -25,7 +27,7 @@ class ConstructEmailTests(TestCase):
             {
                 "user": self.user.email,
                 "domain": self.domain,
-                "pk": self.user.pk,
+                "uid": urlsafe_base64_encode(force_bytes(self.user.pk)),
                 "token": email_activation_token.make_token(self.user),
                 "protocol": "https" if self.protocol else "http",
             },
