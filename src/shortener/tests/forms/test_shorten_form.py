@@ -25,7 +25,7 @@ class ShortenFormTests(TestCase):
         long_link = "youtube.com"
         alias = "test-short-link"
         shorten_form_1 = ShortenForm(data={"long_link": long_link, "alias": alias})
-        save_link(shorten_form_1)
+        shorten_form_1.save()
         shorten_form_2 = ShortenForm(data={"long_link": long_link, "alias": alias})
         shorten_form_2.is_valid()
         error = shorten_form_2.errors
