@@ -1,8 +1,7 @@
 from unittest import mock
 
 from django.contrib.gis.geoip2 import GeoIP2
-from django.test import RequestFactory, TestCase
-from django.urls import reverse
+from django.test import TestCase
 from geoip2.errors import AddressNotFoundError
 
 from shortener.services import get_request_country_code

@@ -11,9 +11,10 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.urls.test_urls.AccountUrlTests.test_sign_up_url_auth_user",
+                "shortener.tests.services.test_update_link_statistics.UpdateLinkStatisticsTests.test_method_execution",
             ],
-            "django": true
+            "django": true,
+            "justMyCode": false
         },
         {
             "name": "Python: Django",

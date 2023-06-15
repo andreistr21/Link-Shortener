@@ -1,6 +1,7 @@
 import json
 import random
 import string
+from functools import lru_cache
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -10,14 +11,19 @@ from django.contrib.gis.geoip2 import GeoIP2
 from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
-from django_redis import get_redis_connection
 from geoip2.errors import AddressNotFoundError
+from redis import Redis
 
 from shortener.models import Link
 from shortener.selectors import is_alias_free
 
-redis_con = get_redis_connection("default")
 g = GeoIP2()
+
+
+@lru_cache(maxsize=1)
+def redis_connection() -> Redis:
+    """Creates redis connection during first call and returns it. During next call cached value will be returned"""
+    return Redis(host="127.0.0.1", port="6379")
 
 
 def save_link(
@@ -160,12 +166,15 @@ def get_request_country_code(request: HttpRequest) -> str:
     return country_code
 
 
-# TODO: add tests
-def update_link_statistics(request: HttpRequest, link: Link) -> None:
-    country_code = get_request_country_code(request)
-    redis_con.lpush(
-        link.alias,
+def append_to_redis_list(alias: str, country_code: str) -> None:
+    redis_connection().lpush(
+        alias,
         json.dumps(
             {"time": timezone.now().isoformat(), "country": country_code}
         ),
     )
+
+
+def update_link_statistics(request: HttpRequest, link: Link) -> None:
+    country_code = get_request_country_code(request)
+    append_to_redis_list(link.alias, country_code)
