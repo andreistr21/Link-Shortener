@@ -5,7 +5,7 @@ from account.models import Profile
 
 class Link(models.Model):
     user_profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=True
+        Profile, on_delete=models.CASCADE, null=True, related_name="links"
     )
 
     long_link = models.TextField(max_length=2000)

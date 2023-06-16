@@ -450,6 +450,7 @@ Dialog box
   border: none;
   cursor: pointer;
   transition: var(--transition);
+  margin-left: 2rem;
 }
 
 .dropdown {
@@ -498,6 +499,7 @@ Dialog box
   .nav-links {
     display: grid;
     justify-self: end;
+    align-items: center;
     grid-template-columns: repeat(2, auto);
   }
 }
@@ -603,7 +605,7 @@ Dialog box
 }
 
 @media screen and (max-width: 672px) {
-  .section-shortener{
+  .section-shortener {
     min-height: 62rem;
   }
   .appeal {
@@ -707,4 +709,99 @@ Pages
 }
 .password-reset-done h2 {
   padding: 1.5rem 0;
+}
+
+/* 
+==========
+Overview
+========== 
+*/
+.section-overview {
+  background-color: var(--grey-100);
+  min-height: calc(100vh - 5rem - 4rem);
+  overflow: auto;
+}
+
+.total-counts {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.total-counts-card {
+  display: flex;
+  justify-content: center;
+  background-color: var(--white);
+  width: fit-content;
+  border-radius: var(--borderRadius-200);
+  box-shadow: var(--shadow-2);
+  padding: 1.5rem 2rem;
+}
+
+.total-counts-card h5 {
+  display: inline;
+}
+
+.total-counts-counter {
+  color: var(--primary-600);
+  font-weight: 500;
+}
+
+.link-item-clicks-text {
+  color: var(--primary-600);
+}
+
+.link-item {
+  background-color: var(--white);
+  border-radius: var(--borderRadius-300);
+  box-shadow: var(--shadow-2);
+  padding: 2rem 2.5rem;
+  transition: var(--transition);
+  margin-bottom: 2rem;
+}
+.link-item:hover {
+  /* transform: scale(102%); */
+  box-shadow: var(--shadow-4);
+}
+
+.link-item p {
+  color: var(--grey-500);
+  text-transform: capitalize;
+  margin-bottom: 0.25rem;
+}
+
+.link-item-long-link {
+  margin-bottom: 1rem;
+}
+
+.link-long-link-text {
+  text-transform: none;
+}
+
+.link-item-short-link {
+  margin-bottom: 1rem;
+}
+
+.link-short-link-text {
+  text-transform: none;
+  margin-top: 0.25rem;
+}
+
+.link-item-clicks {
+  margin-bottom: 1rem;
+}
+
+.link-item-details a {
+  display: flex;
+  justify-content: end;
+}
+
+.links-view-more {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.links-view-more a {
+  display: block;
 }

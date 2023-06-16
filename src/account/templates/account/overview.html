@@ -4,12 +4,27 @@
     Overview
 {% endblock title %}
 {% block content %}
-    {% if user.is_authenticated %}
-        Authenticated
-    {% else %}
-        Not authenticated
-    {% endif %}
-    {{ user.email }}
-    {{ user.get_username }}
-    <h1>Overview page</h1>
+    <section class="section-overview">
+        <div class="section-center">
+            <div class="total-counts">
+                <div class="total-counts-card">
+                    <h5>
+                        total clicks: <span class="total-counts-counter">{{ total_clicks }}</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="links-list">
+                {% for link, clicks in mapped_links %}
+                    {% include "account/link_item.html" %}
+                {% endfor %}
+            </div>
+            {% if view_more %}
+                <div class="links-view-more">
+                    <a href="#">
+                        <h4>view more</h4>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 {% endblock content %}

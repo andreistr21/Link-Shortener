@@ -37,6 +37,9 @@
                     {% comment %} navlinks {% endcomment %}
                     <ul class="nav-links">
                         {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'account:overview' %}" class="nav-link">Overview</a>
+                            </li>
                             <div class="dropdown">
                                 <button class="drop-btn">
                                     {{ user.username }}
