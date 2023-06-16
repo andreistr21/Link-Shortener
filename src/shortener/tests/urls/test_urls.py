@@ -4,6 +4,7 @@ from django.urls import resolve, reverse
 
 from account.models import Profile
 from shortener import views
+from shortener.models import Link
 
 
 class AccountUrlTests(TestCase):
@@ -13,6 +14,9 @@ class AccountUrlTests(TestCase):
         cls.user_password = "test_password"
         cls.user = Profile.objects.create_user(
             cls.user_email, cls.user_password
+        )
+        cls.link = Link.objects.create(
+            long_link="https://www.youtube.com", alias="youtube"
         )
         cls.anonymous_require_redirect_name = "account:overview"
         cls.login_required_redirect_name = "account:sign_in"
@@ -43,14 +47,32 @@ class AccountUrlTests(TestCase):
         self._test_view_used(response, view)
         if template_name:
             self._test_template_used(response, template_name)
-            
+
     def test_index_url_anonymous_user(self):
         response = self.client.get(reverse("shortener:index"))
-        
+
         self._test_view_render(response, views.index)
 
     def test_index_url_auth_user(self):
         self._login()
         response = self.client.get(reverse("shortener:index"))
-        
+
         self._test_view_render(response, views.index)
+
+    def test_shorten_redirect_url_anonymous_user(self):
+        # sourcery skip: class-extract-method
+        response = self.client.get(
+            reverse("shortener:shorten_redirect", args=("youtube",))
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self._test_view_used(response, views.shorten_redirect)
+
+    def test_shorten_redirect_url_auth_user(self):
+        self._login()
+        response = self.client.get(
+            reverse("shortener:shorten_redirect", args=("youtube",))
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self._test_view_used(response, views.shorten_redirect)
