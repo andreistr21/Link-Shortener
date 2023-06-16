@@ -119,7 +119,7 @@ def validate_for_restricted_domains(link: str) -> bool:
 
 def link_validation(shorten_form: ModelForm) -> bool:
     link = shorten_form.cleaned_data.get("long_link")
-    if validators.url(link) or validators.url(f"https://{link}"):
+    if validators.url(link):
         if not validate_for_restricted_domains(link):
             shorten_form.add_error(
                 "long_link", "This domain is banned or invalid"
