@@ -63,7 +63,8 @@ html {
   --borderRadius-200: 0.5rem;
   --borderRadius-300: 1rem;
   --letterSpacing: 1px;
-  --transition: 0.3s ease-in-out all;
+  /* --transition: 0.3s ease-in-out all; */
+  --transition: 0.6s ease-in-out all;
   --max-width: 1120px;
   --fixed-width: 600px;
 
@@ -449,8 +450,8 @@ Dialog box
   font-size: 16px;
   border: none;
   cursor: pointer;
-  transition: var(--transition);
   margin-left: 2rem;
+  transition: var(--transition);
 }
 
 .dropdown {
@@ -459,7 +460,7 @@ Dialog box
 }
 
 .dropdown-content {
-  display: none;
+  visibility: hidden;
   position: absolute;
   background-color: var(--grey-300);
   min-width: 160px;
@@ -467,6 +468,7 @@ Dialog box
   z-index: 1;
   border-radius: var(--borderRadius-100);
   transition: var(--transition);
+  opacity: 0;
 }
 
 .dropdown-content a {
@@ -486,6 +488,8 @@ Dialog box
 
 .dropdown:hover .dropdown-content {
   display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .dropdown:hover .drop-btn {
@@ -791,7 +795,7 @@ Overview
   margin-bottom: 1rem;
 }
 
-.link-item-details a {
+.link-item-details {
   display: flex;
   justify-content: end;
 }
