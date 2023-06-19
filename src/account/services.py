@@ -91,7 +91,6 @@ def get_domain() -> str:
     return settings.DEFAULT_DOMAIN
 
 
-# TODO: add tests
 def map_clicks_amount_to_link(links: list[Link]) -> list[tuple[Link, str]]:
     """Returns list tuples with link and link clicks"""
     return [(link, get_link_total_clicks(link.alias)) for link in links]
