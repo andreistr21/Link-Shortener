@@ -170,6 +170,10 @@ class AccountUrlTests(TestCase):
         response = self.client.get(reverse("account:overview"))
 
         self._test_view_render(response, views.overview)
+        self.assertEqual(response.context["total_clicks"], 0)
+        self.assertEqual(response.context["mapped_links"], [])
+        self.assertEqual(response.context["view_more"], False)
+        self.assertEqual(response.context["domain"], "http://127.0.0.1:8000")
 
     def test_password_reset_url_anonymous_user(self):
         response = self.client.get(reverse("account:password_reset"))
