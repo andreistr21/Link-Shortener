@@ -19,12 +19,10 @@ def get_links_by_user(user: Profile) -> QuerySet:
     return user.links.all()
 
 
-# TODO: add tests
 def get_links_total_clicks(links: list[Link]) -> int:
     """Counts and returns all links clicks in list."""
     return sum(get_link_total_clicks(link.alias) for link in links)
 
 
-# TODO: add tests
 def get_link_total_clicks(link_alias: str) -> int:
     return redis_connection().llen(link_alias)

@@ -12,7 +12,7 @@ from account.selectors import get_links_total_clicks
 from shortener.models import Link
 
 
-class GetLinksTotalClicks(TestCase):
+class GetLinksTotalClicksTests(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.links = Link.objects.bulk_create(
@@ -21,9 +21,10 @@ class GetLinksTotalClicks(TestCase):
                 Link(long_link="https://www.youtube.com/", alias="youtube2"),
             ]
         )
-
-    def _redis_connection(self):
-        return FakeStrictRedis()
+        
+    def tearDown(self) -> None:
+        for link in self.links:
+            redis_connection().delete(link.alias)
 
     @mock.patch("account.redis.Redis", FakeStrictRedis)
     @mock.patch.object(
