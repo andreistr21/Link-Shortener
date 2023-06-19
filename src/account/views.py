@@ -66,7 +66,6 @@ def activate_email(_, uidb64, token):
     return redirect(reverse("account:sign_in"))
 
 
-# TODO: add tests
 @login_required
 def overview(request: HttpRequest) -> HttpResponse:
     links = get_links_by_user(request.user)
