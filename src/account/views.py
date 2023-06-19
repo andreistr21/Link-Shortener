@@ -5,9 +5,8 @@ from django.urls import reverse
 
 from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
-from account.selectors import get_links_by_user
+from account.selectors import get_account_total_clicks, get_links_by_user
 from account.services import (
-    get_account_total_clicks,
     get_domain,
     map_clicks_to_link,
     send_new_activation_link,

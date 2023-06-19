@@ -1,4 +1,3 @@
-from functools import lru_cache
 from profile import Profile
 
 from django import forms
@@ -10,9 +9,12 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from redis import Redis
 
-from account.selectors import get_profile, get_profile_by_email
+from account.selectors import (
+    get_link_total_clicks,
+    get_profile,
+    get_profile_by_email,
+)
 from account.tasks import send_activation_email_task
 from account.tokens import email_activation_token
 from shortener.models import Link
@@ -85,19 +87,6 @@ def send_new_activation_link(request, new_confirmation_link_form):
         return redirect(reverse("account:confirm_email"))
 
 
-@lru_cache(maxsize=1)
-def redis_connection() -> Redis:
-    """Creates redis connection during first call and returns it. During next
-    call cached value will be returned"""
-    return Redis(host="127.0.0.1", port="6379")
-
-
-# TODO: add tests
-def get_account_total_clicks(links: list[Link]) -> int:
-    """Counts and returns all clicks on user links."""
-    return sum(redis_connection().llen(link.alias) for link in links)
-
-
 # TODO: add tests
 def get_domain() -> str:
     return settings.DEFAULT_DOMAIN
@@ -106,4 +95,4 @@ def get_domain() -> str:
 # TODO: add tests
 def map_clicks_to_link(links: list[Link]) -> list[tuple[Link, str]]:
     """Returns list tuples with link and link clicks"""
-    return [(link, redis_connection().llen(link.alias)) for link in links]
+    return [(link, get_link_total_clicks(link.alias)) for link in links]
