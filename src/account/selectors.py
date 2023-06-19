@@ -13,5 +13,5 @@ def get_profile_by_email(email):
 
 
 # TODO: add tests
-def get_links(user: Profile) -> QuerySet:
+def get_links_by_user(user: Profile) -> QuerySet:
     return user.links.all()

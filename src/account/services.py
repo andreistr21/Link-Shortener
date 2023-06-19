@@ -12,7 +12,7 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from redis import Redis
 
-from account.selectors import get_links, get_profile, get_profile_by_email
+from account.selectors import get_profile, get_profile_by_email
 from account.tasks import send_activation_email_task
 from account.tokens import email_activation_token
 from shortener.models import Link
