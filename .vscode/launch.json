@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "shortener.tests.services.test_update_link_statistics.UpdateLinkStatisticsTests.test_method_execution",
+                "account.tests.selectors.test_get_links_total_clicks.GetLinksTotalClicks.test_return_all_links",
             ],
             "django": true,
             "justMyCode": false

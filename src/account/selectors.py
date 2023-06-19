@@ -20,9 +20,9 @@ def get_links_by_user(user: Profile) -> QuerySet:
 
 
 # TODO: add tests
-def get_account_total_clicks(links: list[Link]) -> int:
-    """Counts and returns all clicks on user links."""
-    return sum(redis_connection().llen(link.alias) for link in links)
+def get_links_total_clicks(links: list[Link]) -> int:
+    """Counts and returns all links clicks in list."""
+    return sum(get_link_total_clicks(link.alias) for link in links)
 
 
 # TODO: add tests

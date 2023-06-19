@@ -22,7 +22,7 @@ g = GeoIP2()
 
 @lru_cache(maxsize=1)
 def redis_connection() -> Redis:
-    """Creates redis connection during first call and returns it. During next 
+    """Creates redis connection during first call and returns it. During next
     call cached value will be returned"""
     return Redis(host="127.0.0.1", port="6379")
 
@@ -167,6 +167,7 @@ def get_request_country_code(request: HttpRequest) -> str:
     return country_code
 
 
+# TODO: add tests
 def append_to_redis_list(alias: str, country_code: str) -> None:
     redis_connection().lpush(
         alias,

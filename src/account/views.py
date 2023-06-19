@@ -5,10 +5,10 @@ from django.urls import reverse
 
 from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
-from account.selectors import get_account_total_clicks, get_links_by_user
+from account.selectors import get_links_total_clicks, get_links_by_user
 from account.services import (
     get_domain,
-    map_clicks_to_link,
+    map_clicks_amount_to_link,
     send_new_activation_link,
     sign_in_user,
     sign_up_user,
@@ -70,8 +70,11 @@ def activate_email(_, uidb64, token):
 @login_required
 def overview(request: HttpRequest) -> HttpResponse:
     links = get_links_by_user(request.user)
-    total_clicks = get_account_total_clicks(links)
-    mapped_links = map_clicks_to_link(links[:3])
+    total_clicks = 0
+    mapped_links = []
+    if links:
+        total_clicks = get_links_total_clicks(links)
+        mapped_links = map_clicks_amount_to_link(links[:3])
     view_more = len(links) > 3
     domain = get_domain()
 
