@@ -110,9 +110,6 @@ def validate_for_restricted_domains(link: str) -> bool:
     """Returns True if domain is allowed"""
     restricted_domains = settings.RESTRICTED_DOMAINS
     link_domain = urlparse(link).netloc
-    # urlparse library can't find domain if there is no protocol extension
-    if link_domain == "":
-        link_domain = urlparse(f"https://{link}").netloc
     return (
         False if link_domain == "" else link_domain not in restricted_domains
     )
