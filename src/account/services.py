@@ -87,7 +87,6 @@ def send_new_activation_link(request, new_confirmation_link_form):
         return redirect(reverse("account:confirm_email"))
 
 
-# TODO: add tests
 def get_domain() -> str:
     return settings.DEFAULT_DOMAIN
 
