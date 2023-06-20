@@ -63,8 +63,7 @@ html {
   --borderRadius-200: 0.5rem;
   --borderRadius-300: 1rem;
   --letterSpacing: 1px;
-  /* --transition: 0.3s ease-in-out all; */
-  --transition: 0.6s ease-in-out all;
+  --transition: 0.3s ease-in-out all;
   --max-width: 1120px;
   --fixed-width: 600px;
 
@@ -186,6 +185,9 @@ a:visited {
   to {
     transform: rotate(360deg);
   }
+}
+.pagination .grayed-out{
+  color: var(--grey-500);
 }
 
 /* buttons */
@@ -364,6 +366,11 @@ Form
   column-gap: 1.5rem;
   margin-top: 1rem;
 }
+.section-account {
+  background-color: var(--grey-100);
+  min-height: calc(100vh - 5rem - 4rem);
+  overflow: auto;
+}
 
 /* 
 ==========
@@ -504,7 +511,7 @@ Dialog box
     display: grid;
     justify-self: end;
     align-items: center;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(3, auto);
   }
 }
 
@@ -717,15 +724,9 @@ Pages
 
 /* 
 ==========
-Overview
+Overview & Links
 ========== 
 */
-.section-overview {
-  background-color: var(--grey-100);
-  min-height: calc(100vh - 5rem - 4rem);
-  overflow: auto;
-}
-
 .total-counts {
   display: flex;
   justify-content: center;
@@ -785,14 +786,14 @@ Overview
 .link-item-short-link {
   margin-bottom: 1rem;
 }
+.link-item-short-link p,
+.link-item-short-link h5 {
+  width: fit-content;
+}
 
 .link-short-link-text {
   text-transform: none;
   margin-top: 0.25rem;
-}
-
-.link-item-clicks {
-  margin-bottom: 1rem;
 }
 
 .link-item-details {
@@ -808,4 +809,53 @@ Overview
 
 .links-view-more a {
   display: block;
+}
+
+.links-list {
+  margin-top: 2rem;
+}
+.short-link-and-date {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.link-item-date {
+  margin-left: 2rem;
+  text-align: end;
+}
+.link-item-clicks-and-details {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+.link-date {
+  color: var(--primary-600);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+.pagination-ellipsis {
+  margin: auto 0;
+  padding: 0.5rem 1rem;
+}
+.pagination a,
+.pagination p {
+  color: var(--black);
+  padding: 0.5rem 1rem;
+  border-radius: var(--borderRadius-100);
+}
+.pagination p{
+  margin-top: 0;
+}
+.active-page {
+  background-color: var(--primary-400);
+  color: var(--white);
+}
+
+.pagination a:hover:not(.active-page) {
+  background-color: var(--grey-300);
+  border-radius: var(--borderRadius-100);
 }

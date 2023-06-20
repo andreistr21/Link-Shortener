@@ -38,6 +38,9 @@
                     <ul class="nav-links">
                         {% if user.is_authenticated %}
                             <li>
+                                <a href="{% url 'account:links_list' %}" class="nav-link">links</a>
+                            </li>
+                            <li>
                                 <a href="{% url 'account:overview' %}" class="nav-link">Overview</a>
                             </li>
                             <div class="dropdown">

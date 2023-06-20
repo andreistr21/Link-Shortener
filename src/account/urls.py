@@ -24,6 +24,10 @@ urlpatterns = [
         ),
         name="logout",
     ),
+    path("overview", views.overview, name="overview"),
+    # TODO: add tests
+    path("links/", views.links_list, name="links_list"),
+    path("links/<int:page>", views.links_list, name="links_list"),
     path("confirm-email/", views.confirm_email, name="confirm_email"),
     path(
         "new-confirmation-link/",
@@ -35,7 +39,6 @@ urlpatterns = [
         views.activate_email,
         name="activate_email",
     ),
-    path("overview", views.overview, name="overview"),
     path(
         "password-reset/",
         anonymous_required(

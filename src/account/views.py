@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
-from account.selectors import get_links_total_clicks, get_links_by_user
+from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
     get_domain,
     map_clicks_amount_to_link,
@@ -105,5 +106,30 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
         "account/new_confirmation_link.html",
         {
             "new_confirmation_link_form": new_confirmation_link_form,
+        },
+    )
+
+
+# TODO: add tests
+def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
+    if links := get_links_by_user(request.user):
+        mapped_links = map_clicks_amount_to_link(links) if links else []
+    domain = get_domain()
+
+    paginator = Paginator(mapped_links, 5)
+    page_obj = paginator.get_page(page)
+    elided_page_range = paginator.get_elided_page_range(
+        page_obj.number, on_each_side=3, on_ends=1
+    )
+
+    return render(
+        request,
+        "account/links_list.html",
+        {
+            "mapped_links": mapped_links,
+            "domain": domain,
+            "paginator": paginator,
+            "page_obj": page_obj,
+            "elided_page_range": elided_page_range,
         },
     )

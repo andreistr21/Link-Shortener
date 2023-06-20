@@ -1,23 +1,31 @@
 <div class="link-item">
+    <div class="short-link-and-date">
+        <div class="link-item-short-link">
+            <p>short link:</p>
+            <h5 class="link-short-link-text">
+                <a href="{{ domain }}/{{ link.alias }}" target="_blank">{{ domain }}/{{ link.alias }}</a>
+            </h5>
+        </div>
+        <div class="link-item-date">
+            <p>created:</p>
+            <h5 class="link-date">{{ link.created_at|date }}</h5>
+        </div>
+    </div>
     <div class="link-item-long-link">
         <p>link:</p>
         <h5 class="link-long-link-text">
             <a href="{{ link.long_link }}" target="_blank">{{ link.long_link }}</a>
         </h5>
     </div>
-    <div class="link-item-short-link">
-        <p>short link:</p>
-        <h5 class="link-short-link-text">
-            <a href="{{ domain }}/{{ link.alias }}" target="_blank">{{ domain }}/{{ link.alias }}</a>
-        </h5>
-    </div>
-    <div class="link-item-clicks">
-        <p>clicks:</p>
-        <h5 class="link-item-clicks-text">{{ clicks }}</h5>
-    </div>
-    <div class="link-item-details">
-        <a href="#">
-            <h5>details</h5>
-        </a>
+    <div class="link-item-clicks-and-details">
+        <div class="link-item-clicks">
+            <p>clicks:</p>
+            <h5 class="link-item-clicks-text">{{ clicks }}</h5>
+        </div>
+        <div class="link-item-details">
+            <a href="#">
+                <h5>details</h5>
+            </a>
+        </div>
     </div>
 </div>

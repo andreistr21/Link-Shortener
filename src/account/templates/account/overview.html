@@ -4,7 +4,7 @@
     Overview
 {% endblock title %}
 {% block content %}
-    <section class="section-overview">
+    <section class="section-account">
         <div class="section-center">
             <div class="total-counts">
                 <div class="total-counts-card">
@@ -20,7 +20,7 @@
             </div>
             {% if view_more %}
                 <div class="links-view-more">
-                    <a href="#">
+                    <a href="{% url 'account:links_list' %}">
                         <h4>view more</h4>
                     </a>
                 </div>
