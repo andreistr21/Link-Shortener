@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_decode
 
 from account.selectors import (
     get_link_total_clicks,
+    get_links_by_user,
     get_profile,
     get_profile_by_email,
 )
@@ -94,3 +95,12 @@ def get_domain() -> str:
 def map_clicks_amount_to_link(links: list[Link]) -> list[tuple[Link, str]]:
     """Returns list tuples with link and link clicks"""
     return [(link, get_link_total_clicks(link.alias)) for link in links]
+
+
+# TODO: add tests
+def get_links_and_clicks(request: HttpRequest):
+    """Returns list tuples with link and link clicks."""
+    filter_by = request.GET.get("search")
+    order_by = request.GET.get("order-by")
+    if links := get_links_by_user(request.user, filter_by, order_by):
+        return map_clicks_amount_to_link(links) if links else []

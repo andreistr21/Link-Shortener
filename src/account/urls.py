@@ -24,10 +24,10 @@ urlpatterns = [
         ),
         name="logout",
     ),
-    path("overview", views.overview, name="overview"),
+    path("overview/", views.overview, name="overview"),
     # TODO: add tests
     path("links/", views.links_list, name="links_list"),
-    path("links/<int:page>", views.links_list, name="links_list"),
+    path("links/<int:page>/", views.links_list, name="links_list"),
     path("confirm-email/", views.confirm_email, name="confirm_email"),
     path(
         "new-confirmation-link/",
@@ -35,7 +35,7 @@ urlpatterns = [
         name="new_confirmation_link",
     ),
     path(
-        "activate-email/<uidb64>/<token>",
+        "activate-email/<uidb64>/<token>/",
         views.activate_email,
         name="activate_email",
     ),

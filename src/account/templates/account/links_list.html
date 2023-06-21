@@ -1,11 +1,25 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load account_custom_tags %}
 {% block title %}
     Overview
 {% endblock title %}
 {% block content %}
     <section class="section-account">
         <div class="section-center">
+            <form class="search-form" action="{% url 'account:links_list' %}">
+                <div class="input">
+                    <input type="search" name="search">
+                </div>
+                <button class="add_your_class" type="submit">Search</button>
+            </form>
+            {% if search %}
+                <div class="search-for">
+                    <h3>
+                        search results for "<span class="text-normal">{{ search }}</span>"
+                    </h3>
+                </div>
+            {% endif %}
             <div class="links-list">
                 {% for link, clicks in page_obj %}
                     {% include "account/link_item.html" %}
@@ -13,7 +27,7 @@
             </div>
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a href="{% url 'account:links_list' page=page_obj.previous_page_number %}">&laquo; Previous</a>
+                    <a href="{% url 'account:links_list' page=page_obj.previous_page_number %}{% if current_query_str %}?{{ current_query_str }}{% endif %}">&laquo; Previous</a>
                 {% else %}
                     <p class="grayed-out">&laquo; Previous</p>
                 {% endif %}
@@ -24,12 +38,12 @@
                         {% if page_number == page_obj.number %}
                             <p class="active-page">{{ page_number }}</p>
                         {% else %}
-                            <a href="{% url 'account:links_list' page=page_number %}">{{ page_number }}</a>
+                            <a href="{% url 'account:links_list' page=page_number %}{% if current_query_str %}?{{ current_query_str }}{% endif %}">{{ page_number }}</a>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                    <a href="{% url 'account:links_list' page=page_obj.next_page_number %}">Next &raquo;</a>
+                    <a href="{% url 'account:links_list' page=page_obj.next_page_number %}{% if current_query_str %}?{{ current_query_str }}{% endif %}">Next &raquo;</a>
                 {% else %}
                     <p class="grayed-out">Next &raquo;</p>
                 {% endif %}

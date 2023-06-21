@@ -186,7 +186,7 @@ a:visited {
     transform: rotate(360deg);
   }
 }
-.pagination .grayed-out{
+.pagination .grayed-out {
   color: var(--grey-500);
 }
 
@@ -847,7 +847,7 @@ Overview & Links
   padding: 0.5rem 1rem;
   border-radius: var(--borderRadius-100);
 }
-.pagination p{
+.pagination p {
   margin-top: 0;
 }
 .active-page {
@@ -858,4 +858,8 @@ Overview & Links
 .pagination a:hover:not(.active-page) {
   background-color: var(--grey-300);
   border-radius: var(--borderRadius-100);
+}
+.search-for h3 {
+  margin-top: 2rem;
+  text-align: center;
 }

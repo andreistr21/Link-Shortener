@@ -9,6 +9,7 @@ from account.forms import SignInForm, SignUpForm
 from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
     get_domain,
+    get_links_and_clicks,
     map_clicks_amount_to_link,
     send_new_activation_link,
     sign_in_user,
@@ -112,15 +113,20 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
 
 # TODO: add tests
 def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
-    if links := get_links_by_user(request.user):
-        mapped_links = map_clicks_amount_to_link(links) if links else []
+    search_str = request.GET.get("search")
+    current_query_str = request.META.get("QUERY_STRING")
+    mapped_links = get_links_and_clicks(request)
     domain = get_domain()
 
-    paginator = Paginator(mapped_links, 5)
-    page_obj = paginator.get_page(page)
-    elided_page_range = paginator.get_elided_page_range(
-        page_obj.number, on_each_side=3, on_ends=1
-    )
+    paginator = None
+    page_obj = None
+    elided_page_range = None
+    if mapped_links:
+        paginator = Paginator(mapped_links, 5)
+        page_obj = paginator.get_page(page)
+        elided_page_range = paginator.get_elided_page_range(
+            page_obj.number, on_each_side=3, on_ends=1
+        )
 
     return render(
         request,
@@ -131,5 +137,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
             "paginator": paginator,
             "page_obj": page_obj,
             "elided_page_range": elided_page_range,
+            "search": search_str,
+            "current_query_str": current_query_str,
         },
     )
