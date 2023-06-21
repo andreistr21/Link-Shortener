@@ -453,8 +453,7 @@ Dialog box
 .drop-btn {
   background-color: transparent;
   color: var(--black);
-  padding: 16px;
-  font-size: 16px;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
   margin-left: 2rem;
@@ -513,6 +512,35 @@ Dialog box
     align-items: center;
     grid-template-columns: repeat(3, auto);
   }
+}
+
+/* Dropdown click */
+.dropdown-click {
+  position: relative;
+  display: inline-block;
+}
+.drop-btn-click {
+  width: fit-content;
+  background-color: transparent;
+  color: var(--black);
+  font-size: 1rem;
+  border: 2px solid var(--grey-300);
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--borderRadius-100);
+}
+.drop-btn-txt {
+  margin-right: 2rem;
+}
+.dropdown-click-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+.show-dropdown-click {
+  display: block;
 }
 
 /* sidebar */

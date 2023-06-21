@@ -7,12 +7,24 @@
 {% block content %}
     <section class="section-account">
         <div class="section-center">
-            <form class="search-form" action="{% url 'account:links_list' %}">
-                <div class="input">
-                    <input type="search" name="search">
-                </div>
-                <button class="add_your_class" type="submit">Search</button>
-            </form>
+            <div class="utils">
+                <form class="search-form" action="{% url 'account:links_list' %}">
+                    <div class="input">
+                        <input type="search" name="search">
+                    </div>
+                    <button class="add_your_class" type="submit">Search</button>
+                </form>
+                <form class="dropdown-click" action>
+                    <button type="button" onclick="dropdownClick()" class="drop-btn-click">
+                        <span class="drop-btn-txt">Sorting</span>
+                        <span><i class="fa-solid fa-caret-down"></i></span>
+                    </button>
+                    <div class="dropdown-click-content" id="dropdown-click-content-id">
+                        <a href="#">settings</a>
+                        <a id="logout-btn-id">log out</a>
+                    </div>
+                </form>
+            </div>
             {% if search %}
                 <div class="search-for">
                     <h3>
