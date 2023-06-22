@@ -15,7 +15,6 @@ from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
     get_domain,
     get_links_and_clicks,
-    get_order_by_str,
     map_clicks_amount_to_link,
     send_new_activation_link,
     sign_in_user,
@@ -117,11 +116,9 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required
 # TODO: add tests
 def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
-    search_str = request.GET.get("search")
-    # TODO: what if returns none
-    order_by_str = get_order_by_str(request)
     current_query_str = request.META.get("QUERY_STRING")
     current_query_dict = QueryDict(current_query_str)
     domain = get_domain()
@@ -142,14 +139,10 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
         request,
         "account/links_list.html",
         {
-            "mapped_links": mapped_links,
             "domain": domain,
-            "paginator": paginator,
             "page_obj": page_obj,
             "elided_page_range": elided_page_range,
-            "search": search_str,
             "current_query_str": current_query_str,
             "current_query_dict": current_query_dict,
-            "order_by_str": order_by_str,
         },
     )

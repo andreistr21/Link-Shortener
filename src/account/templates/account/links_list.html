@@ -23,7 +23,9 @@
                     {% endfor %}
                     <p>Sorting:</p>
                     <button type="button" onclick="dropdownClick()" class="drop-btn-click">
-                        <span class="drop-btn-txt">{{ order_by_str }}</span>
+                        {% with order_by_user_friendly=get_order_by_user_friendly %}
+                            <span class="drop-btn-txt">{% get_order_by_user_friendly %}</span>
+                        {% endwith %}
                         <span><i class="fa-solid fa-caret-down"></i></span>
                     </button>
                     <div class="dropdown-click-content" id="dropdown-click-content-id">
@@ -34,13 +36,15 @@
                     </div>
                 </form>
             </div>
-            {% if search %}
-                <div class="search-for">
-                    <h3>
-                        search results for "<span class="text-normal">{{ search }}</span>"
-                    </h3>
-                </div>
-            {% endif %}
+            {% with search_str=request.GET.search %}
+                {% if search_str %}
+                    <div class="search-for">
+                        <h3>
+                            search results for "<span class="text-normal">{{ search_str }}</span>"
+                        </h3>
+                    </div>
+                {% endif %}
+            {% endwith %}
             <div class="links-list">
                 {% for link, clicks in page_obj %}
                     {% include "account/link_item.html" %}
@@ -53,7 +57,7 @@
                     <p class="grayed-out">&laquo; Previous</p>
                 {% endif %}
                 {% for page_number in elided_page_range %}
-                    {% if page_number == paginator.ELLIPSIS %}
+                    {% if page_number == page_obj.paginator.ELLIPSIS %}
                         <p class="pagination-ellipsis">{{ page_number }}</p>
                     {% else %}
                         {% if page_number == page_obj.number %}
