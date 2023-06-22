@@ -519,6 +519,10 @@ Dialog box
   position: relative;
   display: inline-block;
 }
+.dropdown-click p{
+  margin-bottom: 0.250rem;
+  color: var(--grey-600);
+}
 .drop-btn-click {
   width: fit-content;
   background-color: transparent;

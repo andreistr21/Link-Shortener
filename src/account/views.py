@@ -1,6 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+    QueryDict,
+)
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -10,6 +15,7 @@ from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
     get_domain,
     get_links_and_clicks,
+    get_order_by_str,
     map_clicks_amount_to_link,
     send_new_activation_link,
     sign_in_user,
@@ -114,9 +120,13 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
 # TODO: add tests
 def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     search_str = request.GET.get("search")
+    # TODO: what if returns none
+    order_by_str = get_order_by_str(request)
     current_query_str = request.META.get("QUERY_STRING")
-    mapped_links = get_links_and_clicks(request)
+    current_query_dict = QueryDict(current_query_str)
     domain = get_domain()
+
+    mapped_links = get_links_and_clicks(request)
 
     paginator = None
     page_obj = None
@@ -139,5 +149,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
             "elided_page_range": elided_page_range,
             "search": search_str,
             "current_query_str": current_query_str,
+            "current_query_dict": current_query_dict,
+            "order_by_str": order_by_str,
         },
     )

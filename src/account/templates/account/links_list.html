@@ -10,18 +10,27 @@
             <div class="utils">
                 <form class="search-form" action="{% url 'account:links_list' %}">
                     <div class="input">
+                        {% for key, value in current_query_dict.items %}
+                            {% if key != "search" %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endif %}
+                        {% endfor %}
                         <input type="search" name="search">
                     </div>
                     <button class="add_your_class" type="submit">Search</button>
                 </form>
-                <form class="dropdown-click" action>
+                <form class="dropdown-click" action="{% url 'account:links_list' %}">
+                    {% for key, value in current_query_dict.items %}
+                        {% if key != "orderby" %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endif %}
+                    {% endfor %}
+                    <p>Sorting:</p>
                     <button type="button" onclick="dropdownClick()" class="drop-btn-click">
-                        <span class="drop-btn-txt">Sorting</span>
+                        <span class="drop-btn-txt">{{ order_by_str }}</span>
                         <span><i class="fa-solid fa-caret-down"></i></span>
                     </button>
                     <div class="dropdown-click-content" id="dropdown-click-content-id">
-                        <a href="#">settings</a>
-                        <a id="logout-btn-id">log out</a>
+                        <button name="orderby" value="-created_at">Date - Newest first</button>
+                        <button name="orderby" value="created_at">Date - Oldest first</button>
+                        <button name="orderby" value="-clicks">Clicks - Most clicked first</button>
+                        <button name="orderby" value="clicks">Clicks - Least clicked first</button>
                     </div>
                 </form>
             </div>

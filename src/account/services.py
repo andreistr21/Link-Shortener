@@ -101,6 +101,30 @@ def map_clicks_amount_to_link(links: list[Link]) -> list[tuple[Link, str]]:
 def get_links_and_clicks(request: HttpRequest):
     """Returns list tuples with link and link clicks."""
     filter_by = request.GET.get("search")
-    order_by = request.GET.get("order-by")
-    if links := get_links_by_user(request.user, filter_by, order_by):
-        return map_clicks_amount_to_link(links) if links else []
+    order_by = request.GET.get("orderby")
+    clicks_sort = order_by in ["clicks", "-clicks"]
+    if links := get_links_by_user(
+        request.user, filter_by, None if clicks_sort else order_by
+    ):
+        if links:
+            mapped_clicks = map_clicks_amount_to_link(links)
+            if clicks_sort:
+                reverse = order_by == "-clicks"
+                mapped_clicks.sort(key=lambda item: item[1], reverse=reverse)
+            return mapped_clicks
+        return []
+
+
+# TODO: add tests
+def get_order_by_str(request: HttpRequest) -> str:
+    """Returns user friendly sorting name"""
+    order_by = request.GET.get("orderby", "")
+    sorting = {
+        "": "Date - Newest first",
+        "-created_at": "Date - Newest first",
+        "created_at": "Date - Oldest first",
+        "-clicks": "Clicks - Most clicked first",
+        "clicks": "Clicks - Least clicked first",
+    }
+
+    return sorting.get(order_by)
