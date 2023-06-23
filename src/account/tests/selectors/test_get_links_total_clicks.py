@@ -21,7 +21,7 @@ class GetLinksTotalClicksTests(TestCase):
                 Link(long_link="https://www.youtube.com/", alias="youtube2"),
             ]
         )
-        
+
     def tearDown(self) -> None:
         for link in self.links:
             redis_connection().delete(link.alias)

@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.views.test_overview.TestOverviewTests.test_with_multiple_links",
+                "account.tests.selectors.test_get_links_by_user.GetLLinksByUserTests.test_if_no_links_with_filter",
             ],
             "django": true,
             "justMyCode": false
