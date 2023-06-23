@@ -563,7 +563,7 @@ Dialog box
 .section-form {
   background-color: var(--grey-100);
   height: calc(100vh - 4rem - 5rem);
-  min-height: 36rem;
+  min-height: 40rem;
 }
 
 /* shortener */
@@ -688,7 +688,7 @@ Pages
 
 /* Forms */
 .section-sign-up {
-  min-height: 39rem;
+  min-height: 42rem;
 }
 
 /* Confirm Email */
