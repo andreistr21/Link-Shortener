@@ -11,7 +11,19 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.selectors.test_get_links_by_user.GetLLinksByUserTests.test_if_no_links_with_filter",
+                "shortener.tests.services.test_append_to_redis_list.AppendToRedisListTests.test_append_to_redis_list",
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django full Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/manage.py",
+            "args": [
+                "test",
+                "shortener",
             ],
             "django": true,
             "justMyCode": false
