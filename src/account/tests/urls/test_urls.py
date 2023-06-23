@@ -162,7 +162,7 @@ class AccountUrlTests(TestCase):
             response,
             views.overview,
             self.login_required_redirect_name,
-            "?next=/account/overview",
+            "?next=/account/overview/",
         )
 
     def test_overview_url_auth_user(self):

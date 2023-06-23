@@ -1,7 +1,6 @@
 import json
 import random
 import string
-from functools import lru_cache
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -12,19 +11,12 @@ from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
 from geoip2.errors import AddressNotFoundError
-from redis import Redis
 
 from shortener.models import Link
+from shortener.redis import redis_connection
 from shortener.selectors import is_alias_free
 
 g = GeoIP2()
-
-
-@lru_cache(maxsize=1)
-def redis_connection() -> Redis:
-    """Creates redis connection during first call and returns it. During next
-    call cached value will be returned"""
-    return Redis(host="127.0.0.1", port="6379")
 
 
 def save_link(
