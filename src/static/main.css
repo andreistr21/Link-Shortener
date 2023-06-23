@@ -808,9 +808,18 @@ Overview & Links
 .links-view-more a {
   display: block;
 }
+.results-showed{
+  margin-bottom: 0.5rem;
+}
+.results-showed p{
+  text-align: end;
+}
 
 .links-list {
   margin-top: 2rem;
+}
+.links-list .no-results-text {
+  text-align: center;
 }
 .short-link-and-date {
   display: grid;

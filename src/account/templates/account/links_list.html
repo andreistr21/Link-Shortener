@@ -13,7 +13,9 @@
                         {% for key, value in current_query_dict.items %}
                             {% if key != "search" %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endif %}
                         {% endfor %}
-                        <input type="search" name="search" placeholder="Search by alias and long link">
+                        <input type="search"
+                               name="search"
+                               placeholder="Search in alias and long link fields">
                     </div>
                     <button class="btn btn-primary search-btn" type="submit">Search</button>
                 </form>
@@ -46,8 +48,21 @@
                 {% endif %}
             {% endwith %}
             <div class="links-list">
+                <div class="results-showed">
+                    <p>
+                        Showed {{ page_obj|length }} links of
+                        {% if page_obj.paginator.count %}
+                            {{ page_obj.paginator.count }}
+                        {% else %}
+                            0
+                        {% endif %}
+                        total
+                    </p>
+                </div>
                 {% for link, clicks in page_obj %}
                     {% include "account/link_item.html" %}
+                {% empty %}
+                    <h5 class="no-results-text">No such results</h5>
                 {% endfor %}
             </div>
             <div class="pagination">
@@ -66,6 +81,8 @@
                             <a href="{% url 'account:links_list' page=page_number %}{% if current_query_str %}?{{ current_query_str }}{% endif %}">{{ page_number }}</a>
                         {% endif %}
                     {% endif %}
+                {% empty %}
+                    <p class="active-page">1</p>
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <a href="{% url 'account:links_list' page=page_obj.next_page_number %}{% if current_query_str %}?{{ current_query_str }}{% endif %}">Next &raquo;</a>
