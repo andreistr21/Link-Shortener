@@ -13,9 +13,9 @@
                         {% for key, value in current_query_dict.items %}
                             {% if key != "search" %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endif %}
                         {% endfor %}
-                        <input type="search" name="search">
+                        <input type="search" name="search" placeholder="Search by alias and long link">
                     </div>
-                    <button class="add_your_class" type="submit">Search</button>
+                    <button class="btn btn-primary search-btn" type="submit">Search</button>
                 </form>
                 <form class="dropdown-click" action="{% url 'account:links_list' %}">
                     {% for key, value in current_query_dict.items %}
