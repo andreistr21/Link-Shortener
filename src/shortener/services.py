@@ -156,7 +156,6 @@ def get_request_country_code(request: HttpRequest) -> str:
     return country_code
 
 
-# TODO: add tests
 def append_to_redis_list(alias: str, country_code: str) -> None:
     redis_connection().lpush(
         alias,

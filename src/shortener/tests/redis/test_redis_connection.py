@@ -5,7 +5,7 @@ from django.test import TestCase
 from shortener.redis import redis_connection
 
 
-class RedisConnection(TestCase):
+class RedisConnectionTests(TestCase):
     @mock.patch("shortener.redis.Redis")
     def test_redis_connection_caching(self, redis_mock):
         connection1 = redis_connection()
