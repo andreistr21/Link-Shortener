@@ -117,7 +117,6 @@ def new_confirmation_link(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-# TODO: add tests
 def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     current_query_str = request.META.get("QUERY_STRING")
     current_query_dict = QueryDict(current_query_str)
