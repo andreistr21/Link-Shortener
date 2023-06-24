@@ -97,6 +97,7 @@ def map_clicks_amount_to_link(links: list[Link]) -> list[tuple[Link, str]]:
     return [(link, get_link_total_clicks(link.alias)) for link in links]
 
 
+# TODO: add tests
 def sort_by_clicks(
     mapped_clicks: list[tuple[Link, str]], order_by: str
 ) -> list[tuple[Link, str]]:
@@ -104,7 +105,6 @@ def sort_by_clicks(
     return mapped_clicks.sort(key=lambda item: item[1], reverse=reverse)
 
 
-# TODO: add tests
 def get_links_and_clicks(
     request: HttpRequest,
 ) -> list[tuple[Link, int]] | list:
@@ -117,7 +117,7 @@ def get_links_and_clicks(
         else order_by
     )
     clicks_sort = order_by in ["clicks", "-clicks"]
-    
+
     if links := get_links_by_user(
         request.user, filter_by, None if clicks_sort else order_by
     ):
