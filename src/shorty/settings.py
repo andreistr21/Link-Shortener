@@ -216,6 +216,7 @@ GEOIP_PATH = BASE_DIR / "files"
 
 # Other
 DEFAULT_DOMAIN = "http://127.0.0.1:8000"
+LINKS_ITEMS_PER_PAGE = 5
 LINKS_SORTING_TYPES = {
     "": "Date - Newest first",
     "-created_at": "Date - Newest first",

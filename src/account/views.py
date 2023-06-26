@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import (
@@ -128,7 +129,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     page_obj = None
     elided_page_range = None
     if mapped_links:
-        paginator = Paginator(mapped_links, 5)
+        paginator = Paginator(mapped_links, settings.LINKS_ITEMS_PER_PAGE)
         page_obj = paginator.get_page(page)
         elided_page_range = paginator.get_elided_page_range(
             page_obj.number, on_each_side=3, on_ends=1

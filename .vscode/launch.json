@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "shortener.tests.services.test_append_to_redis_list.AppendToRedisListTests.test_append_to_redis_list",
+                "account.tests.urls.test_urls.AccountUrlTests.test_links_url_with_default_page_auth_user",
             ],
             "django": true,
             "justMyCode": false

@@ -1,4 +1,6 @@
 from unittest import mock
+
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.views import (
     LogoutView,
@@ -7,6 +9,8 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetView,
 )
+from django.core.paginator import Paginator
+from django.http import QueryDict
 from django.test import Client, TestCase
 from django.urls import resolve, reverse
 from django.views.generic import TemplateView
@@ -70,6 +74,58 @@ class AccountUrlTests(TestCase):
 
         self._test_view_used(response, view)
 
+    def _get_mapped_clicks_list(self):
+        return [
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+            ("link_obj", 9),
+            ("link_obj", 3),
+            ("link_obj", 5),
+            ("link_obj", 6),
+            ("link_obj", 2),
+            ("link_obj", 10),
+            ("link_obj", 54),
+            ("link_obj", 1),
+        ]
+
     def test_sign_up_url_anonymous_user(self):
         response = self.client.get(reverse("account:sign_up"))
 
@@ -110,6 +166,128 @@ class AccountUrlTests(TestCase):
             response,
             LogoutView,
             "account/logged_out.html",
+        )
+
+    def test_overview_url_anonymous_user(self):
+        response = self.client.get(reverse("account:overview"))
+
+        self._test_view_redirect(
+            response,
+            views.overview,
+            self.login_required_redirect_name,
+            "?next=/account/overview/",
+        )
+
+    def test_overview_url_auth_user(self):
+        self._login()
+        response = self.client.get(reverse("account:overview"))
+
+        self._test_view_render(response, views.overview)
+        self.assertEqual(response.context["total_clicks"], 0)
+        self.assertEqual(response.context["mapped_links"], [])
+        self.assertEqual(response.context["view_more"], False)
+        self.assertEqual(response.context["domain"], "http://127.0.0.1:8000")
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.get_links_and_clicks", return_value="")
+    def test_links_url_with_default_page_anonymous_user(
+        self, get_links_and_clicks_mock, _
+    ):
+        response = self.client.get(reverse("account:links_list"))
+
+        self.assertRedirects(
+            response, reverse("account:sign_in") + "?next=/account/links/"
+        )
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.get_links_and_clicks")
+    def test_links_url_with_default_page_auth_user(
+        self, get_links_and_clicks_mock, _
+    ):
+        mapped_clicks = self._get_mapped_clicks_list()
+        get_links_and_clicks_mock.return_value = mapped_clicks
+        paginator = Paginator(mapped_clicks, settings.LINKS_ITEMS_PER_PAGE)
+        page_obj = paginator.get_page(1)
+
+        self._login()
+        response = self.client.get(reverse("account:links_list"))
+
+        self._test_view_render(
+            response, views.links_list, "account/links_list.html"
+        )
+        self.assertEqual(response.context["domain"], "https://shorty.com")
+        self.assertEqual(
+            response.context["page_obj"].object_list,
+            page_obj.object_list,
+        )
+        self.assertEqual(response.context["current_query_str"], "")
+        self.assertEqual(response.context["current_query_dict"], {})
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.get_links_and_clicks", return_value="")
+    def test_links_url_with_retrieved_page_anonymous_user(
+        self, get_links_and_clicks_mock, _
+    ):
+        response = self.client.get(reverse("account:links_list", args=(2,)))
+
+        self.assertRedirects(
+            response, reverse("account:sign_in") + "?next=/account/links/2/"
+        )
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.get_links_and_clicks")
+    def test_links_url_with_retrieved_page_auth_user(
+        self, get_links_and_clicks_mock, _
+    ):
+        mapped_clicks = self._get_mapped_clicks_list()
+        get_links_and_clicks_mock.return_value = mapped_clicks
+        paginator = Paginator(mapped_clicks, settings.LINKS_ITEMS_PER_PAGE)
+        page_obj = paginator.get_page(2)
+
+        self._login()
+        response = self.client.get(reverse("account:links_list", args=(2,)))
+
+        self._test_view_render(
+            response, views.links_list, "account/links_list.html"
+        )
+        self.assertEqual(response.context["domain"], "https://shorty.com")
+        self.assertEqual(
+            response.context["page_obj"].object_list,
+            page_obj.object_list,
+        )
+        self.assertEqual(response.context["current_query_str"], "")
+        self.assertEqual(response.context["current_query_dict"], {})
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.get_links_and_clicks")
+    def test_links_url_with_retrieved_page_with_query_auth_user(
+        self, get_links_and_clicks_mock, _
+    ):
+        mapped_clicks = self._get_mapped_clicks_list()
+        get_links_and_clicks_mock.return_value = mapped_clicks
+        paginator = Paginator(mapped_clicks, settings.LINKS_ITEMS_PER_PAGE)
+        page_obj = paginator.get_page(2)
+
+        self._login()
+        response = self.client.get(
+            reverse("account:links_list", args=(2,))
+            + "?search=wiki&orderby=date"
+        )
+
+        self._test_view_render(
+            response, views.links_list, "account/links_list.html"
+        )
+        self.assertEqual(response.context["domain"], "https://shorty.com")
+        self.assertEqual(
+            response.context["page_obj"].object_list,
+            page_obj.object_list,
+        )
+        self.assertEqual(
+            response.context["current_query_str"], "search=wiki&orderby=date"
+        )
+        self.assertEqual(
+            response.context["current_query_dict"],
+            QueryDict("search=wiki&orderby=date"),
         )
 
     def test_confirm_email_url_anonymous_user(self):
@@ -154,26 +332,6 @@ class AccountUrlTests(TestCase):
         )
 
         self._test_view_redirect(response, views.activate_email)
-
-    def test_overview_url_anonymous_user(self):
-        response = self.client.get(reverse("account:overview"))
-
-        self._test_view_redirect(
-            response,
-            views.overview,
-            self.login_required_redirect_name,
-            "?next=/account/overview/",
-        )
-
-    def test_overview_url_auth_user(self):
-        self._login()
-        response = self.client.get(reverse("account:overview"))
-
-        self._test_view_render(response, views.overview)
-        self.assertEqual(response.context["total_clicks"], 0)
-        self.assertEqual(response.context["mapped_links"], [])
-        self.assertEqual(response.context["view_more"], False)
-        self.assertEqual(response.context["domain"], "http://127.0.0.1:8000")
 
     def test_password_reset_url_anonymous_user(self):
         response = self.client.get(reverse("account:password_reset"))
