@@ -242,7 +242,7 @@ a:visited {
   background-color: var(--red-500);
 }
 .btn-logout:hover {
-  background-color: var(--red-400);
+  background-color: var(--red-700);
 }
 
 /* alerts */
@@ -946,9 +946,36 @@ Overview & Links
 Link statistics page
 */
 /* Chart */
+.section-link > * {
+  margin-top: 2rem;
+}
+.section-link h2 {
+  text-align: center;
+}
+.link-info p {
+  text-transform: capitalize;
+  color: var(--grey-500);
+}
 .clicks-statistics {
   height: 24rem;
 }
-.countries-statistics{
+.countries-statistics {
+  display: flex;
+  justify-content: center;
   height: 24rem;
+  margin-top: 2rem;
+}
+.action-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5rem;
+}
+.link-alias-link-text{
+  color: var(--primary-600);
+}
+.link-item-link-alias{
+  margin-bottom: 1rem;
+}
+.link-item-link-alias > *{
+  text-align: center;
 }

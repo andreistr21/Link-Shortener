@@ -157,6 +157,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
 def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
     link = get_object_or_404(Link, alias=alias)
     # TODO: add verification if link belongs to current user
+    domain = get_domain()
     clicks_chart_dataset, country_chart_dataset = get_link_datasets(link)
 
     return render(
@@ -164,6 +165,7 @@ def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
         "account/link_statistics.html",
         {
             "link": link,
+            "domain": domain,
             "clicks_chart_dataset": clicks_chart_dataset,
             "country_chart_dataset": country_chart_dataset,
         },

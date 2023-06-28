@@ -171,7 +171,6 @@ def get_link_datasets(link: Link):
                     {
                         "label": "Clicks",
                         "backgroundColor": "#20a7f8",
-                        "borderColor": "#6b7280",
                         "data": list(clicks_chart_data.values()),
                     }
                 ],
@@ -185,9 +184,7 @@ def get_link_datasets(link: Link):
                 "labels": list(countries_chart_data.keys()),
                 "datasets": [
                     {
-                        "label": "Clicks (%)",
-                        "backgroundColor": "#20a7f8",
-                        "borderColor": "#6b7280",
+                        "label": "Clicks",
                         "data": list(countries_chart_data.values()),
                     }
                 ],

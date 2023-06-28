@@ -6,7 +6,34 @@
 {% endblock title %}
 {% block content %}
     <section class="section-account">
-        <div class="section-center">
+        <div class="section-center section-link">
+            <h2>link statistics</h2>
+            <div class="link-info">
+                <div class="link-item-link-alias">
+                    <p>link alias:</p>
+                    <h3 class="link-alias-link-text">
+                        <div>{{ link.alias }}</div>
+                    </h3>
+                </div>
+                <div class="short-link-and-date">
+                    <div class="link-item-short-link">
+                        <p>short link:</p>
+                        <h5 class="link-short-link-text">
+                            <a href="{{ domain }}/{{ link.alias }}" target="_blank">{{ domain }}/{{ link.alias }}</a>
+                        </h5>
+                    </div>
+                    <div class="link-item-date">
+                        <p>created:</p>
+                        <h5 class="link-date">{{ link.created_at|date }}</h5>
+                    </div>
+                </div>
+                <div class="link-item-long-link">
+                    <p>link:</p>
+                    <h5 class="link-long-link-text">
+                        <a href="{{ link.long_link }}" target="_blank">{{ link.long_link }}</a>
+                    </h5>
+                </div>
+            </div>
             <div class="statistics">
                 <div class="clicks-statistics">
                     <canvas id="clicksChart"></canvas>
@@ -14,6 +41,10 @@
                 <div class="countries-statistics">
                     <canvas id="countriesChart"></canvas>
                 </div>
+            </div>
+            <div class="action-btns">
+                <button class="btn btn-primary">edit</button>
+                <button class="btn btn-logout">remove</button>
             </div>
         </div>
     </section>
@@ -30,9 +61,14 @@
             type: "bar",
             options: {
                 responsive: true,
-                title: {
-                    display: true,
-                    text: ""
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "",
+                        font: {
+                                size: 22
+                        }
+                    },
                 },
                 maintainAspectRatio: false
             }
@@ -43,10 +79,15 @@
             type: "pie",
             options: {
                 responsive: true,
-                title: {
-                    display: true,
-                    text: ""
-                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "",
+                        font: {
+                                size: 22
+                        }
+                    },
+                }   
             }
         });
     </script>
@@ -61,8 +102,8 @@
             salesChart.data.labels = [];
 
             // Load new data into the chart
-            salesChart.options.title.text = chartData.title;
-            salesChart.options.title.display = true;
+            salesChart.options.plugins.title.text = chartData.title;
+            salesChart.options.plugins.title.display = true;
             salesChart.data.labels = chartData.data.labels;
             datasets.forEach(dataset => {
                 salesChart.data.datasets.push(dataset);
@@ -80,8 +121,8 @@
             countriesChart.data.labels = [];
 
             // Load new data into the chart
-            countriesChart.options.title.text = pieChartData.title;
-            countriesChart.options.title.display = true;
+            countriesChart.options.plugins.title.text = pieChartData.title;
+            countriesChart.options.plugins.title.display = true;
             countriesChart.data.labels = pieChartData.data.labels;
             datasets.forEach(dataset => {
                 countriesChart.data.datasets.push(dataset);
