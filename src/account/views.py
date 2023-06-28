@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -7,7 +9,7 @@ from django.http import (
     HttpResponseRedirect,
     QueryDict,
 )
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from account.decorators import anonymous_required
@@ -15,6 +17,7 @@ from account.forms import SignInForm, SignUpForm
 from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
     get_domain,
+    get_link_datasets,
     get_links_and_clicks,
     map_clicks_amount_to_link,
     send_new_activation_link,
@@ -22,6 +25,7 @@ from account.services import (
     sign_up_user,
     update_email_confirmation_status,
 )
+from shortener.models import Link
 
 
 @anonymous_required
@@ -144,5 +148,23 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
             "elided_page_range": elided_page_range,
             "current_query_str": current_query_str,
             "current_query_dict": current_query_dict,
+        },
+    )
+
+
+# TODO: add tests
+@login_required
+def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
+    link = get_object_or_404(Link, alias=alias)
+    # TODO: add verification if link belongs to current user
+    clicks_chart_dataset, country_chart_dataset = get_link_datasets(link)
+
+    return render(
+        request,
+        "account/link_statistics.html",
+        {
+            "link": link,
+            "clicks_chart_dataset": clicks_chart_dataset,
+            "country_chart_dataset": country_chart_dataset,
         },
     )

@@ -808,10 +808,10 @@ Overview & Links
 .links-view-more a {
   display: block;
 }
-.results-showed{
+.results-showed {
   margin-bottom: 0.5rem;
 }
-.results-showed p{
+.results-showed p {
   text-align: end;
 }
 
@@ -940,4 +940,15 @@ Overview & Links
 }
 .show-dropdown-click {
   display: block;
+}
+
+/*
+Link statistics page
+*/
+/* Chart */
+.clicks-statistics {
+  height: 24rem;
+}
+.countries-statistics{
+  height: 24rem;
 }

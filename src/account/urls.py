@@ -27,6 +27,7 @@ urlpatterns = [
     path("overview/", views.overview, name="overview"),
     path("links/", views.links_list, name="links_list"),
     path("links/<int:page>/", views.links_list, name="links_list"),
+    path("link/<str:alias>", views.link_statistics, name="link_statistics"),
     path("confirm-email/", views.confirm_email, name="confirm_email"),
     path(
         "new-confirmation-link/",

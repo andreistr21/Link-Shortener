@@ -41,3 +41,8 @@ def get_links_total_clicks(links: list[Link]) -> int:
 
 def get_link_total_clicks(link_alias: str) -> int:
     return redis_connection().llen(link_alias)
+
+
+# TODO: add tests
+def get_link_statistics(alias: str) -> list[tuple[str, str]]:
+    return redis_connection().lrange(alias, 0, -1)

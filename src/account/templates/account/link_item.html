@@ -23,7 +23,7 @@
             <h5 class="link-item-clicks-text">{{ clicks }}</h5>
         </div>
         <div class="link-item-details">
-            <a href="#">
+            <a href="{% url 'account:link_statistics' alias=link.alias %}">
                 <h5>details</h5>
             </a>
         </div>

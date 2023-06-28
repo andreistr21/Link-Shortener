@@ -1,3 +1,5 @@
+from datetime import datetime
+import json
 from profile import Profile
 
 from django import forms
@@ -11,12 +13,14 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 
 from account.selectors import (
+    get_link_statistics,
     get_link_total_clicks,
     get_links_by_user,
     get_profile,
     get_profile_by_email,
 )
 from account.tasks import send_activation_email_task
+from account.temp import populate_redis_with_test_data
 from account.tokens import email_activation_token
 from shortener.models import Link
 
@@ -125,3 +129,70 @@ def get_links_and_clicks(
             mapped_clicks = sort_by_clicks(mapped_clicks, order_by)
         return mapped_clicks
     return []
+
+
+# TODO:Add tests
+def get_charts_data(
+    link_statistics: list[tuple[str, str]]
+) -> tuple[dict[str, int], dict[str, int]]:
+    clicks_chart_data = {}
+    countries_chart_data = {}
+
+    for stat in link_statistics:
+        parsed_stat = json.loads(stat)
+        date = datetime.strptime(
+            parsed_stat["time"], "%Y-%m-%dT%H:%M:%S.%f"
+        ).strftime("%m.%d")
+        if not clicks_chart_data.get(date):
+            clicks_chart_data[date] = 0
+        clicks_chart_data[date] += 1
+
+        country_code = parsed_stat["country"]
+        if not countries_chart_data.get(country_code):
+            countries_chart_data[country_code] = 0
+        countries_chart_data[country_code] += 1
+
+    return clicks_chart_data, countries_chart_data
+
+
+# TODO:Add tests
+def get_link_datasets(link: Link):
+    link_statistics = get_link_statistics(link.alias)
+    clicks_chart_data, countries_chart_data = get_charts_data(link_statistics)
+    if countries_chart_data.get(""):
+        countries_chart_data["Unknown"] = countries_chart_data.pop("")
+
+    clicks_chart_dataset = json.dumps(
+        {
+            "title": "Clicks in last 60 days",
+            "data": {
+                "labels": list(clicks_chart_data.keys()),
+                "datasets": [
+                    {
+                        "label": "Clicks",
+                        "backgroundColor": "#20a7f8",
+                        "borderColor": "#6b7280",
+                        "data": list(clicks_chart_data.values()),
+                    }
+                ],
+            },
+        }
+    )
+    country_chart_dataset = json.dumps(
+        {
+            "title": "Clicks by Country",
+            "data": {
+                "labels": list(countries_chart_data.keys()),
+                "datasets": [
+                    {
+                        "label": "Clicks (%)",
+                        "backgroundColor": "#20a7f8",
+                        "borderColor": "#6b7280",
+                        "data": list(countries_chart_data.values()),
+                    }
+                ],
+            },
+        }
+    )
+
+    return clicks_chart_dataset, country_chart_dataset
