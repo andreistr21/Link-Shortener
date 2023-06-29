@@ -5,7 +5,7 @@ from shortener.models import Link
 # TODO: update tests with exclude param
 def is_alias_free(
     alias: str,
-    exclude=None,
+    exclude: None | Link = None,
 ) -> bool:
     link = Link.objects.filter(alias=alias)
     if exclude:
