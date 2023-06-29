@@ -1,0 +1,34 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+    Shorty
+{% endblock title %}
+{% block content %}
+    <section class="section-form section-shortener">
+        <div class="section-center shortener section-center-form {% if not user.is_authenticated %}appeal{% endif %}">
+            <form class="form shorten-form" method="post">
+                {% csrf_token %}
+                <div class="form-header">
+                    <h1>update link</h1>
+                </div>
+                {% if update_link_form.non_field_errors %}<div class="form-error">{{ update_link_form.non_field_errors.0 }}</div>{% endif %}
+                <div class="input shotener-input">
+                    {{ update_link_form.long_link|remove_attr:"maxlength" }}
+                    {% if update_link_form.errors.long_link %}<div class="field-error">{{ update_link_form.errors.long_link.0 }}</div>{% endif %}
+                </div>
+                <div class="input shotener-input">
+                    {{ update_link_form.alias }}
+                    {% if update_link_form.errors.alias %}<div class="field-error">{{ update_link_form.errors.alias.0 }}</div>{% endif %}
+                </div>
+                <button class="btn btn-primary block-btn">update</button>
+                {% if shorten_link %}
+                    <div class="shortened-link-section">
+                        <p>Shorten link:</p>
+                        <div class="shortened-link">{{ shorten_link }}</div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </section>
+{% endblock content %}

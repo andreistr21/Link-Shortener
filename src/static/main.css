@@ -970,12 +970,12 @@ Link statistics page
   justify-content: space-between;
   margin-top: 5rem;
 }
-.link-alias-link-text{
+.link-alias-link-text {
   color: var(--primary-600);
 }
-.link-item-link-alias{
+.link-item-link-alias {
   margin-bottom: 1rem;
 }
-.link-item-link-alias > *{
+.link-item-link-alias > * {
   text-align: center;
 }

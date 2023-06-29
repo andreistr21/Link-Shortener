@@ -11,6 +11,7 @@ from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
 from geoip2.errors import AddressNotFoundError
+from shortener.forms import ShortenForm
 
 from shortener.models import Link
 from shortener.redis import redis_connection
@@ -62,13 +63,16 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
 
     return True
 
-
+# TODO: update tests with exclude param
 def short_with_alias(
-    request: HttpRequest, alias: str, shorten_form: ModelForm
+    request: HttpRequest,
+    alias: str,
+    shorten_form: ModelForm,
+    exclude: None | Link,
 ) -> None:
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
-        if is_alias_free(alias):
+        if is_alias_free(alias, exclude):
             save_link(request, shorten_form, alias)
         else:
             shorten_form.add_error("alias", "This alias is unavailable")
@@ -120,13 +124,15 @@ def link_validation(shorten_form: ModelForm) -> bool:
         return False
     return True
 
-
-def short_link(request: HttpRequest, shorten_form: ModelForm) -> Optional[str]:
+# TODO: update tests with exclude param
+def short_link(
+    request: HttpRequest, shorten_form: ShortenForm, exclude=None
+) -> Optional[str]:
     alias = None
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:
-                short_with_alias(request, alias, shorten_form)
+                short_with_alias(request, alias, shorten_form, exclude)
             else:
                 shorten_form.add_error(
                     "alias", "The alias must be at least 4 characters"
@@ -168,3 +174,7 @@ def append_to_redis_list(alias: str, country_code: str) -> None:
 def update_link_statistics(request: HttpRequest, link: Link) -> None:
     country_code = get_request_country_code(request)
     append_to_redis_list(link.alias, country_code)
+
+# TODO: add tests
+def rename_redis_list(old_alias: str, new_alias: str):
+    redis_connection().rename(old_alias, new_alias)

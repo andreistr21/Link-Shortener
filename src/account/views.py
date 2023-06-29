@@ -1,5 +1,3 @@
-import json
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -16,6 +14,7 @@ from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
 from account.selectors import get_links_by_user, get_links_total_clicks
 from account.services import (
+    check_user_access,
     get_domain,
     get_link_datasets,
     get_links_and_clicks,
@@ -25,7 +24,10 @@ from account.services import (
     sign_up_user,
     update_email_confirmation_status,
 )
+from shortener.forms import ShortenForm
 from shortener.models import Link
+from shortener.selectors import get_link
+from shortener.services import rename_redis_list, short_link
 
 
 @anonymous_required
@@ -155,6 +157,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
 # TODO: add tests
 @login_required
 def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
+    # TODO: substitute with existing shortener selector
     link = get_object_or_404(Link, alias=alias)
     # TODO: add verification if link belongs to current user
     domain = get_domain()
@@ -168,5 +171,35 @@ def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
             "domain": domain,
             "clicks_chart_dataset": clicks_chart_dataset,
             "country_chart_dataset": country_chart_dataset,
+        },
+    )
+
+
+# TODO: add tests
+@login_required
+def update_link(request: HttpRequest, alias: str) -> HttpResponse:
+    # sourcery skip: move-assign
+    link = get_link(alias)
+    check_user_access(request.user, link)
+    if request.POST:
+        update_link_form = ShortenForm(request.POST, instance=link)
+        if update_link_form.is_valid():
+            old_alias = alias
+            alias = short_link(request, update_link_form, link)
+            if not update_link_form.errors:
+                if old_alias != alias:
+                    rename_redis_list(old_alias, alias)
+
+                return redirect(
+                    reverse("account:link_statistics", args=(alias,))
+                )
+    else:
+        update_link_form = ShortenForm(instance=link)
+
+    return render(
+        request,
+        "account/update_link.html",
+        {
+            "update_link_form": update_link_form,
         },
     )

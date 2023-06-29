@@ -1,12 +1,12 @@
-from datetime import datetime
 import json
+from datetime import datetime
 from profile import Profile
 
 from django import forms
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpRequest
+from django.http import Http404, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
@@ -140,9 +140,7 @@ def get_charts_data(
 
     for stat in link_statistics:
         parsed_stat = json.loads(stat)
-        date = datetime.strptime(
-            parsed_stat["time"], "%Y-%m-%dT%H:%M:%S.%f"
-        ).strftime("%m.%d")
+        date = datetime.fromisoformat(parsed_stat["time"]).strftime("%m.%d")
         if not clicks_chart_data.get(date):
             clicks_chart_data[date] = 0
         clicks_chart_data[date] += 1
@@ -193,3 +191,10 @@ def get_link_datasets(link: Link):
     )
 
     return clicks_chart_dataset, country_chart_dataset
+
+
+# TODO: add tests
+def check_user_access(user: Profile, link: Link) -> None | Http404:
+    """Raises 404 if link don't belongs to the user."""
+    if link not in user.links.all():
+        raise Http404()
