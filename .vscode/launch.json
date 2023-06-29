@@ -23,7 +23,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "shortener",
+                "account.tests.urls",
             ],
             "django": true,
             "justMyCode": false

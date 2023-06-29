@@ -68,7 +68,7 @@ def short_with_alias(
     request: HttpRequest,
     alias: str,
     shorten_form: ModelForm,
-    exclude: None | Link,
+    exclude=None,
 ) -> None:
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
