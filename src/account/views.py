@@ -157,9 +157,8 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
 # TODO: add tests
 @login_required
 def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
-    # TODO: substitute with existing shortener selector
-    link = get_object_or_404(Link, alias=alias)
-    # TODO: add verification if link belongs to current user
+    link = get_link(alias)
+    check_user_access(request.user, link)
     domain = get_domain()
     clicks_chart_dataset, country_chart_dataset = get_link_datasets(link)
 
