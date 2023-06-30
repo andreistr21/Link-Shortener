@@ -1,3 +1,4 @@
+from genericpath import exists
 import json
 from datetime import datetime
 from profile import Profile
@@ -21,7 +22,6 @@ from account.selectors import (
     get_profile_by_email,
 )
 from account.tasks import send_activation_email_task
-from account.temp import populate_redis_with_test_data
 from account.tokens import email_activation_token
 from shortener.models import Link
 
@@ -201,5 +201,7 @@ def check_user_access(user: Profile, link: Link) -> None | Http404:
 
 
 # TODO: add tests
-def rename_redis_list(old_alias: str, new_alias: str):
-    redis_connection().rename(old_alias, new_alias)
+def rename_redis_list(old_alias: str, new_alias: str) -> None:
+    redis_con = redis_connection()
+    if redis_con.exists(old_alias):
+        redis_con.rename(old_alias, new_alias)

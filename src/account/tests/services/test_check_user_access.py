@@ -6,7 +6,7 @@ from account.services import check_user_access
 from shortener.models import Link
 
 
-class CheckUserAccess(TestCase):
+class CheckUserAccessTests(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.users = Profile.objects.bulk_create(
