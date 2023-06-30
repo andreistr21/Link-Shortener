@@ -194,7 +194,6 @@ def get_link_datasets(link: Link):
     return clicks_chart_dataset, country_chart_dataset
 
 
-# TODO: add tests
 def check_user_access(user: Profile, link: Link) -> None | Http404:
     """Raises 404 if link don't belongs to the user."""
     if link not in user.links.all():
