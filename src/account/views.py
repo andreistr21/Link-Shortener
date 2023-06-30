@@ -173,10 +173,8 @@ def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
     )
 
 
-# TODO: add tests
 @login_required
 def update_link(request: HttpRequest, alias: str) -> HttpResponse:
-    # sourcery skip: move-assign
     link = get_link(alias)
     check_user_access(request.user, link)
     if request.POST:

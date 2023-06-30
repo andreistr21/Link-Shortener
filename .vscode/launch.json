@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.urls.test_urls.AccountUrlTests.test_links_url_with_default_page_auth_user",
+                "account.tests.views.test_update_link.UpdateLinkTests.test_auth_user_post_valid_form_without_errors_during_shortening_same_alias",
             ],
             "django": true,
             "justMyCode": false
