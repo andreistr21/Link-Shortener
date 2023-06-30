@@ -154,7 +154,6 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     )
 
 
-# TODO: add tests
 @login_required
 def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
     link = get_link(alias)
