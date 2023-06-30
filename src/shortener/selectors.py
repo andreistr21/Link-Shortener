@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from shortener.models import Link
 
 
-# TODO: update tests with exclude param
 def is_alias_free(
     alias: str,
     exclude: None | Link = None,

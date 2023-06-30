@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from account.redis import redis_connection
 
 from account.selectors import (
     get_link_statistics,
@@ -198,3 +199,8 @@ def check_user_access(user: Profile, link: Link) -> None | Http404:
     """Raises 404 if link don't belongs to the user."""
     if link not in user.links.all():
         raise Http404()
+
+
+# TODO: add tests
+def rename_redis_list(old_alias: str, new_alias: str):
+    redis_connection().rename(old_alias, new_alias)

@@ -7,7 +7,7 @@ from django.http import (
     HttpResponseRedirect,
     QueryDict,
 )
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from account.decorators import anonymous_required
@@ -19,15 +19,15 @@ from account.services import (
     get_link_datasets,
     get_links_and_clicks,
     map_clicks_amount_to_link,
+    rename_redis_list,
     send_new_activation_link,
     sign_in_user,
     sign_up_user,
     update_email_confirmation_status,
 )
 from shortener.forms import ShortenForm
-from shortener.models import Link
 from shortener.selectors import get_link
-from shortener.services import rename_redis_list, short_link
+from shortener.services import short_link
 
 
 @anonymous_required

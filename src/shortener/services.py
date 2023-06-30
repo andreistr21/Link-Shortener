@@ -63,12 +63,12 @@ def alias_validation(alias: str, shorten_form=None) -> bool:
 
     return True
 
-# TODO: update tests with exclude param
+
 def short_with_alias(
     request: HttpRequest,
     alias: str,
     shorten_form: ModelForm,
-    exclude=None,
+    exclude: None | Link = None,
 ) -> None:
     """Saves shorten URL with alias or, if alias is taken, adds errors to the form"""
     if alias_validation(alias, shorten_form):
@@ -124,7 +124,7 @@ def link_validation(shorten_form: ModelForm) -> bool:
         return False
     return True
 
-# TODO: update tests with exclude param
+
 def short_link(
     request: HttpRequest, shorten_form: ShortenForm, exclude=None
 ) -> Optional[str]:
@@ -175,6 +175,3 @@ def update_link_statistics(request: HttpRequest, link: Link) -> None:
     country_code = get_request_country_code(request)
     append_to_redis_list(link.alias, country_code)
 
-# TODO: add tests
-def rename_redis_list(old_alias: str, new_alias: str):
-    redis_connection().rename(old_alias, new_alias)
