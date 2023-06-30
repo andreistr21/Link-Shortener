@@ -1,4 +1,3 @@
-from genericpath import exists
 import json
 from datetime import datetime
 from profile import Profile
@@ -12,8 +11,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from account.redis import redis_connection
 
+from account.redis import redis_connection
 from account.selectors import (
     get_link_statistics,
     get_link_total_clicks,
@@ -153,7 +152,6 @@ def get_charts_data(
     return clicks_chart_data, countries_chart_data
 
 
-# TODO:Add tests
 def get_link_datasets(link: Link):
     link_statistics = get_link_statistics(link.alias)
     clicks_chart_data, countries_chart_data = get_charts_data(link_statistics)
