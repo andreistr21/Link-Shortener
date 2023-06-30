@@ -8,7 +8,7 @@ from account.services import rename_redis_list
 
 class RenameRedisListTests(TestCase):
     @mock.patch("account.redis.Redis", return_value=FakeStrictRedis())
-    def test_key_renamed(self, redis_mock):
+    def test_key_renamed(self, _):
         redis_con = redis_connection()
         redis_con.lpush("test-alias", "test-value")
         rename_redis_list("test-alias", "new-test-alias")
@@ -20,9 +20,8 @@ class RenameRedisListTests(TestCase):
         )
 
     @mock.patch("account.redis.Redis", return_value=FakeStrictRedis())
-    def test_if_not_such_key_exists(self, redis_mock):
+    def test_if_not_such_key_exists(self, _):
         redis_con = redis_connection()
         rename_redis_list("test-alias", "new-test-alias")
 
         self.assertFalse(redis_con.exists("new-test-alias"))
-        

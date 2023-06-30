@@ -132,7 +132,6 @@ def get_links_and_clicks(
     return []
 
 
-# TODO:Add tests
 def get_charts_data(
     link_statistics: list[tuple[str, str]]
 ) -> tuple[dict[str, int], dict[str, int]]:
@@ -200,7 +199,6 @@ def check_user_access(user: Profile, link: Link) -> None | Http404:
         raise Http404()
 
 
-# TODO: add tests
 def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
     if redis_con.exists(old_alias):
