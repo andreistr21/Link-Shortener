@@ -17,6 +17,7 @@ from django.views.generic import TemplateView
 
 from account import views
 from account.models import Profile
+from shortener.forms import ShortenForm
 from shortener.models import Link
 
 
@@ -65,7 +66,7 @@ class AccountUrlTests(TestCase):
             self._test_template_used(response, template_name)
 
     def _test_view_redirect(
-        self, response, view, redirect_name=None, next=None
+        self, response, view, redirect_name=None, next=None, redirect_args=None
     ):
         if not redirect_name:
             redirect_name = self.anonymous_require_redirect_name
@@ -73,8 +74,13 @@ class AccountUrlTests(TestCase):
         if next:
             expected_url = f"{reverse(redirect_name)}{next}"
             self._test_redirect(response, expected_url)
+        elif redirect_args:
+            self._test_redirect(
+                response, reverse(redirect_name, args=redirect_args)
+            )
         else:
             self._test_redirect(response, reverse(redirect_name))
+
 
         self._test_view_used(response, view)
 
@@ -313,7 +319,7 @@ class AccountUrlTests(TestCase):
     @mock.patch("account.views.check_user_access", return_value=None)
     @mock.patch("account.views.get_link_datasets")
     @mock.patch("account.views.get_link")
-    def test_link_url_auth_user_with_mapped_links(
+    def test_link_url_auth_user(
         self, get_link_mock, get_link_datasets_mock, *args
     ):
         get_link_mock.return_value = self.link
@@ -337,6 +343,61 @@ class AccountUrlTests(TestCase):
         )
         self.assertEqual(
             response.context["country_chart_dataset"], "country_chart_dataset"
+        )
+
+    def test_link_update_url_anonymous_user(self):
+        response = self.client.get(
+            reverse("account:update_link", args=(self.link.alias,))
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("account:sign_in")
+            + "?next="
+            + reverse("account:update_link", args=(self.link.alias,)),
+        )
+
+    @mock.patch("account.views.check_user_access", return_value=None)
+    @mock.patch("account.views.get_link")
+    def test_link_update_url_auth_user_get(self, get_link_mock, *args):
+        get_link_mock.return_value = self.link
+        self._login()
+
+        response = self.client.get(
+            reverse("account:update_link", args=(self.link.alias,))
+        )
+
+        self._test_view_render(
+            response, views.update_link, "account/update_link.html"
+        )
+        self.assertIsInstance(
+            response.context["update_link_form"], ShortenForm
+        )
+
+    @mock.patch("account.views.short_link", return_value="youtube")
+    @mock.patch.object(ShortenForm, "is_valid", return_value=True)
+    @mock.patch("account.views.check_user_access", return_value=None)
+    @mock.patch("account.views.get_link")
+    def test_link_update_url_auth_user_post(
+        self, get_link_mock, short_link_mock, *args
+    ):
+        get_link_mock.return_value = self.link
+        self._login()
+        form_data = {
+            "long_link": "https://www.youtube.com/",
+            "alias": "youtube",
+        }
+
+        response = self.client.post(
+            reverse("account:update_link", args=(self.link.alias,)),
+            data=form_data,
+        )
+
+        self._test_view_redirect(
+            response,
+            views.update_link,
+            "account:link_statistics",
+            redirect_args=(self.link.alias,),
         )
 
     def test_confirm_email_url_anonymous_user(self):
