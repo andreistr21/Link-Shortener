@@ -27,7 +27,6 @@ urlpatterns = [
     path("overview/", views.overview, name="overview"),
     path("links/", views.links_list, name="links_list"),
     path("links/<int:page>/", views.links_list, name="links_list"),
-    # TODO: add tests
     path("link/<str:alias>/", views.link_statistics, name="link_statistics"),
     # TODO: add tests
     path("link/update/<str:alias>/", views.update_link, name="update_link"),

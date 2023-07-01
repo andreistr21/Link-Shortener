@@ -17,6 +17,7 @@ from django.views.generic import TemplateView
 
 from account import views
 from account.models import Profile
+from shortener.models import Link
 
 
 class AccountUrlTests(TestCase):
@@ -29,6 +30,9 @@ class AccountUrlTests(TestCase):
         )
         cls.anonymous_require_redirect_name = "account:overview"
         cls.login_required_redirect_name = "account:sign_in"
+        cls.link = Link.objects.create(
+            long_link="https://www.youtube.com", alias="youtube"
+        )
 
     def setUp(self):
         self.client = Client()
@@ -77,7 +81,7 @@ class AccountUrlTests(TestCase):
     def _get_mapped_clicks_list(self):
         class testLink:
             alias = "link_obj"
-            
+
         return [
             (testLink(), 9),
             (testLink(), 3),
@@ -291,6 +295,48 @@ class AccountUrlTests(TestCase):
         self.assertEqual(
             response.context["current_query_dict"],
             QueryDict("search=wiki&orderby=date"),
+        )
+
+    def test_link_url_anonymous_user(self):
+        response = self.client.get(
+            reverse("account:link_statistics", args=(self.link.alias,))
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("account:sign_in")
+            + "?next="
+            + reverse("account:link_statistics", args=(self.link.alias,)),
+        )
+
+    @mock.patch("account.views.get_domain", return_value="https://shorty.com")
+    @mock.patch("account.views.check_user_access", return_value=None)
+    @mock.patch("account.views.get_link_datasets")
+    @mock.patch("account.views.get_link")
+    def test_link_url_auth_user_with_mapped_links(
+        self, get_link_mock, get_link_datasets_mock, *args
+    ):
+        get_link_mock.return_value = self.link
+        get_link_datasets_mock.return_value = (
+            "clicks_chart_dataset",
+            "country_chart_dataset",
+        )
+        self._login()
+
+        response = self.client.get(
+            reverse("account:link_statistics", args=(self.link.alias,))
+        )
+
+        self._test_view_render(
+            response, views.link_statistics, "account/link_statistics.html"
+        )
+        self.assertEqual(response.context["link"], self.link)
+        self.assertEqual(response.context["domain"], "https://shorty.com")
+        self.assertEqual(
+            response.context["clicks_chart_dataset"], "clicks_chart_dataset"
+        )
+        self.assertEqual(
+            response.context["country_chart_dataset"], "country_chart_dataset"
         )
 
     def test_confirm_email_url_anonymous_user(self):
