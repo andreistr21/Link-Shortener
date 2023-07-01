@@ -224,3 +224,4 @@ LINKS_SORTING_TYPES = {
     "-clicks": "Clicks - Most clicked first",
     "clicks": "Clicks - Least clicked first",
 }
+LINK_DEFAULT_SORTING_STR = "Date - Newest first"

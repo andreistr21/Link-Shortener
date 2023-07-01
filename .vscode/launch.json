@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.views.test_update_link.UpdateLinkTests.test_auth_user_post_valid_form_without_errors_during_shortening_same_alias",
+                "account.tests.templatetags.test_get_order_by_suer_friendly.GetOrderByUserFriendlyTests.test_if_no_such_order_by",
             ],
             "django": true,
             "justMyCode": false

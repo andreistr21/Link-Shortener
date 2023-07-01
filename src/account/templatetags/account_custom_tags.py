@@ -4,8 +4,6 @@ from django.conf import settings
 register = template.Library()
 
 
-# TODO: add tests
-# TODO: what if returns none
 @register.simple_tag(takes_context=True)
 def get_order_by_user_friendly(context: dict) -> str:
     """Returns user friendly sorting name"""
@@ -13,4 +11,4 @@ def get_order_by_user_friendly(context: dict) -> str:
     order_by = request.GET.get("orderby", "")
     sorting = settings.LINKS_SORTING_TYPES.copy()
 
-    return sorting.get(order_by)
+    return sorting.get(order_by, settings.LINK_DEFAULT_SORTING_STR)
