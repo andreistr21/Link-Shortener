@@ -202,7 +202,6 @@ def update_link(request: HttpRequest, alias: str) -> HttpResponse:
     )
 
 
-# TODO: add test
 @login_required
 def delete_link(request: HttpRequest, alias: str) -> HttpResponse:
     link = get_link(alias)
