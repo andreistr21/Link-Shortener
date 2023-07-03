@@ -6,6 +6,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import QuerySet
 from django.http import Http404, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -191,7 +192,7 @@ def get_link_datasets(link: Link):
     return clicks_chart_dataset, country_chart_dataset
 
 
-def check_user_access(user: Profile, link: Link) -> None | Http404:
+def check_user_access(user: Profile, link: QuerySet) -> None | Http404:
     """Raises 404 if link don't belongs to the user."""
     if link not in user.links.all():
         raise Http404()
@@ -201,3 +202,7 @@ def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
     if redis_con.exists(old_alias):
         redis_con.rename(old_alias, new_alias)
+
+
+def remove_link(link: QuerySet) -> None:
+    link.delete()

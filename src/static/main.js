@@ -67,6 +67,23 @@ document
     });
   });
 
+// Link deletion listener
+document
+  .getElementById("link-delete-btn-id")
+  .addEventListener("click", (event) => {
+    const alias = window.location.href.split("/").slice(-2)[0];
+    event.preventDefault(); // Prevent the default link behavior
+    myConfirmBox("Are you sure you want to delete this link?").then(
+      (response) => {
+        if (response) {
+          window.location.replace(
+            "http://127.0.0.1:8000/account/link/delete/" + alias + "/"
+          );
+        }
+      }
+    );
+  });
+
 /* 
 ==========
 Sorting dropdown menu

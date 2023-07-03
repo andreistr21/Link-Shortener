@@ -9,11 +9,11 @@ from shortener.models import Link
 from .models import Profile
 
 
-def get_profile(pk):
+def get_profile(pk) -> QuerySet:
     return get_object_or_404(Profile, pk=pk)
 
 
-def get_profile_by_email(email):
+def get_profile_by_email(email) -> QuerySet:
     return get_object_or_404(Profile, email=email)
 
 

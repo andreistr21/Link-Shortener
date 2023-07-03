@@ -29,6 +29,7 @@ urlpatterns = [
     path("links/<int:page>/", views.links_list, name="links_list"),
     path("link/<str:alias>/", views.link_statistics, name="link_statistics"),
     path("link/update/<str:alias>/", views.update_link, name="update_link"),
+    path("link/delete/<str:alias>/", views.delete_link, name="delete_link"),
     path("confirm-email/", views.confirm_email, name="confirm_email"),
     path(
         "new-confirmation-link/",

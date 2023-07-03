@@ -19,6 +19,7 @@ from account.services import (
     get_link_datasets,
     get_links_and_clicks,
     map_clicks_amount_to_link,
+    remove_link,
     rename_redis_list,
     send_new_activation_link,
     sign_in_user,
@@ -199,3 +200,13 @@ def update_link(request: HttpRequest, alias: str) -> HttpResponse:
             "update_link_form": update_link_form,
         },
     )
+
+
+# TODO: add test
+@login_required
+def delete_link(request: HttpRequest, alias: str) -> HttpResponse:
+    link = get_link(alias)
+    check_user_access(request.user, link)
+    remove_link(link)
+
+    return redirect(reverse("account:links_list"))
