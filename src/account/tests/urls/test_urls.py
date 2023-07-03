@@ -81,7 +81,6 @@ class AccountUrlTests(TestCase):
         else:
             self._test_redirect(response, reverse(redirect_name))
 
-
         self._test_view_used(response, view)
 
     def _get_mapped_clicks_list(self):
@@ -374,6 +373,7 @@ class AccountUrlTests(TestCase):
             response.context["update_link_form"], ShortenForm
         )
 
+    @mock.patch("account.views.get_link_datasets", return_value=(None, None))
     @mock.patch("account.views.short_link", return_value="youtube")
     @mock.patch.object(ShortenForm, "is_valid", return_value=True)
     @mock.patch("account.views.check_user_access", return_value=None)
@@ -398,6 +398,35 @@ class AccountUrlTests(TestCase):
             views.update_link,
             "account:link_statistics",
             redirect_args=(self.link.alias,),
+        )
+
+    def test_link_delete_url_anonymous_user(self):
+        response = self.client.get(
+            reverse("account:delete_link", args=(self.link.alias,))
+        )
+
+        self._test_view_redirect(
+            response,
+            views.delete_link,
+            "account:sign_in",
+            next=(
+                f'?next={reverse("account:delete_link", args=(self.link.alias,))}'
+            ),
+        )
+
+    @mock.patch("account.views.remove_link")
+    @mock.patch("account.views.check_user_access")
+    @mock.patch("account.views.get_link")
+    def test_link_delete_url_auth_user(self, get_link_mock, *args):
+        get_link_mock.return_value = self.link
+        self._login()
+
+        response = self.client.get(
+            reverse("account:delete_link", args=(self.link.alias,))
+        )
+
+        self._test_view_redirect(
+            response, views.delete_link, "account:links_list"
         )
 
     def test_confirm_email_url_anonymous_user(self):
