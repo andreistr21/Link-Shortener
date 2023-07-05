@@ -150,7 +150,7 @@ def calc_percentages(
 
 
 def get_charts_data(
-    link_statistics: list[tuple[str, str]]
+    link_statistics: list[dict[str:str, str:str]]
 ) -> tuple[dict[str, int], dict[str, int]]:
     clicks_chart_data = {}
     raw_countries_chart_data = {}

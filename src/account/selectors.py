@@ -1,7 +1,9 @@
+from datetime import timedelta
 from typing import Optional
 
 from django.db.models import Q, QuerySet
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from account.redis import redis_connection
 from shortener.models import Link
@@ -39,9 +41,26 @@ def get_links_total_clicks(links: list[Link]) -> int:
     return sum(get_link_total_clicks(link.alias) for link in links)
 
 
+# TODO: update tests
 def get_link_total_clicks(link_alias: str) -> int:
-    return redis_connection().llen(link_alias)
+    counter = 0
+    current_date = timezone.now()
+    redis_con = redis_connection()
+    for i in range(60):
+        date = (current_date - timedelta(i)).strftime("%m.%d")
+        item_key = f"{link_alias}:{date}"
+        counter += redis_con.llen(item_key)
+
+    return counter
 
 
+# TODO: update tests
 def get_link_statistics(alias: str) -> list[tuple[str, str]]:
-    return redis_connection().lrange(alias, 0, -1)
+    current_date = timezone.now()
+    redis_con = redis_connection()
+    link_statistics = []
+    for i in range(60):
+        date = (current_date - timedelta(i)).strftime("%m.%d")
+        item_key = f"{alias}:{date}"
+        link_statistics.extend(iter(redis_con.lrange(item_key, 0, -1)))
+    return link_statistics

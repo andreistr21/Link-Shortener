@@ -162,16 +162,23 @@ def get_request_country_code(request: HttpRequest) -> str:
     return country_code
 
 
+# TODO: update tests
 def append_to_redis_list(alias: str, country_code: str) -> None:
-    redis_connection().lpush(
-        alias,
+    list_key = f"{alias}:{timezone.now().strftime('%m.%d')}"
+    redis_con = redis_connection()
+    exists = redis_con.exists(list_key)
+
+    redis_con.lpush(
+        list_key,
         json.dumps(
             {"time": timezone.now().isoformat(), "country": country_code}
         ),
     )
 
+    if not exists:
+        redis_con.expire(list_key, settings.REDIS_TTL)
+
 
 def update_link_statistics(request: HttpRequest, link: Link) -> None:
     country_code = get_request_country_code(request)
     append_to_redis_list(link.alias, country_code)
-
