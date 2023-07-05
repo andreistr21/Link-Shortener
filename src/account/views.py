@@ -30,6 +30,8 @@ from shortener.forms import ShortenForm
 from shortener.selectors import get_link
 from shortener.services import short_link
 
+from account._temp import populate_redis_with_test_data
+
 
 @anonymous_required
 def sign_up(request):

@@ -132,11 +132,30 @@ def get_links_and_clicks(
     return []
 
 
+# TODO: add tests
+def calc_percentages(
+    raw_countries_chart_data: dict[str, int]
+) -> dict[str, float]:
+    total = sum(raw_countries_chart_data.values())
+    percentages_countries_chart_data = {
+        country: round((raw_countries_chart_data[country] * 100 / total), 1)
+        for country in raw_countries_chart_data
+    }
+    return dict(
+        sorted(
+            percentages_countries_chart_data.items(),
+            key=lambda x: x[1],
+            reverse=True,
+        )
+    )
+
+
+# TODO: update tests
 def get_charts_data(
     link_statistics: list[tuple[str, str]]
 ) -> tuple[dict[str, int], dict[str, int]]:
     clicks_chart_data = {}
-    countries_chart_data = {}
+    raw_countries_chart_data = {}
 
     for stat in link_statistics:
         parsed_stat = json.loads(stat)
@@ -146,11 +165,15 @@ def get_charts_data(
         clicks_chart_data[date] += 1
 
         country_code = parsed_stat["country"]
-        if not countries_chart_data.get(country_code):
-            countries_chart_data[country_code] = 0
-        countries_chart_data[country_code] += 1
+        if not raw_countries_chart_data.get(country_code):
+            raw_countries_chart_data[country_code] = 0
+        raw_countries_chart_data[country_code] += 1
 
-    return clicks_chart_data, countries_chart_data
+    percentages_countries_chart_data = calc_percentages(
+        raw_countries_chart_data
+    )
+
+    return clicks_chart_data, percentages_countries_chart_data
 
 
 def get_link_datasets(link: Link):
@@ -181,7 +204,7 @@ def get_link_datasets(link: Link):
                 "labels": list(countries_chart_data.keys()),
                 "datasets": [
                     {
-                        "label": "Clicks",
+                        "label": "Clicks (%)",
                         "data": list(countries_chart_data.values()),
                     }
                 ],
