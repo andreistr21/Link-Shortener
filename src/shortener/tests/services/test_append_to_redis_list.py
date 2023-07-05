@@ -1,7 +1,9 @@
 import datetime
 from functools import lru_cache
 import json
+from time import sleep
 from unittest import mock
+from django.conf import settings
 
 from django.test import TestCase
 from django.utils import timezone
@@ -23,14 +25,17 @@ class AppendToRedisListTests(TestCase):
     @mock.patch.object(
         timezone, "now", return_value=datetime.datetime(2023, 6, 23, 18, 20)
     )
-    def test_append_to_redis_list(self, _):
+    def test_append_to_redis_nonexistent_list(self, _):
         alias = "test-alias"
+        list_key = f"{alias}:{timezone.now().strftime('%m.%d')}"
         country_code = "PL"
-        append_to_redis_list(alias, country_code)
         redis_con = fake_redis_connection()
 
+        append_to_redis_list(alias, country_code)
+
+        self.assertEqual(redis_con.ttl(list_key), settings.REDIS_TTL)
         self.assertEqual(
-            redis_con.lrange(alias, 0, 1)[0],
+            redis_con.lrange(list_key, 0, 1)[0],
             bytes(
                 json.dumps(
                     {"time": timezone.now().isoformat(), "country": "PL"}
