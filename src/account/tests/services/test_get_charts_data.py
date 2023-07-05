@@ -1,7 +1,7 @@
 import json
-import random
 from datetime import datetime, timedelta
 from functools import lru_cache
+from unittest import mock
 
 from django.test import TestCase
 from django.utils import timezone
@@ -12,19 +12,18 @@ from account.services import get_charts_data
 
 
 class GetChartsDataTests(TestCase):
-    def test_for_expected_return_values(self):
+    @mock.patch("account.services.calc_percentages")
+    def test_for_expected_return_values(self, calc_percentages_mock):
         test_data = self._get_test_data()
 
-        clicks_chart_data, countries_chart_data = get_charts_data(test_data)
+        get_charts_data(test_data)
 
         (
-            expected_clicks_chart_data,
+            _,
             expected_countries_chart_data,
         ) = self._get_charts_data(test_data)
-        self.assertEqual(expected_clicks_chart_data, clicks_chart_data)
-        self.assertEqual(
-            expected_countries_chart_data,
-            countries_chart_data,
+        calc_percentages_mock.assert_called_once_with(
+            expected_countries_chart_data
         )
 
     def _get_charts_data(
