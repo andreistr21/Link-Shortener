@@ -53,7 +53,6 @@ def get_link_total_clicks(link_alias: str) -> int:
     return counter
 
 
-# TODO: update tests
 def get_link_statistics(alias: str) -> list[tuple[str, str]]:
     current_date = timezone.now()
     redis_con = redis_connection()
