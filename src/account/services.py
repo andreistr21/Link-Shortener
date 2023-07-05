@@ -132,7 +132,6 @@ def get_links_and_clicks(
     return []
 
 
-# TODO: add tests
 def calc_percentages(
     raw_countries_chart_data: dict[str, int]
 ) -> dict[str, float]:
@@ -150,7 +149,6 @@ def calc_percentages(
     )
 
 
-# TODO: update tests
 def get_charts_data(
     link_statistics: list[tuple[str, str]]
 ) -> tuple[dict[str, int], dict[str, int]]:
