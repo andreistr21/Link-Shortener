@@ -26,13 +26,13 @@ class GetLinkTotalClicksTests(TestCase):
         timezone, "now", return_value=datetime.datetime(2023, 6, 19, 11, 40)
     )
     def test_not_empty_lists(self, _):
-        clicks_amount = 10
+        expected_clicks_amount = 10
         redis_conn = redis_connection()
 
-        # Adds `clicks_amount` clicks for links
-        for i in range(clicks_amount):
+        # Adds "expected_clicks_amount" clicks for links
+        for i in range(expected_clicks_amount):
             redis_conn.lpush(
-                self.link.alias,
+                f'{self.link.alias}:{timezone.now().strftime("%m.%d")}',
                 json.dumps(
                     {
                         "time": (
@@ -45,13 +45,13 @@ class GetLinkTotalClicksTests(TestCase):
 
         clicks_amount = get_link_total_clicks(self.link.alias)
 
-        self.assertEqual(clicks_amount, clicks_amount)
+        self.assertEqual(clicks_amount, expected_clicks_amount)
 
     @mock.patch("account.redis.Redis", FakeStrictRedis)
     @mock.patch.object(
         timezone, "now", return_value=datetime.datetime(2023, 6, 19, 11, 40)
     )
-    def test_return_empty_lists(self, _):
+    def test_if_lists_are_empty(self, _):
         clicks_amount = get_link_total_clicks(self.link.alias)
 
         self.assertEqual(0, clicks_amount)

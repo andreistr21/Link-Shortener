@@ -41,7 +41,6 @@ def get_links_total_clicks(links: list[Link]) -> int:
     return sum(get_link_total_clicks(link.alias) for link in links)
 
 
-# TODO: update tests
 def get_link_total_clicks(link_alias: str) -> int:
     counter = 0
     current_date = timezone.now()
