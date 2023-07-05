@@ -69,7 +69,7 @@ class GetLinkDatasetsTests(TestCase):
                     "labels": list(self.expected_countries_chart_data.keys()),
                     "datasets": [
                         {
-                            "label": "Clicks",
+                            "label": "Clicks (%)",
                             "data": list(
                                 self.expected_countries_chart_data.values()
                             ),
