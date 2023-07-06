@@ -1,5 +1,5 @@
-from collections import OrderedDict
 import json
+from collections import OrderedDict
 from datetime import datetime
 from profile import Profile
 
@@ -22,6 +22,7 @@ from account.selectors import (
     get_links_by_user,
     get_profile,
     get_profile_by_email,
+    scan_redis_for_links_keys2,
 )
 from account.tasks import send_activation_email_task
 from account.tokens import email_activation_token
@@ -235,5 +236,20 @@ def rename_redis_list(old_alias: str, new_alias: str) -> None:
         redis_con.rename(old_alias, new_alias)
 
 
+# TODO: add tests
+def remove_link_statistics(link_alias: str) -> None:
+    """Scans for link statistics records and delete them"""
+    redis_con = redis_connection()
+
+    _, keys = list(scan_redis_for_links_keys2(redis_con, link_alias))
+    with redis_con.pipeline() as redis_pipeline:
+        for key in keys:
+            redis_pipeline.delete(key)
+
+        redis_pipeline.execute()
+
+
+# TODO: update tests
 def remove_link(link: QuerySet) -> None:
+    remove_link_statistics(link.alias)
     link.delete()

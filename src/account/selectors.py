@@ -4,6 +4,7 @@ from typing import Optional
 from django.db.models import Q, QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from redis import Redis
 
 from account.redis import redis_connection
 from shortener.models import Link
@@ -62,3 +63,8 @@ def get_link_statistics(alias: str) -> list[tuple[str, str]]:
         item_key = f"{alias}:{date}"
         link_statistics.extend(iter(redis_con.lrange(item_key, 0, -1)))
     return link_statistics
+
+
+# TODO: add tests
+def scan_redis_for_links_keys2(redis_con: Redis, link_alias: str):
+    return redis_con.scan(match=f"{link_alias}:*", count=60)
