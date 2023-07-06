@@ -985,3 +985,7 @@ Link statistics page
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
 }
+.statistics h3{
+  margin: 3rem 0;
+  text-align: center;
+}

@@ -35,21 +35,25 @@
                 </div>
             </div>
             <div class="statistics">
-                <div class="clicks-statistics">
-                    <canvas id="clicksChart"></canvas>
-                </div>
-                <div class="countries-and-total-clicks">
-                    <div class="countries-statistics">
-                        <canvas id="countriesChart"></canvas>
+                {% if clicks_chart_dataset %}
+                    <div class="clicks-statistics">
+                        <canvas id="clicksChart"></canvas>
                     </div>
-                    <div class="total-counts">
-                        <div class="total-counts-card">
-                            <h5>
-                                link clicks: <span class="total-counts-counter">{{ link_clicks }}</span>
-                            </h5>
+                    <div class="countries-and-total-clicks">
+                        <div class="countries-statistics">
+                            <canvas id="countriesChart"></canvas>
+                        </div>
+                        <div class="total-counts">
+                            <div class="total-counts-card">
+                                <h5>
+                                    link clicks: <span class="total-counts-counter">{{ link_clicks }}</span>
+                                </h5>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% else %}
+                    <h3>no statistics for this link yet</h3>
+                {% endif %}
             </div>
             <div class="action-btns">
                 <a href="{% url 'account:update_link' alias=link.alias %}">

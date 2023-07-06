@@ -187,35 +187,38 @@ def get_link_datasets(link: Link):
     if countries_chart_data.get(""):
         countries_chart_data["Unknown"] = countries_chart_data.pop("")
 
-    clicks_chart_dataset = json.dumps(
-        {
-            "title": "Clicks in last 60 days",
-            "data": {
-                "labels": list(clicks_chart_data.keys()),
-                "datasets": [
-                    {
-                        "label": "Clicks",
-                        "backgroundColor": "#20a7f8",
-                        "data": list(clicks_chart_data.values()),
-                    }
-                ],
-            },
-        }
-    )
-    country_chart_dataset = json.dumps(
-        {
-            "title": "Clicks by Country",
-            "data": {
-                "labels": list(countries_chart_data.keys()),
-                "datasets": [
-                    {
-                        "label": "Clicks (%)",
-                        "data": list(countries_chart_data.values()),
-                    }
-                ],
-            },
-        }
-    )
+    if clicks_chart_data:
+        clicks_chart_dataset = json.dumps(
+            {
+                "title": "Clicks in last 60 days",
+                "data": {
+                    "labels": list(clicks_chart_data.keys()),
+                    "datasets": [
+                        {
+                            "label": "Clicks",
+                            "backgroundColor": "#20a7f8",
+                            "data": list(clicks_chart_data.values()),
+                        }
+                    ],
+                },
+            }
+        )
+        country_chart_dataset = json.dumps(
+            {
+                "title": "Clicks by Country",
+                "data": {
+                    "labels": list(countries_chart_data.keys()),
+                    "datasets": [
+                        {
+                            "label": "Clicks (%)",
+                            "data": list(countries_chart_data.values()),
+                        }
+                    ],
+                },
+            }
+        )
+    else:
+        clicks_chart_dataset, country_chart_dataset = None, None
 
     return clicks_chart_dataset, country_chart_dataset
 
