@@ -12,7 +12,11 @@ from django.urls import reverse
 
 from account.decorators import anonymous_required
 from account.forms import SignInForm, SignUpForm
-from account.selectors import get_links_by_user, get_links_total_clicks
+from account.selectors import (
+    get_link_total_clicks,
+    get_links_by_user,
+    get_links_total_clicks,
+)
 from account.services import (
     check_user_access,
     get_domain,
@@ -29,8 +33,6 @@ from account.services import (
 from shortener.forms import ShortenForm
 from shortener.selectors import get_link
 from shortener.services import short_link
-
-from account._temp import populate_redis_with_test_data
 
 
 @anonymous_required
@@ -163,6 +165,7 @@ def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
     check_user_access(request.user, link)
     domain = get_domain()
     clicks_chart_dataset, country_chart_dataset = get_link_datasets(link)
+    link_clicks = get_link_total_clicks(link.alias)
 
     return render(
         request,
@@ -172,6 +175,7 @@ def link_statistics(request: HttpRequest, alias: str) -> HttpResponse:
             "domain": domain,
             "clicks_chart_dataset": clicks_chart_dataset,
             "country_chart_dataset": country_chart_dataset,
+            "link_clicks": link_clicks,
         },
     )
 

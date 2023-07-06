@@ -38,8 +38,17 @@
                 <div class="clicks-statistics">
                     <canvas id="clicksChart"></canvas>
                 </div>
-                <div class="countries-statistics">
-                    <canvas id="countriesChart"></canvas>
+                <div class="countries-and-total-clicks">
+                    <div class="countries-statistics">
+                        <canvas id="countriesChart"></canvas>
+                    </div>
+                    <div class="total-counts">
+                        <div class="total-counts-card">
+                            <h5>
+                                link clicks: <span class="total-counts-counter">{{ link_clicks }}</span>
+                            </h5>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="action-btns">

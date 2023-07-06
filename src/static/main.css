@@ -737,6 +737,7 @@ Overview & Links
   justify-content: center;
   background-color: var(--white);
   width: fit-content;
+  height: fit-content;
   border-radius: var(--borderRadius-200);
   box-shadow: var(--shadow-2);
   padding: 1.5rem 2rem;
@@ -978,4 +979,9 @@ Link statistics page
 }
 .link-item-link-alias > * {
   text-align: center;
+}
+.countries-and-total-clicks{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
 }
