@@ -4,6 +4,7 @@ from unittest import mock
 
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.timezone import make_aware
 from fakeredis import FakeStrictRedis
 
 from account.redis import redis_connection
@@ -19,7 +20,9 @@ class GetLinkTotalClicksTests(TestCase):
         )
 
     def tearDown(self) -> None:
-        redis_connection().delete(self.link.alias)
+        redis_connection().delete(
+            f"{self.link.alias}:{make_aware(datetime.datetime(2023, 6, 19, 11, 40)).strftime('%m.%d')}"
+        )
 
     @mock.patch("account.redis.Redis", FakeStrictRedis)
     @mock.patch.object(

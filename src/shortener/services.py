@@ -10,7 +10,6 @@ from django.contrib.gis.geoip2 import GeoIP2
 from django.forms import ModelForm
 from django.http import HttpRequest
 from django.utils import timezone
-from django.utils.timezone import make_naive
 from geoip2.errors import AddressNotFoundError
 
 from shortener.forms import ShortenForm
@@ -164,7 +163,7 @@ def get_request_country_code(request: HttpRequest) -> str:
 
 
 def append_to_redis_list(alias: str, country_code: str) -> None:
-    list_key = f"{alias}:{make_naive(timezone.now()).strftime('%m.%d')}"
+    list_key = f"{alias}:{timezone.now().strftime('%m.%d')}"
     redis_con = redis_connection()
     exists = redis_con.exists(list_key)
 

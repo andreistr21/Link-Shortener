@@ -5,9 +5,10 @@ from unittest import mock
 
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.timezone import make_aware
 from fakeredis import FakeStrictRedis
-from account.redis import redis_connection
 
+from account.redis import redis_connection
 from account.selectors import get_links_total_clicks
 from shortener.models import Link
 
@@ -24,21 +25,23 @@ class GetLinksTotalClicksTests(TestCase):
 
     def tearDown(self) -> None:
         for link in self.links:
-            redis_connection().delete(link.alias)
+            redis_connection().delete(
+                f"{link.alias}:{make_aware(datetime.datetime(2023, 6, 19, 11, 40)).strftime('%m.%d')}"
+            )
 
     @mock.patch("account.redis.Redis", FakeStrictRedis)
     @mock.patch.object(
         timezone, "now", return_value=datetime.datetime(2023, 6, 19, 11, 40)
     )
     def test_not_empty_lists(self, _):
-        clicks_amount = 10
+        expected_clicks_amount = 10
         redis_conn = redis_connection()
 
         # Adds `clicks_amount` clicks for links
         for link in self.links:
-            for i in range(clicks_amount):
+            for i in range(expected_clicks_amount):
                 redis_conn.lpush(
-                    link.alias,
+                    f"{link.alias}:{timezone.now().strftime('%m.%d')}",
                     json.dumps(
                         {
                             "time": (
@@ -52,8 +55,8 @@ class GetLinksTotalClicksTests(TestCase):
         clicks_amount_1 = get_links_total_clicks([self.links[0]])
         clicks_amount_2 = get_links_total_clicks([self.links[1]])
 
-        self.assertEqual(clicks_amount, clicks_amount_1)
-        self.assertEqual(clicks_amount, clicks_amount_2)
+        self.assertEqual(clicks_amount_1, expected_clicks_amount)
+        self.assertEqual(clicks_amount_2, expected_clicks_amount)
 
     @mock.patch("account.redis.Redis", FakeStrictRedis)
     @mock.patch.object(
@@ -63,5 +66,5 @@ class GetLinksTotalClicksTests(TestCase):
         clicks_amount_1 = get_links_total_clicks([self.links[0]])
         clicks_amount_2 = get_links_total_clicks([self.links[1]])
 
-        self.assertEqual(0, clicks_amount_1)
-        self.assertEqual(0, clicks_amount_2)
+        self.assertEqual(clicks_amount_1, 0)
+        self.assertEqual(clicks_amount_2, 0)
