@@ -3,7 +3,6 @@ from datetime import timedelta
 from unittest import mock
 
 from django.test import TestCase
-from django.utils import timezone
 
 from account.services import get_link_datasets
 

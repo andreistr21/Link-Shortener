@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.urls.test_urls.AccountUrlTests.test_link_update_url_auth_user_post",
+                "account.tests.selectors.test_scan_redis_for_links_keys.ScanRedisForLinksKeysTests.test_return_not_empty_list",
             ],
             "django": true,
             "justMyCode": false

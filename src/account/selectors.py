@@ -65,6 +65,5 @@ def get_link_statistics(alias: str) -> list[tuple[str, str]]:
     return link_statistics
 
 
-# TODO: add tests
-def scan_redis_for_links_keys2(redis_con: Redis, link_alias: str):
+def scan_redis_for_links_keys(redis_con: Redis, link_alias: str):
     return redis_con.scan(match=f"{link_alias}:*", count=60)
