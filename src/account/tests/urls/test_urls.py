@@ -314,6 +314,7 @@ class AccountUrlTests(TestCase):
             + reverse("account:link_statistics", args=(self.link.alias,)),
         )
 
+    @mock.patch("account.views.get_link_total_clicks", return_value=10)
     @mock.patch("account.views.get_domain", return_value="https://shorty.com")
     @mock.patch("account.views.check_user_access", return_value=None)
     @mock.patch("account.views.get_link_datasets")
@@ -343,6 +344,7 @@ class AccountUrlTests(TestCase):
         self.assertEqual(
             response.context["country_chart_dataset"], "country_chart_dataset"
         )
+        self.assertEqual(response.context["link_clicks"], 10)
 
     def test_link_update_url_anonymous_user(self):
         response = self.client.get(

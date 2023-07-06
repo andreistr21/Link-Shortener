@@ -83,11 +83,12 @@ class LinkStatisticsTests(TestCase):
             + reverse("account:link_statistics", args=(self.link.alias,)),
         )
 
+    @mock.patch("account.views.get_link_total_clicks", return_value=10)
     @mock.patch("account.views.check_user_access", return_value=None)
     @mock.patch("account.views.get_link_datasets")
     @mock.patch("account.views.get_link")
     def test_auth_user(
-        self, get_link_mock, get_link_datasets_mock, check_user_access_mock
+        self, get_link_mock, get_link_datasets_mock, check_user_access_mock, get_link_total_clicks_mock
     ):
         get_link_mock.return_value = self.link
         get_link_datasets_mock.return_value = (
@@ -106,12 +107,12 @@ class LinkStatisticsTests(TestCase):
         get_link_mock.assert_called_once_with(self.link.alias)
         get_link_datasets_mock.assert_called_once_with(self.link)
         check_user_access_mock.assert_called_once_with(request.user, self.link)
+        get_link_total_clicks_mock.assert_called_once_with(self.link.alias)
 
-    @mock.patch("account.views.check_user_access", return_value=None)
     @mock.patch("account.views.get_link_datasets")
     @mock.patch("account.views.get_link")
     def test_auth_user_no_link_found(
-        self, get_link_mock, get_link_datasets_mock, _
+        self, get_link_mock, get_link_datasets_mock
     ):
         get_link_mock.return_value = None
         get_link_mock.side_effect = Http404
