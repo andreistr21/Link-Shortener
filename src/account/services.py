@@ -159,7 +159,9 @@ def get_charts_data(
 
     for stat in link_statistics:
         parsed_stat = json.loads(stat)
-        date = datetime.fromisoformat(parsed_stat["time"]).strftime("%m.%d")
+        date = make_naive(
+            datetime.fromisoformat(parsed_stat["time"])
+        ).strftime("%m.%d")
         if not clicks_chart_data.get(date):
             clicks_chart_data[date] = 0
         clicks_chart_data[date] += 1

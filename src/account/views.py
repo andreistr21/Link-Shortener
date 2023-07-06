@@ -34,7 +34,6 @@ from shortener.forms import ShortenForm
 from shortener.selectors import get_link
 from shortener.services import short_link
 
-
 @anonymous_required
 def sign_up(request):
     sign_up_form = SignUpForm()
