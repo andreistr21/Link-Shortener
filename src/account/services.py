@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import json
 from datetime import datetime
 from profile import Profile
@@ -12,6 +13,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from django.utils.timezone import make_naive
 
 from account.redis import redis_connection
 from account.selectors import (
@@ -166,6 +168,9 @@ def get_charts_data(
         if not raw_countries_chart_data.get(country_code):
             raw_countries_chart_data[country_code] = 0
         raw_countries_chart_data[country_code] += 1
+
+    # reverse data, so chart will display data in ascending order
+    clicks_chart_data = OrderedDict(reversed(list(clicks_chart_data.items())))
 
     percentages_countries_chart_data = calc_percentages(
         raw_countries_chart_data

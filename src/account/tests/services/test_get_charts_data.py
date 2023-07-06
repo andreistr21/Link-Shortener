@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import json
 from datetime import datetime, timedelta
 from functools import lru_cache
@@ -16,12 +17,13 @@ class GetChartsDataTests(TestCase):
     def test_for_expected_return_values(self, calc_percentages_mock):
         test_data = self._get_test_data()
 
-        get_charts_data(test_data)
+        clicks_chart_data, _ = get_charts_data(test_data)
 
         (
-            _,
+            expected_clicks_chart_data,
             expected_countries_chart_data,
         ) = self._get_charts_data(test_data)
+        self.assertEqual(clicks_chart_data, expected_clicks_chart_data)
         calc_percentages_mock.assert_called_once_with(
             expected_countries_chart_data
         )
@@ -45,6 +47,10 @@ class GetChartsDataTests(TestCase):
             if not countries_chart_data.get(country_code):
                 countries_chart_data[country_code] = 0
             countries_chart_data[country_code] += 1
+
+        clicks_chart_data = OrderedDict(
+            reversed(list(clicks_chart_data.items()))
+        )
 
         return clicks_chart_data, countries_chart_data
 
