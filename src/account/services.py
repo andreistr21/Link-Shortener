@@ -249,7 +249,6 @@ def remove_link_statistics(link_alias: str) -> None:
         redis_pipeline.execute()
 
 
-# TODO: update tests
 def remove_link(link: QuerySet) -> None:
     remove_link_statistics(link.alias)
     link.delete()

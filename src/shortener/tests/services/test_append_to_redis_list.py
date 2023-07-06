@@ -7,6 +7,7 @@ from django.conf import settings
 
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.timezone import make_aware
 from fakeredis import FakeStrictRedis
 
 from shortener.services import redis_connection
@@ -23,7 +24,9 @@ def fake_redis_connection():
 class AppendToRedisListTests(TestCase):
     @mock.patch("shortener.services.redis_connection", fake_redis_connection)
     @mock.patch.object(
-        timezone, "now", return_value=datetime.datetime(2023, 6, 23, 18, 20)
+        timezone,
+        "now",
+        return_value=make_aware(datetime.datetime(2023, 6, 23, 18, 20)),
     )
     def test_append_to_redis_nonexistent_list(self, _):
         alias = "test-alias"
