@@ -165,5 +165,6 @@ src/selftest-cert.key
 /selftest-cert.crt
 /selftest-cert.key
 
-# Temporary files
+# Temporary and other files
 _temp*.py
+data.json
