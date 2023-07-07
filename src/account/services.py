@@ -236,7 +236,6 @@ def rename_redis_list(old_alias: str, new_alias: str) -> None:
         redis_con.rename(old_alias, new_alias)
 
 
-# TODO: add tests
 def remove_link_statistics(link_alias: str) -> None:
     """Scans for link statistics records and delete them"""
     redis_con = redis_connection()

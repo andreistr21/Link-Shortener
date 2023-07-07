@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.selectors.test_scan_redis_for_links_keys.ScanRedisForLinksKeysTests.test_return_not_empty_list",
+                "account.tests.services.test_remove_link_statistics.RemoveLinkStatisticsTests.test_if_data_exists",
             ],
             "django": true,
             "justMyCode": false
