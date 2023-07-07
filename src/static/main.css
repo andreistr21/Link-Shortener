@@ -431,6 +431,7 @@ Dialog box
 }
 .nav-logo {
   height: 44px;
+  width: fit-content;
 }
 .nav-links {
   display: none;
@@ -780,6 +781,10 @@ Overview & Links
 
 .link-long-link-text {
   text-transform: none;
+  overflow: hidden;
+}
+.link-long-link-text a {
+  white-space: nowrap;
 }
 
 .link-item-short-link {
@@ -977,15 +982,18 @@ Link statistics page
 .link-item-link-alias {
   margin-bottom: 1rem;
 }
+.link-item-link-alias h3 {
+  text-transform: none;
+}
 .link-item-link-alias > * {
   text-align: center;
 }
-.countries-and-total-clicks{
+.countries-and-total-clicks {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
 }
-.statistics h3{
+.statistics h3 {
   margin: 3rem 0;
   text-align: center;
 }
