@@ -1,13 +1,10 @@
-from collections import OrderedDict
 import json
+from collections import OrderedDict
 from datetime import datetime, timedelta
-from functools import lru_cache
 from unittest import mock
 
 from django.test import TestCase
 from django.utils import timezone
-from fakeredis import FakeStrictRedis
-from redis import Redis
 
 from account.services import get_charts_data
 
@@ -53,12 +50,6 @@ class GetChartsDataTests(TestCase):
         )
 
         return clicks_chart_data, countries_chart_data
-
-    @lru_cache(maxsize=1)
-    def _redis_connection(self) -> Redis:
-        """Creates redis connection during first call and returns it. During
-        next call cached value will be returned"""
-        return FakeStrictRedis()
 
     def _get_test_data(self) -> list:
         test_data = []

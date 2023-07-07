@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/src/manage.py",
             "args": [
                 "test",
-                "account.tests.services.test_remove_link_statistics.RemoveLinkStatisticsTests.test_if_data_exists",
+                "account.tests.decorators",
             ],
             "django": true,
             "justMyCode": false
