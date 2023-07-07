@@ -81,3 +81,20 @@ class GetLinkDatasetsTests(TestCase):
         self.assertEqual(country_chart_dataset, expected_country_chart_dataset)
         get_link_statistics_mock.assert_called_once_with(self.dummy_link.alias)
         get_charts_data_mock.assert_called_once_with(self.charts_data)
+
+    @mock.patch("account.services.get_charts_data")
+    @mock.patch("account.services.get_link_statistics")
+    def test_returns_empty_chart_data(
+        self, get_link_statistics_mock, get_charts_data_mock
+    ):
+        get_link_statistics_mock.return_value = None
+        get_charts_data_mock.return_value = ({}, {})
+
+        clicks_chart_dataset, country_chart_dataset = get_link_datasets(
+            self.dummy_link
+        )
+
+        self.assertEqual(clicks_chart_dataset, None)
+        self.assertEqual(country_chart_dataset, None)
+        get_link_statistics_mock.assert_called_once_with(self.dummy_link.alias)
+        get_charts_data_mock.assert_called_once_with(None)
