@@ -17,7 +17,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # ENV variables
-load_dotenv()
+load_dotenv(".env.dev")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,15 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-8q+^2&g9mbg5+dyvkpj_#7r+h0=csq4t8k@1@014iy7898a#j-"
-)
+SECRET_KEY = getenv("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv("DEBUG") != "False"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = getenv("ALLOWED_HOSTS").split(" ")
 
+CSRF_TRUSTED_ORIGINS = getenv("CSRF_TRUSTED_ORIGINS").split(" ")
+ALLOWED_HOSTS = getenv("ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -91,11 +92,11 @@ WSGI_APPLICATION = "shorty.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "Shorty",
-        "USER": "postgres",
-        "PASSWORD": "5648",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": getenv("POSTGRES_DB"),
+        "USER": getenv("POSTGRES_USER"),
+        "PASSWORD": getenv("POSTGRES_PASSWORD"),
+        "HOST": getenv("POSTGRES_HOST"),
+        "PORT": getenv("POSTGRES_PORT"),
     }
 }
 
@@ -155,6 +156,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = (BASE_DIR / "static",)
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -223,7 +225,7 @@ REDIS_TTL = 60 * 60 * 24 * 60  # 60 days
 
 
 # Other
-DEFAULT_DOMAIN = "http://127.0.0.1:8000"
+DEFAULT_DOMAIN = getenv("DEFAULT_DOMAIN").split(" ")
 LINKS_ITEMS_PER_PAGE = 5
 LINKS_SORTING_TYPES = {
     "": "Date - Newest first",

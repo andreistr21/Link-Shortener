@@ -121,6 +121,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
 .venv
 env/
 venv/
@@ -168,3 +169,4 @@ src/selftest-cert.key
 # Temporary and other files
 _temp*.py
 data.json
+staticfiles/
