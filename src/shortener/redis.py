@@ -1,4 +1,5 @@
 from functools import lru_cache
+from os import getenv
 
 from redis import Redis
 
@@ -7,4 +8,4 @@ from redis import Redis
 def redis_connection() -> Redis:
     """Creates redis connection during first call and returns it. During next
     call cached value will be returned"""
-    return Redis(host="127.0.0.1", port="6379")
+    return Redis(host=getenv("REDIS_HOST"), port="6379")

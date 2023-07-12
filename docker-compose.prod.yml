@@ -14,6 +14,7 @@ services:
       - ./.env.prod
     depends_on:
       - db
+      - redis
   db:
     image: postgres:alpine3.18
     volumes:
@@ -28,7 +29,17 @@ services:
       - 1337:80
     depends_on:
       - web
+  redis:
+    restart: unless-stopped
+    image: redis/redis-stack:latest
+    command: redis-server --include /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+      - ./src/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
 
 volumes:
   postgres_data:
   static_volume:
+  redis_data:
