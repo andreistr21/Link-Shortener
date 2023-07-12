@@ -11,6 +11,7 @@ from django.db.models import QuerySet
 from django.http import Http404, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import make_naive
@@ -230,10 +231,18 @@ def check_user_access(user: Profile, link: QuerySet) -> None | Http404:
         raise Http404()
 
 
+# TODO: add tests
+def get_redis_key(alias: str) -> str:
+    date = timezone.now().strftime("%m.%d")
+    return f"{alias}:{date}"
+
+
 def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
-    if redis_con.exists(old_alias):
-        redis_con.rename(old_alias, new_alias)
+    old_key = get_redis_key(old_alias)
+    new_key = get_redis_key(new_alias)
+    if redis_con.exists(old_key):
+        redis_con.rename(old_key, new_key)
 
 
 def remove_link_statistics(link_alias: str) -> None:

@@ -17,7 +17,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # ENV variables
-load_dotenv(".env.dev")
+load_dotenv("src/.env.dev")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +37,6 @@ DEBUG = getenv("DEBUG") != "False"
 ALLOWED_HOSTS = getenv("ALLOWED_HOSTS").split(" ")
 
 CSRF_TRUSTED_ORIGINS = getenv("CSRF_TRUSTED_ORIGINS").split(" ")
-ALLOWED_HOSTS = getenv("ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -225,7 +224,7 @@ REDIS_TTL = 60 * 60 * 24 * 60  # 60 days
 
 
 # Other
-DEFAULT_DOMAIN = getenv("DEFAULT_DOMAIN").split(" ")
+DEFAULT_DOMAIN = getenv("DEFAULT_DOMAIN")
 LINKS_ITEMS_PER_PAGE = 5
 LINKS_SORTING_TYPES = {
     "": "Date - Newest first",
