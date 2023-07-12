@@ -179,7 +179,7 @@ EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
 
 
 # Celery
-CELERY_BROKER_URL = "amqp://127.0.0.1:5672//"
+CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
 
 
 # Social authentication

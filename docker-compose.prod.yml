@@ -38,6 +38,21 @@ services:
       - ./src/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - 6379
+  rabbitmq_server:
+    image: rabbitmq:3.9.29-management
+    expose:
+      - 5672
+  celery:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.prod
+    command: celery -A shorty worker -l info
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - rabbitmq_server
 
 volumes:
   postgres_data:
