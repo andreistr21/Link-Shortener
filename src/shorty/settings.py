@@ -14,6 +14,7 @@ import string
 from os import getenv
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 # ENV variables
@@ -89,14 +90,18 @@ WSGI_APPLICATION = "shorty.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": getenv("POSTGRES_DB"),
-        "USER": getenv("POSTGRES_USER"),
-        "PASSWORD": getenv("POSTGRES_PASSWORD"),
-        "HOST": getenv("POSTGRES_HOST"),
-        "PORT": getenv("POSTGRES_PORT"),
-    }
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "NAME": getenv("POSTGRES_DB"),
+    #     "USER": getenv("POSTGRES_USER"),
+    #     "PASSWORD": getenv("POSTGRES_PASSWORD"),
+    #     "HOST": getenv("POSTGRES_HOST"),
+    #     "PORT": getenv("POSTGRES_PORT"),
+    # }
+    "default": dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    ),
 }
 
 
