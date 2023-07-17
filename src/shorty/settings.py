@@ -184,7 +184,7 @@ EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
 
 
 # Celery
-CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
+CELERY_BROKER_URL = getenv("REDIS_URL")
 
 
 # Social authentication
