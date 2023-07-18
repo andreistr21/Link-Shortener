@@ -49,7 +49,7 @@
                                     <span><i class="fa-solid fa-caret-down"></i></span>
                                 </button>
                                 <div class="dropdown-content">
-                                    <a href="#">settings</a>
+                                    {% comment %} <a href="#">settings</a> {% endcomment %}
                                     <a id="logout-btn-id">log out</a>
                                 </div>
                             </div>
@@ -84,9 +84,9 @@
                             <button class="btn btn-primary btn-block">sign up</button>
                         </a>
                     {% else %}
-                        <a href="#">
+                        {% comment %} <a href="#">
                             <button class="btn btn-primary btn-block">settings</button>
-                        </a>
+                        </a> {% endcomment %}
                         <a href="{% url 'account:logout' %}" id="logout-btn-id-2">
                             <button class="btn btn-logout btn-block">log out</button>
                         </a>
