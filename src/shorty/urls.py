@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,5 +27,11 @@ urlpatterns = [
     path(
         "account/social-auth/",
         include("social_django.urls", namespace="social"),
+    ),
+    path(
+        ".well-known/acme-challenge/c3y8oJJ2G2WX8WtnfKv22MI-6i5TtqRa_Yd4OqDzu9o",
+        TemplateView.as_view(
+            template_name="common/certbot.txt", content_type="text/plain"
+        ),
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
