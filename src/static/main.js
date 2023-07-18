@@ -49,7 +49,8 @@ function myConfirmBox(message) {
 document.getElementById("logout-btn-id").addEventListener("click", () => {
   myConfirmBox("Are you sure you want to log out?").then((response) => {
     if (response) {
-      window.location.replace("http://127.0.0.1:8000/account/logout/");
+      const currentLocation = location.protocol + "//" + location.host;
+      window.location.replace(currentLocation + "/account/logout/");
     }
   });
 });
@@ -62,7 +63,8 @@ document
     sidebar.classList.remove("show-sidebar");
     myConfirmBox("Are you sure you want to log out?").then((response) => {
       if (response) {
-        window.location.href = "http://127.0.0.1:8000/account/logout/";
+        const currentLocation = location.protocol + "//" + location.host;
+        window.location.href = currentLocation + "/account/logout/";
       }
     });
   });
@@ -76,8 +78,9 @@ document
     myConfirmBox("Are you sure you want to delete this link?").then(
       (response) => {
         if (response) {
+          const currentLocation = location.protocol + "//" + location.host;
           window.location.replace(
-            "http://127.0.0.1:8000/account/link/delete/" + alias + "/"
+            currentLocation + "/account/link/delete/" + alias + "/"
           );
         }
       }
