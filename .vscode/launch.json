@@ -33,6 +33,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/manage.py",
+            "envFile": "${workspaceFolder}/src/.env.dev",
             "args": [
                 "runserver",
             ],

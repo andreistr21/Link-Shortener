@@ -586,6 +586,9 @@ Dialog box
   border-radius: var(--borderRadius-200);
   padding: 0.5rem 0.75rem;
 }
+.shortened-link {
+  word-break: break-all;
+}
 .shortened-link-section p {
   margin-top: 1rem;
   padding-left: 0.5rem;
@@ -774,6 +777,9 @@ Overview & Links
   text-transform: capitalize;
   margin-bottom: 0.25rem;
 }
+.link-item h5 {
+  line-height: 2rem;
+}
 
 .link-item-long-link {
   margin-bottom: 1rem;
@@ -798,6 +804,7 @@ Overview & Links
 .link-short-link-text {
   text-transform: none;
   margin-top: 0.25rem;
+  word-break: break-all;
 }
 
 .link-item-details {
