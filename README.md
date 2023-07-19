@@ -22,6 +22,10 @@ Website link: https://shorty-django-07fdf8142b77.herokuapp.com/
 Project hosted by [heroku](https://www.heroku.com/home).
 
 # Project presentation
+Demo video:
+
+https://github.com/andreistr21/Link-Shortener/assets/60103919/c638d18c-3b91-4143-9865-9030dd0c98ee
+
 Main page, where user can short link.
 ![](readme_files/main_not_authorized.png)
 
