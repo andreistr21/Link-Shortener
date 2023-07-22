@@ -34,6 +34,7 @@ from shortener.forms import ShortenForm
 from shortener.selectors import get_link
 from shortener.services import short_link
 
+
 @anonymous_required
 def sign_up(request):
     sign_up_form = SignUpForm()
@@ -132,7 +133,6 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     current_query_str = request.META.get("QUERY_STRING")
     current_query_dict = QueryDict(current_query_str)
     domain = get_domain()
-
     mapped_links = get_links_and_clicks(request)
 
     paginator = None

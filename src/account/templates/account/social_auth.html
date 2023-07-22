@@ -1,6 +1,6 @@
 <h5 class="text-center">Or Continue With</h5>
 <div class="social-auth">
     <a href="{% url 'social:begin' "facebook" %}" class="fa fa-facebook"></a>
-    <a href="{% url "social:begin" "google-oauth2" %}" class="fa fa-google"></a>
+    {% comment %} <a href="{% url "social:begin" "google-oauth2" %}" class="fa fa-google"></a> {% endcomment %}
     <a href="{% url 'social:begin' "twitter" %}" class="fa fa-twitter"></a>
 </div>
