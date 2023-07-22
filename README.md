@@ -1,4 +1,4 @@
-# [Shorty](https://shorty-django-07fdf8142b77.herokuapp.com/)
+# [Shorty](https://shorty-prod-23d1a8e9a3fc.herokuapp.com/)
 
 ### Remark
 It must be assumed that the site is under a short domain, for example `shorty.com`
@@ -6,9 +6,9 @@ It must be assumed that the site is under a short domain, for example `shorty.co
 ### Description
 This is a Django web application. On this website you can short any link with custom or random alias. If you will be logged in during shorting process, you can check link statistics.
 
-You can view the site at [this link](https://shorty-django-07fdf8142b77.herokuapp.com/) or with the help of the video and images below.
+You can view the site at [this link](https://shorty-prod-23d1a8e9a3fc.herokuapp.com/) or with the help of the video and images below.
 
-Website link: https://shorty-django-07fdf8142b77.herokuapp.com/
+Website link: https://shorty-prod-23d1a8e9a3fc.herokuapp.com/
 
 ## Technologies
 
