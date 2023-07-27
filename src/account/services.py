@@ -232,12 +232,17 @@ def check_user_access(user: Profile, link: QuerySet) -> None | Http404:
 
 
 # TODO: add tests
+def construct_redis_key(alias: str, date: str) -> str:
+    """date: M.D"""
+    return f"{alias}:{date}"
+
+
+# TODO: add tests
 def get_redis_key(old_key: str, new_alias: str) -> str:
     date = old_key.split(":")[1]
-    return f"{new_alias}:{date}"
+    return construct_redis_key(new_alias, date)
 
 
-# TODO: update tests
 def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
     _, keys = list(scan_redis_for_links_keys(redis_con, old_alias))
