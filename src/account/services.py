@@ -232,17 +232,21 @@ def check_user_access(user: Profile, link: QuerySet) -> None | Http404:
 
 
 # TODO: add tests
-def get_redis_key(alias: str) -> str:
-    date = timezone.now().strftime("%m.%d")
-    return f"{alias}:{date}"
+def get_redis_key(old_key: str, new_alias: str) -> str:
+    date = old_key.split(":")[1]
+    return f"{new_alias}:{date}"
 
 
+# TODO: update tests
 def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
-    old_key = get_redis_key(old_alias)
-    new_key = get_redis_key(new_alias)
-    if redis_con.exists(old_key):
-        redis_con.rename(old_key, new_key)
+    _, keys = list(scan_redis_for_links_keys(redis_con, old_alias))
+    with redis_con.pipeline() as redis_pipeline:
+        for key in keys:
+            key_dec = key.decode(encoding="utf8")
+            redis_pipeline.rename(key_dec, get_redis_key(key_dec, new_alias))
+
+        redis_pipeline.execute()
 
 
 def remove_link_statistics(link_alias: str) -> None:

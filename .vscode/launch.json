@@ -9,9 +9,10 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/manage.py",
+            "envFile": "${workspaceFolder}/src/.env.dev",
             "args": [
                 "test",
-                "account.tests.decorators",
+                "account.tests.services.test_rename_redis_list.RenameRedisListTests.test_key_renamed",
             ],
             "django": true,
             "justMyCode": false
