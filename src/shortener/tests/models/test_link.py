@@ -17,8 +17,12 @@ class LinkTests(TestCase):
         alias = "test-alias"
         with mock.patch("django.utils.timezone.now") as mock_now:
             mock_now.return_value = mock_date
-            user = Profile.objects.create(email="user_username", password="user_password", last_online=mock_date)
-            link = Link.objects.create(user_profile=user, long_link=long_link, alias=alias)
+            user = Profile.objects.create(
+                email="user_username", password="user_password"
+            )
+            link = Link.objects.create(
+                user_profile=user, long_link=long_link, alias=alias
+            )
 
         self.assertEqual(link.user_profile, user)
         self.assertEqual(link.long_link, long_link)
@@ -28,11 +32,13 @@ class LinkTests(TestCase):
     def test_if_link_too_long(self):
         letters = string.ascii_lowercase + string.digits
 
-        long_link = "https://www.youtube.com/" + "".join(random.choice(letters) for _ in range(2000))
+        long_link = "https://www.youtube.com/" + "".join(
+            random.choice(letters) for _ in range(2000)
+        )
         part_of_error_value = "Ensure this value has at most"
         shorten_form = ShortenForm(data={"long_link": long_link})
         shorten_form.is_valid()
 
         errors = shorten_form.errors.get("long_link")
-        for error in errors:
+        for error in errors:  # type: ignore
             self.assertTrue(part_of_error_value in error)

@@ -141,7 +141,7 @@ def links_list(request: HttpRequest, page: int = 1) -> HttpResponse:
     if mapped_links:
         paginator = Paginator(mapped_links, settings.LINKS_ITEMS_PER_PAGE)
         page_obj = paginator.get_page(page)
-        elided_page_range = paginator.get_elided_page_range(
+        elided_page_range = paginator.get_elided_page_range(  # type: ignore
             page_obj.number, on_each_side=3, on_ends=1
         )
 
@@ -186,14 +186,13 @@ def update_link(request: HttpRequest, alias: str) -> HttpResponse:
     if request.POST:
         update_link_form = ShortenForm(request.POST, instance=link)
         if update_link_form.is_valid():
-            old_alias = alias
-            alias = short_link(request, update_link_form, link)
+            new_alias = short_link(request, update_link_form, link)
             if not update_link_form.errors:
-                if old_alias != alias:
-                    rename_redis_list(old_alias, alias)
+                if alias != new_alias and new_alias:
+                    rename_redis_list(alias, new_alias)
 
                 return redirect(
-                    reverse("account:link_statistics", args=(alias,))
+                    reverse("account:link_statistics", args=(new_alias,))
                 )
     else:
         update_link_form = ShortenForm(instance=link)

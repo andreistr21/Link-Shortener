@@ -3,19 +3,20 @@ from collections import OrderedDict
 from datetime import datetime
 from profile import Profile
 
-from django import forms
 from django.conf import settings
 from django.contrib.auth import login
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import QuerySet
 from django.http import Http404, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.timezone import make_naive
 
+from account.forms import SignUpForm
 from account.redis import redis_connection
 from account.selectors import (
     get_link_statistics,
@@ -48,14 +49,14 @@ def _send_activation_email(request: HttpRequest, user, form):
     )
 
 
-def get_username(sign_up_form: forms.Form) -> str:
+def get_username(sign_up_form: SignUpForm) -> str:
     """Extracts first part of the email (up to "@" character)"""
     email = sign_up_form.cleaned_data["email"]
 
     return email.split("@")[0]
 
 
-def save_new_user(sign_up_form: forms.Form) -> Profile:
+def save_new_user(sign_up_form: SignUpForm) -> Profile:
     """Saves user and adds username"""
     user = sign_up_form.save()
     user.username = get_username(sign_up_form)
@@ -101,14 +102,14 @@ def get_domain() -> str:
     return settings.DEFAULT_DOMAIN
 
 
-def map_clicks_amount_to_link(links: list[Link]) -> list[tuple[Link, str]]:
+def map_clicks_amount_to_link(links: QuerySet[Link]) -> list[tuple[Link, int]]:
     """Returns list tuples with link and link clicks"""
     return [(link, get_link_total_clicks(link.alias)) for link in links]
 
 
 def sort_by_clicks(
-    mapped_clicks: list[tuple[Link, str]], order_by: str
-) -> list[tuple[Link, str]]:
+    mapped_clicks: list[tuple[Link, int]], order_by: str
+) -> list[tuple[Link, int]]:
     reverse = order_by == "-clicks"
     return sorted(mapped_clicks, key=lambda item: item[1], reverse=reverse)
 
@@ -154,8 +155,8 @@ def calc_percentages(
 
 
 def get_charts_data(
-    link_statistics: list[dict[str:str, str:str]]
-) -> tuple[dict[str, int], dict[str, int]]:
+    link_statistics: list[bytes],
+) -> tuple[dict[str, int], dict[str, float]]:
     clicks_chart_data = {}
     raw_countries_chart_data = {}
 
@@ -225,9 +226,11 @@ def get_link_datasets(link: Link):
     return clicks_chart_dataset, country_chart_dataset
 
 
-def check_user_access(user: Profile, link: QuerySet) -> None | Http404:
+def check_user_access(
+    user: Profile | AbstractBaseUser | AnonymousUser, link: Link
+) -> None | Http404:
     """Raises 404 if link don't belongs to the user."""
-    if link not in user.links.all():
+    if link not in user.links.all():  # type: ignore
         raise Http404()
 
 
@@ -245,7 +248,7 @@ def get_redis_key(old_key: str, new_alias: str) -> str:
 
 def rename_redis_list(old_alias: str, new_alias: str) -> None:
     redis_con = redis_connection()
-    _, keys = list(scan_redis_for_links_keys(redis_con, old_alias))
+    _, keys = scan_redis_for_links_keys(redis_con, old_alias)
     with redis_con.pipeline() as redis_pipeline:
         for key in keys:
             key_dec = key.decode(encoding="utf8")
@@ -258,7 +261,7 @@ def remove_link_statistics(link_alias: str) -> None:
     """Scans for link statistics records and delete them"""
     redis_con = redis_connection()
 
-    _, keys = list(scan_redis_for_links_keys(redis_con, link_alias))
+    _, keys = scan_redis_for_links_keys(redis_con, link_alias)
     with redis_con.pipeline() as redis_pipeline:
         for key in keys:
             redis_pipeline.delete(key)
@@ -266,6 +269,6 @@ def remove_link_statistics(link_alias: str) -> None:
         redis_pipeline.execute()
 
 
-def remove_link(link: QuerySet) -> None:
+def remove_link(link: Link) -> None:
     remove_link_statistics(link.alias)
     link.delete()

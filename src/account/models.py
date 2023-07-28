@@ -4,7 +4,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
-from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -52,15 +51,9 @@ class Profile(AbstractUser):
         },
     )
     email = models.EmailField("email address", unique=True, max_length=150)
-    last_online = models.DateTimeField(auto_now_add=timezone.now())
     is_email_confirmed = models.BooleanField("email confirmed", default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-
-    # @property
-    # def update_last_online(self) -> None:
-    #     self.last_online = timezone.now()
-    #     self.save()

@@ -113,7 +113,7 @@ def validate_for_restricted_domains(link: str) -> bool:
 
 def link_validation(shorten_form: ModelForm) -> bool:
     link = shorten_form.cleaned_data.get("long_link")
-    if validators.url(link): # type: ignore
+    if validators.url(link):  # type: ignore
         if not validate_for_restricted_domains(link):
             shorten_form.add_error(
                 "long_link", "This domain is banned or invalid"
@@ -126,9 +126,11 @@ def link_validation(shorten_form: ModelForm) -> bool:
 
 
 def short_link(
-    request: HttpRequest, shorten_form: ShortenForm, exclude=None
-) -> Optional[str]:
-    alias = None
+    request: HttpRequest,
+    shorten_form: ShortenForm,
+    exclude: Optional[Link] = None,
+) -> str:
+    alias = ""
     if shorten_form.is_valid() and link_validation(shorten_form):
         if alias := shorten_form.cleaned_data.get("alias"):
             if len(alias) > 3:

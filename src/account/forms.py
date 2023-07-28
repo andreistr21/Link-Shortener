@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import (
+    PasswordResetForm,
     SetPasswordForm,
     UserCreationForm,
-    PasswordResetForm,
 )
 
 from account.models import Profile
@@ -67,7 +67,7 @@ class SignInForm(forms.Form):
         return self.cleaned_data
 
     def confirm_login_allowed(self):
-        if not self.user_cache.is_email_confirmed:
+        if not self.user_cache.is_email_confirmed:  # type: ignore
             self.add_error(
                 None,
                 (

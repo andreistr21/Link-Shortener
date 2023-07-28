@@ -7,7 +7,7 @@ class EmailActivationTokenGenerator(PasswordResetTokenGenerator):
         return (
             six.text_type(user.pk)
             + six.text_type(timestamp)
-            + six.text_type(user.is_email_confirmed)
+            + six.text_type(user.is_email_confirmed)  # type: ignore
         )
 
 

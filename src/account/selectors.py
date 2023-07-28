@@ -1,6 +1,8 @@
 from datetime import timedelta
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q, QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -12,20 +14,20 @@ from shortener.models import Link
 from .models import Profile
 
 
-def get_profile(pk) -> QuerySet:
+def get_profile(pk) -> Profile:
     return get_object_or_404(Profile, pk=pk)
 
 
-def get_profile_by_email(email) -> QuerySet:
+def get_profile_by_email(email) -> Profile:
     return get_object_or_404(Profile, email=email)
 
 
 def get_links_by_user(
-    user: Profile,
+    user: Profile | AbstractBaseUser | AnonymousUser,
     filter_by: Optional[str] = None,
     order_by: Optional[str] = None,
-) -> QuerySet:
-    links = user.links.all()
+) -> QuerySet[Link]:
+    links = user.links.all()  # type: ignore
     if links:
         if filter_by:
             links = links.filter(
@@ -37,7 +39,7 @@ def get_links_by_user(
     return links
 
 
-def get_links_total_clicks(links: list[Link]) -> int:
+def get_links_total_clicks(links: QuerySet[Link]) -> int:
     """Counts and returns all links clicks in list."""
     return sum(get_link_total_clicks(link.alias) for link in links)
 
@@ -54,7 +56,7 @@ def get_link_total_clicks(link_alias: str) -> int:
     return counter
 
 
-def get_link_statistics(alias: str) -> list[tuple[str, str]]:
+def get_link_statistics(alias: str) -> list[bytes]:
     current_date = timezone.now()
     redis_con = redis_connection()
     link_statistics = []
@@ -65,5 +67,7 @@ def get_link_statistics(alias: str) -> list[tuple[str, str]]:
     return link_statistics
 
 
-def scan_redis_for_links_keys(redis_con: Redis, link_alias: str):
+def scan_redis_for_links_keys(
+    redis_con: Redis, link_alias: str
+) -> tuple[int, list[bytes]]:
     return redis_con.scan(match=f"{link_alias}:*", count=60)
