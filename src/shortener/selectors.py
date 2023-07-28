@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
+
 from shortener.models import Link
-from django.db.models import QuerySet
 
 
 def is_alias_free(
@@ -13,6 +13,6 @@ def is_alias_free(
     return not link.exists()
 
 
-def get_link(alias: str) -> QuerySet:
+def get_link(alias: str) -> Link:
     """Retrieve link by alias or raises 404 error"""
     return get_object_or_404(Link, alias=alias)

@@ -9,7 +9,7 @@ class Link(models.Model):
     )
 
     long_link = models.TextField(max_length=2000)
-    alias = models.CharField(max_length=80, unique=True, null=True, blank=True)
+    alias = models.CharField(max_length=80, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
