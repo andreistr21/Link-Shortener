@@ -23,13 +23,16 @@ class GetLinksTotalClicksTests(TestCase):
             ]
         )
 
+    def setUp(self) -> None:
+        redis_connection.cache_clear()
+
     def tearDown(self) -> None:
         for link in self.links:
             redis_connection().delete(
                 f"{link.alias}:{make_aware(datetime.datetime(2023, 6, 19, 11, 40)).strftime('%m.%d')}"
             )
 
-    @mock.patch("account.redis.Redis", FakeStrictRedis)
+    @mock.patch("account.redis.from_url", FakeStrictRedis)
     @mock.patch.object(
         timezone, "now", return_value=datetime.datetime(2023, 6, 19, 11, 40)
     )
@@ -58,7 +61,7 @@ class GetLinksTotalClicksTests(TestCase):
         self.assertEqual(clicks_amount_1, expected_clicks_amount)
         self.assertEqual(clicks_amount_2, expected_clicks_amount)
 
-    @mock.patch("account.redis.Redis", FakeStrictRedis)
+    @mock.patch("account.redis.from_url", FakeStrictRedis)
     @mock.patch.object(
         timezone, "now", return_value=datetime.datetime(2023, 6, 19, 11, 40)
     )

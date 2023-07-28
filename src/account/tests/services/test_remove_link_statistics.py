@@ -17,10 +17,6 @@ class RemoveLinkStatisticsTests(TestCase):
             long_link="http://www.youtube.com/", alias="youtube"
         )
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.link.delete()
-
     @lru_cache(maxsize=1)
     def _redis_connection(self) -> Redis:
         """Creates redis connection during first call and returns it. During

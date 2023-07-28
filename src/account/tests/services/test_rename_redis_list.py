@@ -1,12 +1,16 @@
 from unittest import mock
+
 from django.test import TestCase
 from fakeredis import FakeStrictRedis
-from account.redis import redis_connection
 
+from account.redis import redis_connection
 from account.services import construct_redis_key, rename_redis_list
 
 
 class RenameRedisListTests(TestCase):
+    def setUp(self) -> None:
+        redis_connection.cache_clear()
+
     @mock.patch("account.redis.from_url", FakeStrictRedis)
     def test_key_renamed(self):
         redis_con = redis_connection()
