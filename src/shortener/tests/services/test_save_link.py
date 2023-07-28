@@ -73,8 +73,12 @@ class SaveLinkTests(TestCase):
         self.request.user = AnonymousUser()
 
         long_link = "youtube.com"
-        shorten_form_1 = ShortenForm(data={"long_link": long_link})
-        shorten_form_2 = ShortenForm(data={"long_link": long_link})
+        shorten_form_1 = ShortenForm(
+            data={"long_link": long_link, "alias": "test-alias1"}
+        )
+        shorten_form_2 = ShortenForm(
+            data={"long_link": long_link, "alias": "test-alias2"}
+        )
         save_link(self.request, shorten_form_1)
         save_link(self.request, shorten_form_2)
 
@@ -87,8 +91,12 @@ class SaveLinkTests(TestCase):
         self.request.user = self.user
 
         long_link = "youtube.com"
-        shorten_form_1 = ShortenForm(data={"long_link": long_link})
-        shorten_form_2 = ShortenForm(data={"long_link": long_link})
+        shorten_form_1 = ShortenForm(
+            data={"long_link": long_link, "alias": "test-alias1"}
+        )
+        shorten_form_2 = ShortenForm(
+            data={"long_link": long_link, "alias": "test-alias2"}
+        )
         save_link(self.request, shorten_form_1)
         save_link(self.request, shorten_form_2)
 
