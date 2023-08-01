@@ -234,7 +234,6 @@ def check_user_access(
         raise Http404()
 
 
-# TODO: add tests
 def construct_redis_key(alias: str, date: str) -> str:
     """date: M.D"""
     return f"{alias}:{date}"
