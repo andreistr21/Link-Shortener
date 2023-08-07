@@ -40,7 +40,6 @@ def get_links_by_user(
     return links
 
 
-# TODO: update tests
 def get_links_total_clicks(links: QuerySet[Link]) -> int:
     """Counts and returns all links clicks in list."""
     redis_con = redis_connection()
