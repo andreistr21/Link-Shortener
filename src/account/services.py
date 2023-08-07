@@ -103,7 +103,7 @@ def get_domain() -> str:
 
 
 def map_clicks_amount_to_link(links: QuerySet[Link]) -> list[tuple[Link, int]]:
-    """Returns list tuples with link and link clicks"""
+    """Returns list of tuples with link and link clicks"""
     return [(link, get_link_total_clicks(link.alias)) for link in links]
 
 

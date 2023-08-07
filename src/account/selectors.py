@@ -40,7 +40,6 @@ def get_links_by_user(
     return links
 
 
-# 306ms, 226ms
 # TODO: update tests
 def get_links_total_clicks(links: QuerySet[Link]) -> int:
     """Counts and returns all links clicks in list."""
@@ -66,20 +65,20 @@ def get_keys_total_count(
     for keys_tuple in keys_tuples:
         key_list = keys_tuple[1]
         for key in key_list:
-            key_dec = key.decode(encoding="utf8")
-            redis_pipeline.llen(key_dec)
+            redis_pipeline.llen(key.decode(encoding="utf8"))
 
 
+# TODO: update tests
 def get_link_total_clicks(link_alias: str) -> int:
-    counter = 0
-    current_date = timezone.now()
     redis_con = redis_connection()
-    for i in range(60):
-        date = (current_date - timedelta(i)).strftime("%m.%d")
-        item_key = f"{link_alias}:{date}"
-        counter += redis_con.llen(item_key)
+    _, keys = scan_redis_for_links_keys(redis_con, link_alias)
+    with redis_con.pipeline() as redis_pipeline:
+        for key in keys:
+            redis_pipeline.llen(key.decode(encoding="utf8"))
 
-    return counter
+        clicks = sum(redis_pipeline.execute())
+
+    return clicks
 
 
 def get_link_statistics(alias: str) -> list[bytes]:
