@@ -67,7 +67,6 @@ def get_keys_total_count(
             redis_pipeline.llen(key.decode(encoding="utf8"))
 
 
-# TODO: update tests
 def get_link_total_clicks(link_alias: str) -> int:
     redis_con = redis_connection()
     _, keys = scan_redis_for_links_keys(redis_con, link_alias)
