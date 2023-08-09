@@ -57,7 +57,6 @@ def get_links_total_clicks(links: QuerySet[Link]) -> int:
     return total_clicks
 
 
-# TODO: add tests
 def get_keys_total_count(
     keys_tuples: list[tuple[int, list[bytes]]], redis_pipeline: Pipeline
 ) -> None:
