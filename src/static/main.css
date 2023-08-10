@@ -780,6 +780,9 @@ Overview & Links
 .link-item h5 {
   line-height: 2rem;
 }
+.link-info h5{
+  line-height: 2rem;
+}
 
 .link-item-long-link {
   margin-bottom: 1rem;
