@@ -15,7 +15,8 @@
         <link rel="stylesheet" href={% static 'normalize.css' %} />
         <!-- main css -->
         <link rel="stylesheet" href={% static 'main.css' %} />
-        <meta name="google-site-verification" content="GpS_7xo4oZbiNKrgai4zmhQlXsZpqDpBNeJHpvk-yO0" />
+        <meta name="google-site-verification"
+              content="GpS_7xo4oZbiNKrgai4zmhQlXsZpqDpBNeJHpvk-yO0" />
         <title>
             {% block title %}
                 Shorty
@@ -72,27 +73,32 @@
                 </button>
                 {% comment %} navbuttons {% endcomment %}
                 {% if user.is_authenticated %}
-                    <div class="sidebar-profile">
-                        <h5>{{ user.username }}</h5>
+                    <div class="sidebar-upper">
+                        <div class="sidebar-profile">
+                            <h5>{{ user.username }}</h5>
+                        </div>
+                        <a href="{% url 'account:links_list' %}">
+                            <button class="btn btn-primary btn-block">links</button>
+                        </a>
+                        <a href="{% url 'account:overview' %}">
+                            <button class="btn btn-primary btn-block">overview</button>
+                        </a>
                     </div>
-                {% endif %}
-                <div class="sidebar-buttons">
-                    {% if not user.is_authenticated %}
+                    <div class="sidebar-lower">
+                        <a href="{% url 'account:logout' %}" id="logout-btn-id-2">
+                            <button class="btn btn-logout btn-block">log out</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="sidebar-upper">
                         <a href="{% url 'account:sign_in' %}">
                             <button class="btn btn-primary btn-block">sign in</button>
                         </a>
                         <a href="{% url 'account:sign_up' %}">
                             <button class="btn btn-primary btn-block">sign up</button>
                         </a>
-                    {% else %}
-                        {% comment %} <a href="#">
-                            <button class="btn btn-primary btn-block">settings</button>
-                        </a> {% endcomment %}
-                        <a href="{% url 'account:logout' %}" id="logout-btn-id-2">
-                            <button class="btn btn-logout btn-block">log out</button>
-                        </a>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </aside>
         </header>
         {% block content %}
