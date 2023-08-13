@@ -541,7 +541,7 @@ Dialog box
 .sidebar-buttons {
   margin-top: 3rem;
 }
-.sidebar-upper{
+.sidebar-upper {
   margin-top: 3rem;
 }
 
@@ -780,7 +780,7 @@ Overview & Links
 .link-item h5 {
   line-height: 2rem;
 }
-.link-info h5{
+.link-info h5 {
   line-height: 2rem;
 }
 
@@ -956,6 +956,15 @@ Overview & Links
 }
 .show-dropdown-click {
   display: block;
+}
+
+@media screen and (max-width: 672px) {
+  .utils {
+    grid-template-columns: 1fr;
+  }
+  .dropdown-click{
+    margin: 0 auto;
+  }
 }
 
 /*
