@@ -895,6 +895,18 @@ Overview & Links
   margin-bottom: 2rem;
 }
 
+@media screen and (max-width: 672px) {
+  .short-link-and-date {
+    grid-template-columns: 1fr;
+  }
+  .link-item-short-link {
+    order: 1;
+  }
+  .link-item-date {
+    order: 0;
+  }
+}
+
 /* Search form */
 .search-form {
   display: grid;
@@ -962,7 +974,7 @@ Overview & Links
   .utils {
     grid-template-columns: 1fr;
   }
-  .dropdown-click{
+  .dropdown-click {
     margin: 0 auto;
   }
 }
